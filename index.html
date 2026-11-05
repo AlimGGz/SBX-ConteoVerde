@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#123e34" />
-  <meta name="description" content="Control de inventario desde Excel, conteo por producto y exportación a Excel o PDF." />
+  <meta name="description" content="Inventario Excel con búsqueda Merch, pick pack y exportación Excel, PDF o dictado." />
   <title>Conteo Verde · Control de inventario</title>
   <style>
 :root{--green:#123e34;--deep:#0e2c28;--accent:#087c58;--mint:#d9f2e7;--mint2:#edfaf3;--cream:#f7f8f4;--card:#fff;--ink:#1c312c;--muted:#738078;--line:#e4eae4;--shadow:0 16px 45px rgba(21,57,39,.05);--radius:16px;font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--cream)}*{box-sizing:border-box}body{margin:0;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.app-shell{min-height:100vh}.topbar{height:81px;background:var(--deep);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,5.8vw,100px)}.brand{display:flex;gap:14px;align-items:center}.brand-mark{width:38px;height:38px;display:grid;grid-template-columns:repeat(2,1fr);gap:4px;transform:rotate(-11deg)}.brand-mark span{border-radius:4px;background:#e9c891}.brand-mark span:nth-child(2),.brand-mark span:nth-child(3){background:#a5d7b4}.brand-overline{display:block;font-size:9px;letter-spacing:1.8px;font-weight:700;color:#bdcfca;margin-bottom:3px}.brand strong{font-size:23px;letter-spacing:-1.4px}.brand-accent{color:#a9d9b3}.topbar-actions{display:flex;align-items:center;gap:23px}.connection-pill{color:#c8ded6;font-size:12px}.small-dot{display:inline-block;width:8px;height:8px;background:#80d4a6;border-radius:99px;margin-right:7px}.button{border:1px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:700;border-radius:10px;padding:12px 17px;white-space:nowrap;transition:transform .1s,background .15s,box-shadow .15s}.button:hover:not(:disabled){transform:translateY(-1px)}.button:focus-visible,.icon-button:focus-visible,.product-item:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #91cfac;outline-offset:2px}.button-subtle{background:transparent;border-color:#416159;color:#e1f2e9;font-size:12px}.button-subtle:hover:not(:disabled){background:#1b4e40}.button-primary{background:var(--accent);color:white;box-shadow:0 5px 12px rgba(8,124,88,.13)}.button-primary:hover:not(:disabled){background:#056a4b}.button-icon{font-size:19px;font-weight:400}.main-container{max-width:1430px;margin:0 auto;padding:36px clamp(20px,5vw,74px) 52px}.intro{display:flex;gap:20px;justify-content:space-between;align-items:center;margin:0 0 31px}.eyebrow,.micro-label{color:var(--accent);font-size:10px;font-weight:800;letter-spacing:1.5px;margin:0 0 9px}.eyebrow{color:#7f8f83}.eyebrow-line{display:inline-block;width:22px;height:2px;background:#bd9460;vertical-align:middle;margin-right:8px}.intro h1{font-size:clamp(31px,3vw,43px);letter-spacing:-1.9px;line-height:1.15;margin:0 0 12px;font-weight:750}.intro h1 em{font-style:normal;color:var(--accent)}.intro-description{margin:0;color:#74817a;font-size:14px}.intro-actions{display:flex;align-items:center;gap:16px}.session-tag{font-size:11px;color:#6a7b70;font-weight:650;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.setup-card{display:grid;grid-template-columns:30% 70%;background:var(--card);border:1px solid var(--line);border-radius:19px;overflow:hidden;min-height:510px;box-shadow:var(--shadow)}.setup-illustration{background:linear-gradient(145deg,#195243,#0b2d2a);display:flex;align-items:center;justify-content:center}.setup-illustration span{font-size:105px;color:#bbe0c9;border:7px solid #6aaf90;letter-spacing:-14px;padding:10px 26px 10px 10px;font-weight:800;transform:rotate(-12deg)}.setup-body{padding:clamp(26px,4.4vw,62px)}h2{letter-spacing:-.6px}.setup-body h2{font-size:27px;margin:0 0 12px}.setup-body>p:not(.micro-label){color:#75817b;line-height:1.65;max-width:630px}.drop-zone{border:2px dashed #a7cbbb;background:#f5fcf7;border-radius:14px;margin:29px 0 17px;min-height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;text-align:center;padding:20px;cursor:pointer;transition:background .2s,border-color .2s}.drop-zone:hover,.drop-zone.drag-over{background:#e5f7ed;border-color:#16835b}.upload-icon{font-size:30px;color:var(--accent);width:54px;height:54px;background:#daf1e4;border-radius:15px;display:grid;place-items:center}.drop-zone strong{font-size:14px}.drop-zone small{font-size:11px;color:var(--muted)}.browse-label{color:var(--accent);font-size:12px;font-weight:750;margin-top:4px}.setup-body .setup-footnote{font-size:11px;color:#81908a}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:19px}.stat-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:21px 22px 20px;box-shadow:var(--shadow)}.stat-header{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:650;color:#7c8981}.stat-icon{width:30px;height:30px;border-radius:9px;background:#eff7f2;display:grid;place-items:center;color:var(--accent);font-size:16px}.stat-value{font-size:35px;font-weight:750;letter-spacing:-1.5px;margin-top:10px;line-height:1.05}.stat-detail{font-size:11px;color:#97a09a;margin-top:8px}.stat-progress{background:var(--green);color:#fff}.stat-progress .stat-header{color:#c8dfd2}.stat-progress .stat-icon{background:#2c6853;color:#bde8d0}.stat-progress .stat-value{color:white}.progress-track{height:6px;background:#376454;border-radius:15px;margin-top:18px;overflow:hidden}.progress-track span{display:block;background:#9adeb1;height:100%;width:0;transition:width .2s}.work-grid{display:grid;grid-template-columns:minmax(320px,1.02fr) minmax(320px,1fr);gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);overflow:hidden}.catalog-panel{display:flex;flex-direction:column;min-height:620px}.panel-header{display:flex;align-items:center;justify-content:space-between;padding:25px 24px 15px}.panel-header h2,.recent-title h2{font-size:19px;margin:0}.count-badge{display:grid;place-items:center;min-width:33px;padding:0 7px;height:30px;border-radius:9px;background:#edf4ed;color:var(--accent);font-size:12px;font-weight:700}.search-box{height:47px;display:flex;align-items:center;margin:0 24px 12px;background:#f8faf8;border:1px solid #e2e9e1;border-radius:9px;padding:0 12px;gap:10px}.search-box>span{font-size:27px;color:#8e9b91}.search-box input{background:transparent;border:0;outline:0!important;width:100%;min-width:0;font-size:12px;color:var(--ink)}.search-box input::placeholder{color:#9ca8a0}.search-box kbd{border:1px solid #e0e9e1;border-radius:5px;font-size:10px;padding:3px 6px;color:#a5b0a7;background:white}.filter-row{display:flex;gap:8px;padding:0 24px 18px}.filter-row select{min-width:0;flex:1;border:1px solid #e4e9e4;border-radius:8px;padding:8px 9px;background:#fff;color:#5f7166;font-size:11px}.filter-row select:last-child{flex:0 0 119px}.list-heading{display:flex;justify-content:space-between;align-items:center;background:#f8faf8;padding:11px 23px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:#a2aea4;font-size:9px;letter-spacing:1.2px;font-weight:800}.product-list{min-height:330px;max-height:490px;overflow:auto;scrollbar-width:thin;flex:1}.product-item{width:100%;padding:14px 23px;text-align:left;background:transparent;border:0;border-bottom:1px solid #eef0eb;display:flex;align-items:center;justify-content:space-between;gap:11px;color:var(--ink);position:relative}.product-item:hover{background:#f7fbf8}.product-item.selected{background:#eaf7ef}.product-item.selected:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}.product-item-left{min-width:0}.product-item-code{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.2px;margin-bottom:4px}.product-item-name{font-size:12px;line-height:1.36;font-weight:690;max-height:32px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.product-item-family{color:#9aa7a0;font-size:10px;margin-top:5px}
@@ -55,6 +55,28 @@
 .import-check{display:inline-grid;flex:0 0 23px;height:23px;border-radius:50%;background:#d9f2e4;color:#087c58;place-items:center;font-weight:800}
 @media(max-width:640px){.version-tag{display:block;width:max-content;margin:8px 0 0}}
 
+
+/* V8: visible controls only, never list private merchandise reference data. */
+.merch-status{padding:10px 14px;margin:-6px 0 18px;border:1px solid #d5e5d9;border-radius:10px;background:#f0f8f2;color:#466c58;font-size:12px;line-height:1.5}
+.pack-button{background:#e0f2e6!important;border-color:#93cdaa!important;color:#08573c!important;font-weight:850!important}
+.pack-explanation{font-size:11px;margin:9px 0 0;color:#4d7860;line-height:1.5}
+.file-voice{background:#deefe6;color:#0b684d;font-size:13px;min-width:30px}
+.dictation-cover{position:fixed;inset:0;z-index:1000;background:rgba(10,34,28,.82);padding:18px;overflow:auto}
+.dictation-dialog{height:min(930px,calc(100dvh - 36px));min-height:540px;max-width:1360px;margin:auto;background:white;border-radius:17px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 80px #092b2544}
+.dictation-head{padding:18px 24px;display:flex;gap:15px;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #dfe8df}
+.dictation-head h2{margin:0;font-size:25px}.dictation-head p:not(.micro-label){margin:6px 0 0;color:#7e8d82;font-size:12px}
+.dictation-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;min-height:0;flex:1}
+.dictation-pdf{background:#dce5dd;min-height:0}.dictation-pdf iframe{width:100%;height:100%;border:0;background:#fff}
+.dictation-sidebar{padding:23px 20px;display:flex;flex-direction:column;gap:13px;overflow:auto}
+.dictation-progress{font-weight:800;font-size:18px}.dictation-track{background:#e6ede6;height:7px;border-radius:20px;overflow:hidden}.dictation-track span{background:var(--accent);height:100%;width:0;display:block;transition:width .2s}
+.dictation-current{border-radius:12px;background:#f0f8f3;border:1px solid #dfecdf;padding:16px;font-size:13px;line-height:1.65;min-height:125px;overflow-wrap:anywhere}
+.dictation-current strong{color:var(--green)}.dictation-product-name{font-size:11px;color:#597667}.dictation-buttons{display:flex;gap:7px}.dictation-buttons .button{flex:1;padding:11px 7px;font-size:12px;min-width:0;white-space:normal}
+.dictation-speed{display:flex;justify-content:space-between;align-items:center;gap:9px;font-size:12px;font-weight:700}.dictation-speed select{max-width:160px;border:1px solid #ccdccf;border-radius:7px;background:white;padding:8px}
+.dictation-note{font-size:11px;color:#738276;line-height:1.5;margin:0;flex:1}
+.dictation-sidebar .button-wide{margin-top:auto}
+@media(max-width:820px){.dictation-dialog{height:auto;min-height:calc(100dvh - 36px)}.dictation-grid{grid-template-columns:1fr}.dictation-pdf{height:45vh;min-height:280px}.dictation-sidebar{padding:18px}.topbar{height:auto;min-height:78px;flex-wrap:wrap;row-gap:10px;padding:12px 18px}.topbar-actions{gap:8px;flex-wrap:wrap}.topbar-actions .button{padding:9px 11px;font-size:11px}.connection-pill{display:none}}
+@media(max-width:430px){.topbar-actions{width:100%}.topbar-actions .button{flex:1}}
+
 </style>
 </head>
 <body>
@@ -66,6 +88,7 @@
       </div>
       <div class="topbar-actions">
         <span class="connection-pill"><span class="small-dot"></span> Datos en este dispositivo</span>
+        <button class="button button-subtle" id="merch-upload-btn" type="button" title="Actualizar equivalencias SAP y SKU POS desde PDF o Excel">↥ Actualizar lista Merch</button>
         <button class="button button-subtle" id="change-file-btn" type="button" disabled> <span class="button-icon">↥</span> Cambiar Excel</button>
       </div>
     </header>
@@ -73,7 +96,7 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V7 · SAP + SKU POS</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V8 · MERCH + PICK PACK + DICTADO</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel y descarga el reporte final.</p>
         </div>
@@ -84,6 +107,7 @@
       </section>
 
       <div id="import-message" class="import-message" role="status" aria-live="polite" hidden></div>
+      <div class="merch-status" id="merch-status" role="status" aria-live="polite">Lista Merch: sin cargar. Puedes contar por descripción y SAP.</div>
 
       <section class="setup-card" id="setup-section">
         <div class="setup-illustration" aria-hidden="true"><span>XL</span></div>
@@ -141,25 +165,47 @@
     </main>
   </div>
 
+  <input id="merch-file-input" type="file" accept=".pdf,.xls,.xlsx,.csv,application/pdf,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
   <input id="file-input" type="file" accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
 
   <div id="export-modal" class="modal-cover" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="export-heading">
       <div class="modal-head"><div class="modal-seal">▣</div><button type="button" class="icon-button" id="close-modal" aria-label="Cerrar ventana">✕</button></div>
       <p class="micro-label">PASO 04 · DESCARGAR REPORTE</p><h2 id="export-heading">Finalizar inventario</h2>
-      <p class="modal-desc">Elige el formato de tu reporte. Las piezas y las cantidades medidas en KG o L aparecerán por separado, sin conversiones.</p>
+      <p class="modal-desc">Elige Excel, PDF o Dictado. En Dictado verás el mismo PDF mientras escuchas SAP, una palabra clave del nombre y las cantidades por unidad.</p>
       <div class="modal-summary"><span>Productos con conteo</span><strong id="export-quantity">0</strong><span>Total del catálogo</span><strong id="export-total">0</strong></div>
       <div class="field-heading">FORMATO DE DESCARGA</div>
       <div class="format-options" role="radiogroup" aria-label="Formato de reporte">
         <label class="format-option"><input type="radio" name="export-format" value="xlsx" checked /><span class="file-icon file-excel">X</span><span><strong>Excel</strong><small>Editable · .xlsx</small></span><span class="radio-indicator"></span></label>
         <label class="format-option"><input type="radio" name="export-format" value="pdf" /><span class="file-icon file-pdf">P</span><span><strong>PDF</strong><small>Listo para imprimir · .pdf</small></span><span class="radio-indicator"></span></label>
+        <label class="format-option"><input type="radio" name="export-format" value="dictado" /><span class="file-icon file-voice">◖))</span><span><strong>Dictado</strong><small>PDF en pantalla + lectura por voz</small></span><span class="radio-indicator"></span></label>
       </div>
-      <label class="check-row"><input type="checkbox" id="include-zero" checked /><span>Incluir productos sin conteo (cantidad 0)</span></label>
+      <label class="check-row"><input type="checkbox" id="include-zero" checked /><span>Incluir productos sin conteo (cantidad 0) · También se leerán en Dictado</span></label>
       <p class="export-hint">Al generar el reporte, el inventario quedará marcado como finalizado. Podrás reabrirlo para hacer correcciones.</p>
       <button type="button" id="download-btn" class="button button-primary button-wide">Generar y descargar reporte <span aria-hidden="true">↓</span></button>
     </div>
   </div>
 
+  <div id="dictation-modal" class="dictation-cover" hidden>
+    <section class="dictation-dialog" role="dialog" aria-modal="true" aria-labelledby="dictation-heading">
+      <header class="dictation-head"><div><p class="micro-label">REPORTE FINAL · LECTURA DE INVENTARIO</p><h2 id="dictation-heading">Modo Dictado</h2><p>Consulta el PDF mientras escuchas el SAP, una palabra clave y las cantidades.</p></div><button class="icon-button" id="dictation-close" type="button" aria-label="Cerrar modo Dictado">✕</button></header>
+      <div class="dictation-grid">
+        <div class="dictation-pdf"><iframe id="dictation-pdf" title="Vista del reporte final en PDF" loading="lazy"></iframe></div>
+        <aside class="dictation-sidebar">
+          <p class="micro-label">LECTURA EN VOZ ALTA · ESPAÑOL</p>
+          <div id="dictation-progress" class="dictation-progress" aria-live="polite">Producto 0 de 0</div>
+          <div class="dictation-track"><span id="dictation-bar"></span></div>
+          <div id="dictation-current" class="dictation-current">Selecciona «Iniciar dictado».</div>
+          <div class="dictation-buttons"><button class="button button-primary" id="dictation-play" type="button">▶ Iniciar dictado</button><button class="button button-outline" id="dictation-pause" type="button">Ⅱ Pausar</button></div>
+          <div class="dictation-buttons"><button class="button button-outline" id="dictation-prev" type="button">← Anterior</button><button class="button button-outline" id="dictation-next" type="button">Siguiente →</button></div>
+          <label class="dictation-speed" for="dictation-rate">Velocidad de lectura<select id="dictation-rate"><option value="0.8">Lenta · 0.8×</option><option value="1" selected>Normal · 1×</option><option value="1.2">Rápida · 1.2×</option><option value="1.4">Muy rápida · 1.4×</option></select></label>
+          <p class="dictation-note" id="dictation-note">La lectura utiliza la voz disponible en tu navegador. Recomendamos Chrome o Edge. No se envían datos a un servidor de ConteoVerde.</p>
+          <button class="button button-primary button-wide" id="dictation-download" type="button">↓ Descargar este PDF</button>
+          <button class="button button-outline button-wide" id="dictation-open-tab" type="button">↗ Abrir PDF en otra pestaña</button>
+        </aside>
+      </div>
+    </section>
+  </div>
   <div class="toast" role="status" aria-live="polite" id="toast"></div>
   <script>
 /*!
@@ -448,7 +494,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       Array.from(row.children).filter(c=>/^(td|th)$/i.test(c.tagName)).map(c=>c.textContent.trim())) }));
   }
 
-  async function readExcel(file) {
+  async function readSheets(file) {
     const extension = /\.(xlsx|xls)$/i.exec(file.name)?.[1]?.toLowerCase();
     if (!extension) throw new Error('Selecciona un archivo Excel con extensión .xls o .xlsx.');
     if (file.size > 20 * 1024 * 1024) throw new Error('El archivo excede el límite de 20 MB.');
@@ -459,15 +505,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     // Leer el formato REAL, no sólo la extensión. Algunos sistemas exportan
     // como .xls archivos HTML, XML o incluso .xlsx con otro nombre.
     if (ole) {
-      if (!root.InventoryXLS) throw new Error('Falta el lector XLS. Usa el nuevo index.html completo de la versión V5.');
+      if (!root.InventoryXLS) throw new Error('Falta el lector XLS. Actualiza el index.html completo a la versión V8.');
       let sheets;
       try { sheets = root.InventoryXLS.readBIFF(bytes); }
       catch (err) { throw new Error('No se pudo leer el Excel 97-2003: ' + (err?.message || 'Formato BIFF no compatible')); }
-      return { ...extractCatalog(sheets), filename: file.name };
+      return sheets;
     }
     if (!zipFile) {
       if (extension === 'xlsx') throw new Error('El archivo .xlsx no tiene la estructura esperada. Descárgalo de nuevo.');
-      return { ...extractCatalog(readLegacyTextWorkbook(new Uint8Array(bytes))), filename: file.name };
+      return readLegacyTextWorkbook(new Uint8Array(bytes));
     }
     if (typeof JSZip === 'undefined') throw new Error('Falta el lector XLSX. Usa el index.html completo de la versión V5.');
     let zip;
@@ -503,9 +549,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     }
     const parsed = [];
     for (const sheet of sheets) parsed.push({ name: sheet.name, rows: await readSheet(zip, sheet.path, strings) });
-    return { ...extractCatalog(parsed), filename: file.name };
+    return parsed;
   }
 
+  async function readExcel(file) {
+    return { ...extractCatalog(await readSheets(file)), filename: file.name };
+  }
   const column = n => { let result = ''; for (let i = n + 1; i > 0; i = Math.floor((i - 1) / 26)) result = String.fromCharCode(65 + (i - 1) % 26) + result; return result; };
   function cell(value, col, row, style = 0, numeric = false) {
     const ref = `${column(col)}${row}`;
@@ -534,7 +583,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       cells.push(row(r, [cell(p.family, 0, r, normalStyle), cell(p.code, 1, r, normalStyle), cell(p.description, 2, r, normalStyle), cell((p.totalsMilli?.piece || 0) / 1000, 3, r, centeredNumberStyle, true), other ? cell((p.totalsMilli?.source || 0) / 1000, 4, r, centeredNumberStyle, true) : cell('—', 4, r, centeredTextStyle), cell(p.unit || '—', 5, r, centeredTextStyle), cell(p.history.length, 6, r, i % 2 ? 8 : 5, true)], 23));
     });
     const lastRow = 7 + data.length;
-    const worksheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${MAIN_NS}"><dimension ref="A1:G${Math.max(7,lastRow)}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="7" topLeftCell="A8" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="19"/><cols><col min="1" max="1" width="25" customWidth="1"/><col min="2" max="2" width="17" customWidth="1"/><col min="3" max="3" width="71" customWidth="1"/><col min="4" max="4" width="16" customWidth="1"/><col min="5" max="5" width="16" customWidth="1"/><col min="6" max="6" width="16" customWidth="1"/><col min="7" max="7" width="13" customWidth="1"/></cols><sheetData>${cells.join('')}</sheetData><mergeCells count="3"><mergeCell ref="A1:G1"/><mergeCell ref="A2:G2"/><mergeCell ref="A6:G6"/></mergeCells><autoFilter ref="A7:G${Math.max(lastRow,7)}"/><pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" paperSize="9" fitToHeight="0" fitToWidth="1"/></worksheet>`;
+    const worksheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${MAIN_NS}"><dimension ref="A1:G${Math.max(7,lastRow)}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="7" topLeftCell="A8" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="19"/><cols><col min="1" max="1" width="25" customWidth="1"/><col min="2" max="2" width="17" customWidth="1"/><col min="3" max="3" width="71" customWidth="1"/><col min="4" max="4" width="16" customWidth="1"/><col min="5" max="5" width="16" customWidth="1"/><col min="6" max="6" width="16" customWidth="1"/><col min="7" max="7" width="13" customWidth="1"/></cols><sheetData>${cells.join('')}</sheetData><autoFilter ref="A7:G${Math.max(lastRow,7)}"/><mergeCells count="3"><mergeCell ref="A1:G1"/><mergeCell ref="A2:G2"/><mergeCell ref="A6:G6"/></mergeCells><pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" paperSize="9" fitToHeight="0" fitToWidth="1"/></worksheet>`;
     const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="${MAIN_NS}"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.###"/></numFmts><fonts count="4"><font><sz val="10"/><name val="Aptos"/><color rgb="FF273D34"/></font><font><b/><sz val="10"/><name val="Aptos"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="19"/><name val="Aptos Display"/><color rgb="FF123E34"/></font><font><sz val="10"/><name val="Aptos"/><color rgb="FF7C8980"/></font></fonts><fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF123E34"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1F8F3"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="14"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="0" xfId="0" applyFill="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="0" fillId="3" borderId="0" xfId="0" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFill="1"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="3" borderId="0" xfId="0" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="164" fontId="0" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
     const zip = new JSZip();
     zip.file('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="${contentTypes}"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`);
@@ -545,7 +594,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     zip.file('xl/styles.xml', styles);
     return await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 }, mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   }
-  root.InventoryExcel = { readExcel, exportExcel, extractCatalog };
+  root.InventoryExcel = { readExcel, readSheets, exportExcel, extractCatalog };
 })(window);
 
 </script>
@@ -684,10 +733,154 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 })(window);
 
 </script>
-  <!-- CV_MERCH_ALIASES_BEGIN -->
-<script id="cv-merch-aliases" type="application/json">{"actualizado":"2026-10-30","pares":[["149373","52334"],["149714","58834"],["149751","52304"],["149786","52374"],["149787","52343"],["149788","52345"],["149819","52307"],["149820","52321"],["149821","52323"],["149822","52317"],["149823","52329"],["149824","52347"],["149825","52376"],["149826","52312"],["149827","52320"],["149828","52325"],["149829","52348"],["149837","52350"],["149838","52310"],["149839","52311"],["149840","52309"],["149841","52332"],["149842","52330"],["149843","52331"],["149844","52306"],["149845","52351"],["149846","52382"],["149847","52319"],["149848","52314"],["149849","52315"],["149850","52318"],["149851","52352"],["149852","52368"],["149853","52400"],["149854","52346"],["149855","52378"],["149856","52384"],["149857","52326"],["149858","52308"],["149859","52380"],["149860","52313"],["149861","52398"],["149862","52354"],["149863","52328"],["149864","52369"],["149865","52316"],["149866","52357"],["149867","52359"],["149868","52361"],["149869","52363"],["149870","52365"],["149871","52367"],["149883","52413"],["149890","52442"],["149892","52370"],["149893","52371"],["149894","52373"],["149897","52444"],["149898","52433"],["149900","52418"],["149901","52419"],["149902","52426"],["149903","52414"],["149904","52451"],["149905","52432"],["149906","52416"],["149907","52417"],["149908","52445"],["149909","52448"],["149910","52425"],["149911","52436"],["149915","52483"],["149917","52434"],["149918","52421"],["149920","52446"],["149921","52428"],["149922","52422"],["149923","52427"],["149927","52423"],["149928","52431"],["149929","52440"],["149930","52489"],["149934","52441"],["149941","52443"],["149942","52424"],["149943","52450"],["149944","52453"],["149945","52435"],["149946","52430"],["149947","52429"],["149948","52437"],["149949","52415"],["149950","52420"],["149951","52452"],["149952","52447"],["149953","52408"],["149954","52407"],["149955","52409"],["149957","52345"],["149958","52355"],["149959","52403"],["149967","52336"],["149968","52402"],["149969","52388"],["149970","52386"],["149973","52557"],["149974","52559"],["149977","52505"],["149978","52566"],["149979","52513"],["149980","52541"],["149981","52503"],["149982","52539"],["149983","52501"],["149984","52507"],["149985","52449"],["149988","52562"],["149990","52563"],["149991","52504"],["149992","52510"],["149993","52534"],["149994","52536"],["149995","52537"],["149996","52564"],["149997","52521"],["149998","52519"],["149999","52544"],["150000","52542"],["150001","52517"],["150002","52531"],["150003","52496"],["150004","52532"],["150005","52502"],["150007","52498"],["150008","52561"],["150010","52511"],["150011","52538"],["150012","52508"],["150015","52390"],["150016","52392"],["150017","52394"],["150021","52438"],["150023","52556"],["150024","52554"],["150033","58769"],["150033","58775"],["150034","58771"],["150034","58773"],["150037","52584"],["150038","52593"],["150039","52603"],["150040","52589"],["150041","52602"],["150042","52579"],["150043","52600"],["150044","52580"],["150045","52586"],["150046","52591"],["150047","52585"],["150048","52596"],["150049","52578"],["150050","52581"],["150051","52601"],["150052","52595"],["150053","52604"],["150054","52598"],["150055","52587"],["150056","52597"],["150060","52582"],["150061","52588"],["150161","52322"],["150162","52324"],["150163","52327"],["152528","52525"],["152529","52527"],["152530","52529"],["152531","52523"],["152542","58958"],["152544","58785"],["152545","52575"],["152546","52577"],["152547","50747"],["152548","58761"],["152550","52546"],["152550","52548"],["152550","52550"],["152550","52552"],["152551","52567"],["152551","52568"],["152551","52569"],["152588","52608"],["152589","52609"],["152590","52610"],["152591","52612"],["152592","58779"],["152593","58767"],["152594","58791"],["152595","58792"],["152596","58793"],["152597","58794"],["152598","58781"],["152599","58765"],["152600","58783"],["152601","58796"],["152602","58763"],["152603","58797"],["152604","58798"],["152605","58799"],["152606","58800"],["152607","58801"],["152965","58861"],["152966","58863"],["152967","50743"],["152968","50740"],["152969","58757"],["152971","52617"],["152972","52616"],["152973","52615"],["152975","52606"],["154120","50746"],["154121","58865"],["154122","50742"],["154123","58753"],["154124","58755"],["154125","50745"],["154126","58862"],["154127","50741"],["154141","58828"],["154142","58804"],["154143","58777"],["154144","58805"],["154145","58831"],["154146","58817"],["154147","50736"],["154148","58824"],["154149","58807"],["154150","50737"],["154151","58812"],["154153","58864"],["154157","58803"],["154158","58816"],["154159","58810"],["154160","58813"],["154161","50739"],["154161","50759"],["154162","58819"],["154163","58830"],["154164","58806"],["154165","58818"],["154166","58825"],["154167","58823"],["154168","58848"],["154169","58826"],["154170","58827"],["154171","58829"],["154172","58822"],["154174","58795"],["154175","58821"],["154176","50735"],["154177","58809"],["154178","58802"],["154179","58820"],["154180","50738"],["154181","58808"],["154182","58811"],["154183","58832"],["154184","58835"],["154185","58815"],["155921","52614"],["155959","58840"],["155959","58842"],["155960","58838"],["155961","58839"],["155967","58853"],["155968","58890"],["155969","58846"],["155969","58891"],["155970","58892"],["155971","58906"],["155974","58751"],["155975","58836"],["155977","58885"],["156335","58866"],["156337","58898"],["156338","50757"],["156339","58867"],["156340","58910"],["156341","58908"],["156342","58896"],["156343","58899"],["156344","50755"],["156345","58854"],["156346","50751"],["156347","50753"],["156348","50754"],["156349","58855"],["156350","50756"],["156351","50758"],["156352","58905"],["156353","58895"],["156354","58904"],["156355","58852"],["156356","58901"],["156357","58909"],["156358","58900"],["159930","58858"],["159931","58859"],["159932","58868"],["159933","58894"],["159934","58907"],["159935","58893"],["159936","58897"],["159937","58857"],["159943","50749"],["159944","50749"],["159945","50749"],["159946","50749"],["159947","50749"],["159948","50749"],["161734","58814"],["161819","58887"],["161934","58878"],["161935","58876"],["161936","58870"],["161937","58888"],["161938","58882"],["161939","58874"],["161940","58880"],["162065","58913"],["162249","58884"],["162250","58872"],["162251","58902"],["162262","58916"],["162531","58923"],["162531","58924"],["162532","58926"],["162549","58927"],["162550","58920"],["162551","58928"],["162556","58925"],["163939","58914"]]}</script>
-<!-- CV_MERCH_ALIASES_END -->
   <script>
+/* Local reader for the weekly Merch equivalence list: no prices, cloud uploads or catalogs displayed. */
+(function (root) {
+'use strict';
+const norm = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+const pdfTextDecoder = new TextDecoder('windows-1252');
+function parseLiteral(input) {
+  let output='';
+  for(let i=1;i<input.length-1;i++) {
+    let ch=input[i];
+    if(ch !== '\\'){ output += ch; continue; }
+    if(i+1>=input.length-1) break;
+    ch=input[++i];
+    const escapes={'n':'\n','r':'\r','t':'\t','b':'\b','f':'\f','\\':'\\','(':'(',')':')'};
+    if (Object.hasOwn(escapes,ch)){ output+=escapes[ch]; continue; }
+    if (ch==='\n') continue;
+    if (ch==='\r') {if(input[i+1]==='\n') i++;continue;}
+    if(/[0-7]/.test(ch)){let octal=ch;while(octal.length<3&&/[0-7]/.test(input[i+1]||''))octal+=input[++i];output+=String.fromCharCode(parseInt(octal,8));continue;}
+    output+=ch;
+  }
+  return output;
+}
+function pdfStrings(chunk) {
+  let result='', m;
+  const re=/\((?:\\[\s\S]|[^\\)])*\)/g;
+  while ((m=re.exec(chunk))) result+=parseLiteral(m[0]);
+  return result;
+}
+function pdfPageText(content) {
+  const items=[];
+  const blocks=content.matchAll(/\bBT\b([\s\S]*?)\bET\b/g);
+  for (const [,block] of blocks){
+    const tm = /(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+Tm\b/.exec(block);
+    if(!tm)continue;
+    const x=Number(tm[5]), y=Number(tm[6]);
+    const words = [...block.matchAll(/\[[\s\S]*?\]\s*TJ\b|\((?:\\[\s\S]|[^\\)])*\)\s*Tj\b/g)].map(m=>pdfStrings(m[0]));
+    const text=words.join(' ').replace(/\s+/g,' ').trim();
+    if(text)items.push({x,y,text});
+  }
+  return items;
+}
+async function readPdf(file) {
+  if(typeof DecompressionStream==='undefined')throw new Error('Tu navegador no admite la lectura local de PDF. Usa Chrome o Edge actualizado o sube la lista Merch en Excel.');
+  if(file.size>35*1024*1024)throw new Error('El PDF de Merch supera el tamaño máximo de 35 MB.');
+  const bytes=new Uint8Array(await file.arrayBuffer());
+  const raw=pdfTextDecoder.decode(bytes);
+  if(!raw.startsWith('%PDF-'))throw new Error('El archivo no es un PDF válido.');
+  const records=[], already=new Set();
+  let begin=0, streams=0, bytesProcessed=0;
+  while(streams++<5000){
+    const s=raw.indexOf('stream',begin);
+    if(s<0)break;
+    const pre=raw.slice(Math.max(0,s-170),s);
+    let dataAt=s+6;
+    if(raw.slice(dataAt,dataAt+2)==='\r\n')dataAt+=2;
+    else if(raw[dataAt]==='\n')dataAt++;
+    else{begin=s+6;continue;}
+    const e=raw.indexOf('endstream',dataAt);
+    if(e<0)break;
+    begin=e+9;
+    let dataEnd=e;
+    while(dataEnd>dataAt&&(raw[dataEnd-1]==='\n'||raw[dataEnd-1]==='\r'))dataEnd--;
+    const b=bytes.subarray(dataAt,dataEnd);
+    if(!b.length)continue;
+    let decoded;
+    try{
+      if(/\/FlateDecode/.test(pre) || (b[0]===0x78 && [0x01,0x5e,0x9c,0xda].includes(b[1]))){
+        if(b.length>300000)continue; // giant image: not a text page
+        const uncompressed=await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('deflate'))).arrayBuffer();
+        if(uncompressed.byteLength>2*1024*1024)continue;
+        bytesProcessed+=uncompressed.byteLength;
+        decoded=pdfTextDecoder.decode(uncompressed);
+      }else{
+        if(b.length>2*1024*1024)continue;
+        bytesProcessed+=b.length;
+        decoded=pdfTextDecoder.decode(b);
+      }
+    }catch{continue;} // Some stream filters/images are not page text.
+    if(bytesProcessed>55*1024*1024)break;
+    if(!decoded.includes('BT') || !decoded.includes('Tm'))continue;
+    const items=pdfPageText(decoded);
+    if(items.length<8)continue;
+    const sapItems=items.filter(i=>i.x>=406&&i.x<=439 && /^\d{5,8}$/.test(i.text.trim()));
+    const skuItems=items.filter(i=>i.x>=439&&i.x<=467 && /^\d{4,8}$/.test(i.text.trim()));
+    const names=items.filter(i=>i.x>=362&&i.x<=405 && i.text.length>=3);
+    for(const sap of sapItems){
+      const sku=skuItems.filter(i=>Math.abs(i.y-sap.y)<2.1).sort((a,b)=>Math.abs(a.y-sap.y)-Math.abs(b.y-sap.y))[0];
+      if(!sku)continue;
+      const name=names.filter(i=>Math.abs(i.y-sap.y)<2.5).sort((a,b)=>Math.abs(a.y-sap.y)-Math.abs(b.y-sap.y))[0];
+      const key=`${sap.text}|${sku.text}`;
+      if(already.has(key))continue;
+      already.add(key);
+      records.push({sap:sap.text,sku:sku.text,name:name?.text||''});
+    }
+  }
+  if(!records.length)throw new Error('No pude reconocer las columnas SAP y SKU POS del PDF. Verifica que sea el listado de Merch con texto seleccionable; también puedes subirlo en Excel.');
+  return records;
+}
+function fromRows(sheets) {
+  const rows=[];
+  for (const sheet of sheets) {
+    const list=sheet.rows||[];
+    for(let i=0;i<Math.min(45,list.length);i++){
+      const header=(list[i]||[]).map(norm);
+      const sap=header.findIndex(s=>/^(codigo sap|cod sap|sap)$/.test(s));
+      const sku=header.findIndex(s=>/^(sku pos|sku de pos|codigo pos)$/.test(s));
+      const name=header.findIndex(s=>/^(nombre inventario|descripcion sci|nombre pos res|producto|descripcion)$/.test(s));
+      if(sap<0||sku<0)continue;
+      for(const r of list.slice(i+1)){
+        const s=String(r[sap]??'').trim().replace(/\.0$/,'');
+        const k=String(r[sku]??'').trim().replace(/\.0$/,'');
+        if(!/^\d{5,8}$/.test(s)||!/^\d{4,8}$/.test(k))continue;
+        rows.push({sap:s,sku:k,name:name>=0?String(r[name]??'').trim():''});
+      }
+      break;
+    }
+  }
+  const set=new Set();return rows.filter(r=>{const k=r.sap+'|'+r.sku;if(set.has(k))return false;set.add(k);return true;});
+}
+function parseCsv(source){
+  const first=source.split(/\r?\n/,1)[0];const delim=['\t',';',','].sort((a,b)=>first.split(b).length-first.split(a).length)[0];
+  const rows=[];let row=[],field='',quotes=false;
+  for(let i=0;i<source.length;i++){
+    const ch=source[i];
+    if(ch==='"'){if(quotes&&source[i+1]==='"'){field+='"';i++;}else quotes=!quotes;}
+    else if(ch===delim&&!quotes){row.push(field);field='';}
+    else if((ch==='\n'||ch==='\r')&&!quotes){if(ch==='\r'&&source[i+1]==='\n')i++;row.push(field);rows.push(row);row=[];field='';}
+    else field+=ch;
+  }
+  if(field||row.length){row.push(field);rows.push(row);}
+  return rows;
+}
+async function readMerch(file){
+  const ext=file.name.split('.').pop().toLowerCase();let rows;
+  if(ext==='pdf')rows=await readPdf(file);
+  else if(ext==='xls'||ext==='xlsx'){
+    if(!root.InventoryExcel?.readSheets)throw new Error('Falta el lector de Excel Merch.');
+    rows=fromRows(await root.InventoryExcel.readSheets(file));
+  }else if(ext==='csv')rows=fromRows([{name:'CSV',rows:parseCsv(await file.text())}]);
+  else throw new Error('Sube la lista Merch en PDF, XLS, XLSX o CSV.');
+  if(!rows.length)throw new Error('No encontré relaciones válidas entre Código SAP y SKU POS en ese archivo.');
+  return {pairs:rows.map(r=>[r.sap,r.sku]),importedAt:new Date().toISOString(),filename:file.name, count:rows.length};
+}
+root.MerchReader={read:readMerch,readPdf,fromRows};
+})(window);
+
+  </script>
+<script>
 (function () {
   'use strict';
   const STORAGE_KEY = 'conteoverde_inventory_v1';
@@ -696,31 +889,46 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   const quantity = milli => fmt(milli / 1000);
   const safe = text => String(text ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   const normalize = v => String(v ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es-MX');
-  // Catálogo auxiliar para búsqueda, independiente de los productos y del conteo.
-  // Sólo contiene pares de identificadores (SAP, SKU POS), nunca precios, PDF ni inventario.
-  const merchandising = (() => {
-    const bySAP = new Map();
-    try {
-      const data = JSON.parse($('cv-merch-aliases')?.textContent || '{}');
-      for (const pair of data.pares || []) {
-        if (!Array.isArray(pair) || pair.length !== 2) continue;
-        const [sap, skuPos] = pair.map(String);
-        if (!/^\d{6}$/.test(sap) || !/^\d{4,7}$/.test(skuPos)) continue;
-        if (!bySAP.has(sap)) bySAP.set(sap, new Set());
-        bySAP.get(sap).add(skuPos);
-      }
-    } catch (error) { console.warn('Equivalencias SKU POS no disponibles', error); }
-    return bySAP;
-  })();
+  const MERCH_KEY = 'conteoverde_merch_equivalences_v8';
+  let merchData = null;
+  const merchandising = new Map();
+  function applyMerch(data) {
+    merchandising.clear();
+    for(const pair of data?.pairs || []) {
+      if(!Array.isArray(pair) || pair.length<2)continue;
+      const [sap, sku] = pair.map(String);
+      if(!/^\d{5,8}$/.test(sap)||!/^\d{4,8}$/.test(sku))continue;
+      if(!merchandising.has(sap))merchandising.set(sap,new Set());
+      merchandising.get(sap).add(sku);
+    }
+    merchData = data || null;
+    const count = [...merchandising.values()].reduce((n,set)=>n+set.size,0);
+    $('merch-status').textContent = count
+      ? `Lista Merch actualizada: ${count} equivalencias SAP / SKU POS · ${merchData.filename || 'Archivo local'} · No se muestra como un catálogo separado.`
+      : 'Lista Merch: sin cargar. Puedes contar por descripción y SAP.';
+  }
+  try { applyMerch(JSON.parse(localStorage.getItem(MERCH_KEY)||'null')); }
+  catch { applyMerch(null); }
   const skuPosFor = product => [...(merchandising.get(String(product.code || '').trim()) || [])].sort();
-  const skuSearch = (product, text) => /^\d{3,7}$/.test(text) &&
-    skuPosFor(product).some(sku => sku.includes(text));
+  const skuSearch = (product, text) => /^\d{3,8}$/.test(text) && skuPosFor(product).some(sku => sku.includes(text));
 
   const dateShort = iso => new Date(iso).toLocaleString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
   let state = null, selectedId = null, toastTimer = null, isImporting = false;
   let selectedUnitKey = 'piece'; // Siempre iniciar el registro de cada artículo en piezas.
   const pieceLike = unit => /^(pza|pzas|pz|pieza|piezas|und|un|unidad|unidades)$/.test(normalize(unit).trim());
   const hasOtherUnit = p => Boolean(p.unit && !pieceLike(p.unit));
+  function getPackQty(p) {
+    const text = [p.name,p.description].filter(Boolean).join(' ');
+    const match = /(?:^|[^a-zA-Z0-9])CJ\s*([1-9][0-9.,]{0,8})\s*(?:PZAS?|PZS?|PIEZAS?)\b/i.exec(text);
+    if(!match) return 0;
+    const qty = Number(match[1].replace(/[.,]/g,''));
+    return Number.isSafeInteger(qty) && qty>=1 && qty<=1000000 ? qty : 0;
+  }
+  function keywordFor(p) {
+    const words = String(p.name||p.description||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().match(/[A-ZÑ]{3,}/g) || [];
+    const ignored = new Set(['CAJA','PZA','PZAS','PIEZA','PIEZAS','STARBUCKS','LAC','FALL','SPR','WIN','FY','CORE','SUM','HOL','CUP','PLSTC','CLDCP','TMBLR','WTR','BTL','VAC','STN','GLASS','RECYCLD','HOT','LID','STL','MATERIAL','SUSTAIN','DE','CON','PARA','THE','AND','WITH','ONE','SET','KIT','DEL','POR']);
+    return words.find(w=>!ignored.has(w) && !/^[A-Z]*FY$/.test(w)) || words[0] || 'PRODUCTO';
+  }
   const unitText = (p, key) => key === 'source' && hasOtherUnit(p) ? p.unit : 'pzas';
   const totalFor = (p, key) => Number(p.totalsMilli?.[key]) || 0;
   const hasCount = p => totalFor(p, 'piece') > 0 || totalFor(p, 'source') > 0;
@@ -847,6 +1055,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     $('detail-status').textContent = closed ? 'Finalizado' : (hasCount(p) ? '✓ Con conteo' : 'Sin conteo');
     $('detail-status').className = 'status-pill' + (closed ? ' closed' : (hasCount(p) ? ' done' : ''));
     const history = [...p.history].reverse().slice(0, 5);
+    const packQty = getPackQty(p);
     const skuCodes = skuPosFor(p);
     const skuMeta = skuCodes.length
       ? `<span class="meta-tag meta-tag-pos" title="${skuCodes.length > 1 ? 'Varios SKU POS relacionados con este SAP: verifica la descripción' : 'SKU POS del catálogo auxiliar'}">SKU POS ${safe(skuCodes.join(' / '))}</span>`
@@ -873,7 +1082,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div class="total-card"><span>TOTAL CONTADO POR UNIDAD</span>${totals}</div>
       ${closed ? `<div class="closed-note">Este inventario está finalizado. Puedes descargar el reporte o reabrirlo para corregir algún conteo.</div><button class="button button-outline reopen-button" id="reopen-btn" type="button">Reabrir inventario</button>` : `
       <div class="add-section">${unitSelect}<div class="field-heading">CANTIDAD EN ${safe(unitText(p, unitKey).toUpperCase())}</div><div class="amount-row"><input class="amount-input" type="text" inputmode="decimal" autocomplete="off" id="amount-input" placeholder="${unitKey === 'piece' ? 'Ej. 2' : 'Ej. 1.5'}" aria-label="Cantidad que deseas sumar o restar en ${safe(unitText(p,unitKey))}"/><div class="amount-actions"><button class="button button-primary" type="button" id="add-button">+ Sumar</button><button class="button button-danger" type="button" id="subtract-button" ${totalFor(p,unitKey) === 0 ? 'disabled title="No hay unidades para restar"' : ''}>− Restar</button></div></div>
-      <div class="quick-buttons">${(unitKey === 'piece' ? ['1','5','10'] : ['0.5','1','5']).map(value => `<button type="button" data-quick="${value}">+ ${value} ${safe(unitText(p,unitKey))}</button>`).join('')}</div></div>`}
+      <div class="quick-buttons">${(unitKey === 'piece' ? ['1','5','10'] : ['0.5','1','5']).map(value => `<button type="button" data-quick="${value}">+ ${value} ${safe(unitText(p,unitKey))}</button>`).join('')}${unitKey === 'piece' && packQty ? `<button class="pack-button" type="button" data-quick="${packQty}" title="Sumar el contenido de una caja según el pick pack del Excel">+ 1 CJ (${fmt(packQty)} pzas)</button>` : ''}</div>${unitKey === 'piece' && packQty ? `<p class="pack-explanation">Pick pack detectado en el Excel: <strong>CJ ${fmt(packQty)} PZA</strong>. Cada clic suma ${fmt(packQty)} piezas.</p>` : ''}</div>`}
       <div class="history-head"><strong>Historial del producto</strong><button type="button" class="text-button" id="undo-button" ${closed || !p.history.length ? 'disabled' : ''}>↶ Deshacer último</button></div>
       <div class="history-list">${history.length ? history.map(h => `<div class="history-entry"><span>${safe(dateShort(h.at))}</span><strong class="${h.milli < 0 ? 'negative' : ''}">${h.milli < 0 ? '−' : '+'} ${quantity(Math.abs(h.milli))} ${safe(unitText(p,h.unitKey))}</strong></div>`).join('') : '<p class="empty-note">Todavía no hay conteos de este producto.</p>'}</div>`;
     if (closed) $('reopen-btn').addEventListener('click', () => {
@@ -990,6 +1199,84 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     document.body.append(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url),60000);
   }
+  const dictation = { rows: [], blob: null, url: null, index: 0, paused: false, running: false, nonce: 0 };
+  const spokenNumbers = ['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve'];
+  const spellDigits = value => String(value).split('').map(d=>spokenNumbers[Number(d)]||d).join(' ');
+  function spokenQty(milli) {
+    const value = (Number(milli||0)/1000).toString();
+    if(!value.includes('.'))return value;
+    const [integer, decimal]=value.split('.');
+    return `${integer} punto ${decimal.split('').map(d=>spokenNumbers[Number(d)]).join(' ')}`;
+  }
+  function speechText(p) {
+    let phrase=`SAP ${spellDigits(p.code||'sin código')}. ${keywordFor(p)}. Piezas ${spokenQty(p.totalsMilli?.piece)}.`;
+    if(hasOtherUnit(p) && (p.totalsMilli?.source||0)>0){
+      const unit=normalize(p.unit);
+      const expanded=unit.includes('kg')?'kilogramos':unit==='l'||unit.includes('lit')?'litros':p.unit;
+      phrase+=` ${expanded} ${spokenQty(p.totalsMilli.source)}.`;
+    }
+    return phrase;
+  }
+  function renderDictation() {
+    const p=dictation.rows[dictation.index];
+    $('dictation-progress').textContent = `Producto ${dictation.rows.length ? dictation.index + 1 : 0} de ${dictation.rows.length}`;
+    $('dictation-bar').style.width = `${dictation.rows.length ? ((dictation.index+1)/dictation.rows.length*100) : 0}%`;
+    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>Palabra clave: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
+    $('dictation-pause').disabled = !dictation.running;
+    $('dictation-pause').textContent = dictation.paused ? '▶ Continuar' : 'Ⅱ Pausar';
+    $('dictation-prev').disabled = dictation.index<=0;
+    $('dictation-next').disabled = dictation.index>=dictation.rows.length-1;
+    $('dictation-play').textContent = dictation.paused ? '▶ Reanudar' : (dictation.running ? '↻ Repetir' : '▶ Iniciar dictado');
+  }
+  function stopSpeaking() {
+    dictation.nonce++;
+    dictation.running=false;
+    dictation.paused=false;
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+  function speakAt(index) {
+    if(!('speechSynthesis' in window)){toast('Este navegador no admite lectura por voz. Abre el dictado en Chrome o Edge.',true);return;}
+    stopSpeaking();
+    dictation.index=Math.max(0,Math.min(dictation.rows.length-1,index));
+    const p=dictation.rows[dictation.index];
+    if(!p)return;
+    const nonce=++dictation.nonce;
+    const msg=new SpeechSynthesisUtterance(speechText(p));
+    msg.lang='es-MX';
+    msg.rate=Number($('dictation-rate').value)||1;
+    const voices=window.speechSynthesis.getVoices();
+    msg.voice=voices.find(v=>v.lang.toLowerCase()==='es-mx') || voices.find(v=>v.lang.toLowerCase().startsWith('es')) || null;
+    msg.onend=()=>{
+      if(nonce!==dictation.nonce||!dictation.running)return;
+      if(dictation.index+1<dictation.rows.length) speakAt(dictation.index+1);
+      else{dictation.running=false;dictation.paused=false;renderDictation();toast('Dictado terminado.');}
+    };
+    msg.onerror=event=>{if(nonce!==dictation.nonce || event.error==='canceled'||event.error==='interrupted')return;dictation.running=false;renderDictation();toast('No se pudo reproducir la voz. Comprueba el audio del dispositivo.',true);};
+    dictation.running=true;
+    renderDictation();
+    window.speechSynthesis.speak(msg);
+  }
+  function closeDictation() {
+    stopSpeaking();
+    $('dictation-modal').hidden=true;
+    $('dictation-pdf').removeAttribute('src');
+    if(dictation.url){URL.revokeObjectURL(dictation.url);dictation.url=null;}
+    dictation.rows=[];dictation.blob=null;
+    $('finalize-btn').focus();
+  }
+  function openDictation(rows,blob) {
+    closeExport();
+    stopSpeaking();
+    if(dictation.url)URL.revokeObjectURL(dictation.url);
+    dictation.blob=blob;dictation.url=URL.createObjectURL(blob);
+    dictation.rows=rows; // Exact same rows/order as generated PDF, including zeros when selected.
+    dictation.index=0;
+    $('dictation-pdf').src=dictation.url;
+    $('dictation-modal').hidden=false;
+    $('dictation-note').textContent = 'El dictado sigue el orden exacto del PDF, incluyendo los productos en cero si seleccionaste esa opción. Lee SAP dígito por dígito, una palabra clave, piezas y, cuando corresponda, KG o L. La voz es del navegador.';
+    renderDictation();
+    $('dictation-play').focus();
+  }
   async function generateReport() {
     if (!state) return;
     const btn = $('download-btn');
@@ -1001,13 +1288,36 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       const info = {filename:state.filename, importedAt:state.importedAt};
       const blob = format === 'xlsx' ? await InventoryExcel.exportExcel(data, info) : InventoryPDF.exportPDF(data, info);
       const now = new Date(); const day = [now.getFullYear(), String(now.getMonth()+1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
-      download(blob,`Inventario_Contado_${day}.${format}`);
+      if(format==='dictado') openDictation(data,blob);
+      else download(blob,`Inventario_Contado_${day}.${format}`);
       state.completedAt = new Date().toISOString(); save();
       $('export-modal').hidden = true; render();
-      toast(`¡Inventario finalizado! Reporte ${format.toUpperCase()} descargado.`);
-    } catch(error) { console.error(error); toast('Hubo un problema al generar el reporte. Vuelve a intentarlo.', true); }
+      toast(format === 'dictado' ? '¡Inventario finalizado! Puedes consultar el PDF e iniciar el dictado.' : `¡Inventario finalizado! Reporte ${format.toUpperCase()} descargado.`);
+    } catch(error) { console.error(error); toast('No se pudo generar el reporte: '+(error?.message||'error desconocido'), true); }
     finally { btn.disabled = false; btn.innerHTML = 'Generar y descargar reporte <span aria-hidden="true">↓</span>'; }
   }
+  async function importMerch(file) {
+    if(!file || isImporting)return;
+    isImporting=true;
+    const input=$('merch-file-input');
+    showImportMessage(`Leyendo lista Merch “${file.name}”…`);
+    try {
+      const result=await MerchReader.read(file);
+      if(!result.count)throw Error('El archivo no tiene relaciones SAP / SKU POS.');
+      const counted=state?.products.filter(hasCount).length||0;
+      const warning=counted ? `Hay ${counted} productos con conteo. Se borrarán TODOS los conteos y movimientos del inventario actual.` : 'Se reiniciarán los conteos del inventario actual (si existe).';
+      if(!confirm(`Se encontraron ${result.count} relaciones SAP / SKU POS en “${file.name}”.\n\n${warning}\n\n¿Confirmas la actualización semanal y el reinicio del conteo?`)){
+        showImportMessage('Se canceló la actualización. Tu lista anterior y los conteos se conservaron.');return;
+      }
+      // Only publish the new mapping after a successful parse and explicit approval.
+      localStorage.setItem(MERCH_KEY,JSON.stringify(result));
+      applyMerch(result);
+      if(state){for(const p of state.products){p.totalsMilli={piece:0,source:0};p.history=[];}state.actions=[];state.completedAt=null;selectedUnitKey='piece';save();}
+      render();showImportMessage('');toast(`Lista Merch actualizada (${result.count} equivalencias). Inventario reiniciado a cero.`);
+    } catch(error){console.error(error);showImportMessage('No fue posible actualizar Merch: '+(error?.message||'Error desconocido')+'. Los conteos no se modificaron.',true);toast('No se actualizó Merch. Los conteos siguen intactos.',true);}
+    finally {input.value='';isImporting=false;}
+  }
+
   function resetCounts() {
     if (!state) return;
     if (!confirm('¿Reiniciar todos los conteos? Esto pondrá los totales en cero y borrará el historial. Esta acción no se puede deshacer.')) return;
@@ -1016,6 +1326,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     save(); render(); toast('Se reiniciaron los conteos de todos los productos.');
   }
   function wire() {
+    $('merch-upload-btn').addEventListener('click', () => $('merch-file-input').click());
+    $('merch-file-input').addEventListener('change',e=>importMerch(e.target.files[0]));
     $('change-file-btn').addEventListener('click', () => $('file-input').click());
     $('file-input').addEventListener('change', e => importFile(e.target.files[0]));
     $('drop-zone').addEventListener('click', () => $('file-input').click());
@@ -1031,10 +1343,30 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     $('close-modal').addEventListener('click', closeExport);
     $('export-modal').addEventListener('click',e=>{if(e.target===$('export-modal'))closeExport();});
     document.addEventListener('keydown',e=>{
+      if(e.key==='Escape' && !$('dictation-modal').hidden){closeDictation();return;}
       if(e.key==='Escape' && !$('export-modal').hidden)closeExport();
       if(e.key==='/' && $('export-modal').hidden && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();if(state)$('search-input').focus();}
     });
     $('download-btn').addEventListener('click',generateReport);
+    $('dictation-close').addEventListener('click',closeDictation);
+    $('dictation-modal').addEventListener('click', e=>{if(e.target===$('dictation-modal'))closeDictation();});
+    $('dictation-play').addEventListener('click',()=>{
+      if(dictation.paused){dictation.paused=false;window.speechSynthesis.resume();renderDictation();}
+      else speakAt(dictation.index);
+    });
+    $('dictation-pause').addEventListener('click',()=>{
+      if(!('speechSynthesis' in window)||!dictation.running)return;
+      if(dictation.paused){dictation.paused=false;window.speechSynthesis.resume();}else{dictation.paused=true;window.speechSynthesis.pause();}
+      renderDictation();$('dictation-pause').textContent=dictation.paused?'▶ Continuar':'Ⅱ Pausar';
+    });
+    $('dictation-prev').addEventListener('click',()=>speakAt(dictation.index-1));
+    $('dictation-next').addEventListener('click',()=>speakAt(dictation.index+1));
+    $('dictation-open-tab').addEventListener('click',()=>{if(dictation.url)window.open(dictation.url,'_blank','noopener,noreferrer');});
+    $('dictation-download').addEventListener('click',()=>{
+      if(!dictation.blob)return;
+      const day=new Date().toISOString().slice(0,10);
+      download(dictation.blob,`Inventario_Contado_${day}.pdf`);
+    });
     $('reset-btn').addEventListener('click',resetCounts);
   }
   restore();
