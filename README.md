@@ -1,62 +1,63 @@
-# ConteoVerde V8 — Inventario, Merch semanal, pick pack y Dictado
+# ConteoVerde V9 — Dictado con pausa y Sumar Conteos
 
-Aplicación estática para **GitHub Pages**, compatible con computadoras, tabletas y teléfonos. Funciona con un único archivo `index.html`, sin servidor propio ni bases de datos. La información se procesa en el navegador.
+Aplicación web estática de inventarios para **GitHub Pages**. Funciona con un solo `index.html`, sin servidor y sin enviar inventarios ni archivos de Merch a un servicio externo.
 
-## Cambios de la V8
+## Cambios de V9
 
-### 1. Actualizar lista Merch desde la aplicación
+### 1. Dictado: pausa después de «SAP»
 
-- Presiona **Actualizar lista Merch** en la barra superior.
-- Selecciona el PDF semanal que contiene las columnas **Código SAP** y **SKU POS**, o una lista equivalente en **.xlsx, .xls o .csv**.
-- La aplicación procesa el documento y muestra cuántas equivalencias identificó. **No publica ni muestra una lista independiente de mercancía**, no carga precios y no añade productos que no estén en el Excel de inventario.
-- Solo cuando la lectura tenga éxito se solicita la confirmación del cambio. **Al confirmar, se reinician a cero todos los conteos y se borra el historial del inventario actual.** Si cancelas o el archivo no se puede leer, el conteo actual y la lista Merch anterior se conservan.
-- La nueva correspondencia se guarda en el almacenamiento local del navegador de ese dispositivo. **Si abres la página en otro navegador, equipo, modo incógnito o borras los datos del sitio, tendrás que volver a cargar la lista.**
-- El importador PDF está probado con el formato del documento **Lista de Precios Merch XMAS 2026_WK 45 C1.pdf**, del que recuperó **341 relaciones** entre SAP y SKU POS. Otros diseños de PDF podrían requerir adaptación. Si un PDF no se reconoce, es preferible cargar la misma lista como Excel con esas dos columnas.
+En **Finalizar inventario → Dictado → Iniciar dictado**, el sistema pronuncia primero **«SAP»**, espera **1.15 segundos desde que termina de decir esa palabra** y luego empieza a dictar los dígitos del código uno por uno. Esto también se aplica al pasar al siguiente artículo.
 
-### 2. Compatibilidad de Excel
+Puedes pausar, reanudar, repetir, retroceder y avanzar. Si pausas durante el silencio, el código no se reproduce hasta reanudar. Continúa leyendo una palabra clave del producto, la cantidad en piezas y la cantidad en KG, L u otra unidad cuando corresponda. Mantiene la vista previa del mismo PDF.
 
-- Acepta el inventario original de 262 productos (`lista.xlsx`) y `ReporteInventario_NP2893.xls` de 285 SAP únicos.
-- Se corrigió el orden de elementos `autoFilter` y `mergeCells` en el XML de la hoja exportada; el orden anterior podía provocar que Microsoft Excel solicitara reparar el archivo.
-- Se conserva el orden de columnas **Piezas, Cant. Unid, Unidad**, con esas columnas centradas. Se conservan SAP y descripción, así como las cantidades numéricas.
-- Se comprobó que los `.xlsx` exportados contienen ZIP/XML válido y pueden volver a abrirse mediante un lector de hojas de cálculo. **No sustituye una prueba en tu instalación concreta de Microsoft Excel**, que no está disponible en este entorno.
+En **Estilo de voz** puedes elegir **Asistente grave** (predeterminado) o **Natural**. El primero selecciona preferentemente voces masculinas de español cuando están instaladas y ajusta un poco el tono y la velocidad. **No es la voz oficial de Jarvis**, y la calidad exacta depende del navegador, del sistema operativo y de sus voces de español disponibles. Usa Chrome o Edge actualizados para mayor compatibilidad.
 
-### 3. Botón de pick pack
+### 2. Sumar Conteos de dos o más personas
 
-- El nombre/descripción del inventario se analiza en busca de patrones como **`CJ 1000 PZA`, `CJ1000PZAS`, `CJ52PZA`**.
-- Si existe un pack válido, se añade un botón **`+ 1 CJ (1,000 pzas)`**, además de `+1`, `+5` y `+10`.
-- Cada clic añade la cantidad exacta de piezas indicada para **una caja**, sin cambiar la unidad del producto ni convertir cantidades que el usuario registra en KG/L.
-- Las operaciones quedan registradas en el historial y pueden deshacerse. No se permite restar más que lo contado.
+Se agregó una **cuarta opción «Sumar Conteos»** dentro de **Finalizar inventario → Descargar reporte**. También se puede abrir desde el botón **Σ Sumar Conteos** en la barra superior, incluso sin haber cargado un catálogo; por ejemplo, desde el equipo del gerente que recibe los conteos.
 
-### 4. Modo Dictado
+**Procedimiento recomendado:**
 
-- Haz clic en **Finalizar inventario**, elige **Dictado** y presiona **Generar y descargar reporte**.
-- Se abrirá el **mismo PDF que la opción de exportar PDF**, con controles de lectura en el panel lateral.
-- Pulsa **Iniciar dictado**. Se pronuncia el **SAP dígito por dígito**, **una palabra clave del producto**, las **piezas contadas** y, cuando haya cantidades registradas, los **KG, L u otra unidad del Excel** por separado.
-- Incluye **Pausar / Continuar**, **Anterior**, **Siguiente**, control de velocidad, **Descargar PDF** y **Abrir PDF en otra pestaña**.
-- Si la casilla **Incluir productos sin conteo** está marcada, los artículos en cero estarán tanto en el PDF como en el dictado. Desmárcala antes de generar si quieres leer solo los contados.
-- Usa la función de voz del navegador; funciona mejor en **Google Chrome o Microsoft Edge actualizados** y requiere un dispositivo con salida de audio y voces disponibles. No se crea un archivo de audio.
-- El orden del dictado corresponde al orden de los productos del PDF. El nombre completo también aparece en el panel lateral.
+1. Cada persona realiza su conteo por separado en ConteoVerde y exporta su reporte final en **Excel (.xlsx)**.
+2. En el equipo que realizará la consolidación, abre **Σ Sumar Conteos**.
+3. Selecciona **dos o más** archivos Excel exportados por ConteoVerde; puedes cargar hasta 30 archivos de 20 MB cada uno.
+4. Haz clic en **Σ Sumar reportes seleccionados**. Verás el número de reportes, los artículos encontrados y los productos con conteo.
+5. Elige **Excel unificado**, **PDF unificado** o **Dictado del total**. Si prefieres que no aparezcan artículos en cero, desmarca la casilla correspondiente.
 
-## Publicar en GitHub Pages
+**Cómo se suman los productos:** se comparan el **SAP** y la **descripción** del artículo; también se verifica la unidad. Se suman únicamente cantidades de la misma unidad. Las piezas se mantienen separadas de KG/L, sin conversiones. Los productos que solo aparecen en un archivo también se conservan. Si un SAP aparece con nombres diferentes, el sistema los deja separados y muestra una advertencia para revisión, en lugar de mezclarlos sin autorización. Si los archivos indican unidades incompatibles para el mismo producto (p. ej., KG y L), se cancela la suma y aparece una explicación.
 
-1. Descarga el archivo ZIP de esta versión y descomprímelo.
-2. En tu repositorio de GitHub Pages, reemplaza el archivo **`index.html`** anterior por el nuevo de la carpeta.
-3. Incluye el archivo `.nojekyll` si es necesario. `README.md` y la licencia son documentos de apoyo.
-4. Publica los cambios. Si GitHub Pages no estaba habilitado, ve a **Settings > Pages > Deploy from a branch > main > /(root)**.
-5. Recarga la página con **Ctrl + Shift + R** para ver la etiqueta **`V8 · MERCH + PICK PACK + DICTADO`**.
-6. Carga el Excel de inventario como siempre, y carga el PDF de Merch por el botón **Actualizar lista Merch**. Puedes cargar Merch antes o después del inventario, pero **subir una nueva versión de Merch reiniciará los conteos activos al confirmar**.
+**Protecciones:**
 
-## Seguridad y respaldo
+- Rechaza archivos repetidos con contenido idéntico para evitar sumar dos veces el mismo reporte.
+- Solo admite **reportes finales .xlsx de ConteoVerde**, no el catálogo de inventario original o reportes arbitrarios. Primero hay que generar el Excel desde cada dispositivo.
+- No cambia los conteos de la sesión activa ni reinicia el catálogo o la lista Merch.
+- No guardes otra vez como reporte de un participante un archivo consolidado, y **no mezcles un consolidado con sus archivos originales**, porque duplicarías conteos. Para corregir una suma, selecciona nuevamente todos los archivos individuales actualizados.
+- La consolidación se realiza en la memoria del navegador, sin sincronización automática entre personas.
 
-- El PDF de Merch **no va dentro del ZIP ni dentro del código** publicado. La lista se procesa directamente en el navegador y únicamente sus equivalencias de códigos se conservan localmente.
-- Una página pública de GitHub Pages no requiere iniciar sesión; **cualquier persona con el enlace puede abrir la aplicación**, aunque no verá automáticamente el catálogo Merch de tu dispositivo.
-- El almacenamiento local no es una base de datos compartida ni un mecanismo de cifrado. Quien tenga acceso al mismo navegador/perfil podría examinar sus datos guardados.
-- **Exporta el inventario antes de actualizar Merch**, porque el reinicio posterior a la confirmación es definitivo.
-- Para un catálogo central verdaderamente privado, compartido entre tiendas o con permisos por usuario, se necesitaría una solución de servidor con autenticación.
+### 3. Formatos de exportación y compatibilidad
 
-## Archivos del paquete
+- En Excel: conserva **Familia | SAP | Producto Descripción | Piezas | Cant. Unid | Unidad | Registros**. Las columnas Piezas, Cant. Unid y Unidad permanecen centradas. En un consolidado, también se suman las cifras de la columna Registros.
+- En PDF: usa los mismos totales y el mismo orden de columnas, con identificación de reporte consolidado.
+- En Dictado: utiliza el PDF consolidado y pronuncia los totales finales; no lee por separado cada uno de los reportes originales.
+- Se probaron los `.xlsx` con lectura automática de hojas de cálculo y los PDF con un lector de PDF. La comprobación en la instalación específica de Microsoft Excel de cada tienda sigue siendo recomendable.
 
-- `index.html`: aplicación completa con lectores XLS/XLSX, PDF Merch del formato probado, generador PDF, Excel y síntesis de voz.
-- `.nojekyll`: configuración de publicación estática para GitHub Pages.
-- `README.md`: guía de uso y publicación.
-- `LICENCIA-JSZip.txt`: atribución de la librería JSZip integrada.
+## Funciones de versiones anteriores que se conservan
+
+- Carga de catálogos de inventario `.xls` y `.xlsx` (incluidos el formato SAP anterior y el catálogo con 262 artículos).
+- Búsqueda por descripción, **SAP y SKU POS** (cuando se cargan equivalencias Merch).
+- Actualización de la lista Merch mediante PDF/Excel/CSV. Tras validar el archivo pide confirmar el reinicio del conteo local; si la carga falla o se cancela, conserva los datos previos.
+- Conteo en piezas por defecto, con opción de KG/L, botones **Sumar** y **Restar**, historial y deshacer.
+- Botones rápidos +1, +5, +10 y botón de **pick pack** para descripciones como `CJ1000PZA`.
+- Exportación individual a Excel, PDF o Dictado.
+
+## Actualizar GitHub Pages
+
+1. Descomprime el ZIP y entra a la carpeta `ConteoVerde_V9_GitHub`.
+2. Reemplaza el archivo `index.html` de tu repositorio por el nuevo. No necesitas otro repositorio.
+3. Conserva `.nojekyll` si ya lo usabas.
+4. Confirma los cambios en la rama de publicación de GitHub Pages.
+5. Recarga la aplicación con **Ctrl + Shift + R** y verifica que aparezca **«V9 · SUMAR CONTEOS + VOZ»**.
+
+La lista Merch no está embebida en el paquete. Las equivalencias se guardan en el navegador local donde las cargas. La aplicación publicada es de acceso público si el repositorio/sitio lo es; no utilices GitHub Pages como almacén privado de información confidencial.
+
+**Archivos:** `index.html` (aplicación completa), `.nojekyll` (compatibilidad GitHub Pages), `README.md` (guía) y `LICENCIA-JSZip.txt` (licencia de biblioteca de Excel integrada).
