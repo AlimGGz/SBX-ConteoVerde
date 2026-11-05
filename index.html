@@ -121,7 +121,7 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V11 · DICTADO CON PAUSAS</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V12 · LECTOR MERCH C1/C2</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -842,6 +842,11 @@ async function readPdf(file) {
   const raw=pdfTextDecoder.decode(bytes);
   if(!raw.startsWith('%PDF-'))throw new Error('El archivo no es un PDF válido.');
   const records=[], already=new Set();
+  // PDF templates use different horizontal layouts: C1 has SAP around x=417,
+  // whereas C2 uses x=477. Detect columns by the printed headers instead of
+  // assuming fixed PDF coordinates. Keep the last detected layout for pages
+  // without repeated headers. Prices-only pages do not match these pairs.
+  let columns=null;
   let begin=0, streams=0, bytesProcessed=0;
   while(streams++<5000){
     const s=raw.indexOf('stream',begin);
@@ -876,9 +881,16 @@ async function readPdf(file) {
     if(!decoded.includes('BT') || !decoded.includes('Tm'))continue;
     const items=pdfPageText(decoded);
     if(items.length<8)continue;
-    const sapItems=items.filter(i=>i.x>=406&&i.x<=439 && /^\d{5,8}$/.test(i.text.trim()));
-    const skuItems=items.filter(i=>i.x>=439&&i.x<=467 && /^\d{4,8}$/.test(i.text.trim()));
-    const names=items.filter(i=>i.x>=362&&i.x<=405 && i.text.length>=3);
+    const sapHeader=items.find(i=>/^(codigo\s+sap|cod\.?\s*sap)$/i.test(norm(i.text)));
+    const skuHeader=items.find(i=>/^sku\s+pos$/i.test(norm(i.text)));
+    if(sapHeader && skuHeader && skuHeader.x > sapHeader.x+10){
+      const nameHeader=items.find(i=>/^nombre\s+inventario$/i.test(norm(i.text)));
+      columns={sapX:sapHeader.x,skuX:skuHeader.x,nameX:nameHeader?.x ?? null};
+    }
+    if(!columns)continue;
+    const sapItems=items.filter(i=>i.x>=columns.sapX-6 && i.x<columns.skuX-8 && /^\d{5,8}$/.test(i.text.trim()));
+    const skuItems=items.filter(i=>i.x>=columns.skuX-6 && i.x<=columns.skuX+32 && /^\d{4,8}$/.test(i.text.trim()));
+    const names=columns.nameX===null?[]:items.filter(i=>i.x>=columns.nameX-6 && i.x<columns.sapX-5 && i.text.length>=3);
     for(const sap of sapItems){
       const sku=skuItems.filter(i=>Math.abs(i.y-sap.y)<2.1).sort((a,b)=>Math.abs(a.y-sap.y)-Math.abs(b.y-sap.y))[0];
       if(!sku)continue;
@@ -889,7 +901,7 @@ async function readPdf(file) {
       records.push({sap:sap.text,sku:sku.text,name:name?.text||''});
     }
   }
-  if(!records.length)throw new Error('No pude reconocer las columnas SAP y SKU POS del PDF. Verifica que sea el listado de Merch con texto seleccionable; también puedes subirlo en Excel.');
+  if(!records.length)throw new Error('No pude encontrar pares válidos de Código SAP y SKU POS. Verifica que el PDF tenga las columnas «Código SAP» y «SKU POS» con texto seleccionable, o súbelo como Excel.');
   return records;
 }
 function fromRows(sheets) {
