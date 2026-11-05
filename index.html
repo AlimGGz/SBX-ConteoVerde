@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#123e34" />
-  <meta name="description" content="Inventario con búsqueda Merch, suma de conteos de varios participantes y dictado con pausa SAP." />
+  <meta name="description" content="Inventario con búsqueda Merch, suma de conteos, dictado de tres palabras consecutivas y cronómetro de conteo." />
   <title>Conteo Verde · Control de inventario</title>
   <style>
 :root{--green:#123e34;--deep:#0e2c28;--accent:#087c58;--mint:#d9f2e7;--mint2:#edfaf3;--cream:#f7f8f4;--card:#fff;--ink:#1c312c;--muted:#738078;--line:#e4eae4;--shadow:0 16px 45px rgba(21,57,39,.05);--radius:16px;font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--cream)}*{box-sizing:border-box}body{margin:0;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.app-shell{min-height:100vh}.topbar{height:81px;background:var(--deep);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,5.8vw,100px)}.brand{display:flex;gap:14px;align-items:center}.brand-mark{width:38px;height:38px;display:grid;grid-template-columns:repeat(2,1fr);gap:4px;transform:rotate(-11deg)}.brand-mark span{border-radius:4px;background:#e9c891}.brand-mark span:nth-child(2),.brand-mark span:nth-child(3){background:#a5d7b4}.brand-overline{display:block;font-size:9px;letter-spacing:1.8px;font-weight:700;color:#bdcfca;margin-bottom:3px}.brand strong{font-size:23px;letter-spacing:-1.4px}.brand-accent{color:#a9d9b3}.topbar-actions{display:flex;align-items:center;gap:23px}.connection-pill{color:#c8ded6;font-size:12px}.small-dot{display:inline-block;width:8px;height:8px;background:#80d4a6;border-radius:99px;margin-right:7px}.button{border:1px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:700;border-radius:10px;padding:12px 17px;white-space:nowrap;transition:transform .1s,background .15s,box-shadow .15s}.button:hover:not(:disabled){transform:translateY(-1px)}.button:focus-visible,.icon-button:focus-visible,.product-item:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #91cfac;outline-offset:2px}.button-subtle{background:transparent;border-color:#416159;color:#e1f2e9;font-size:12px}.button-subtle:hover:not(:disabled){background:#1b4e40}.button-primary{background:var(--accent);color:white;box-shadow:0 5px 12px rgba(8,124,88,.13)}.button-primary:hover:not(:disabled){background:#056a4b}.button-icon{font-size:19px;font-weight:400}.main-container{max-width:1430px;margin:0 auto;padding:36px clamp(20px,5vw,74px) 52px}.intro{display:flex;gap:20px;justify-content:space-between;align-items:center;margin:0 0 31px}.eyebrow,.micro-label{color:var(--accent);font-size:10px;font-weight:800;letter-spacing:1.5px;margin:0 0 9px}.eyebrow{color:#7f8f83}.eyebrow-line{display:inline-block;width:22px;height:2px;background:#bd9460;vertical-align:middle;margin-right:8px}.intro h1{font-size:clamp(31px,3vw,43px);letter-spacing:-1.9px;line-height:1.15;margin:0 0 12px;font-weight:750}.intro h1 em{font-style:normal;color:var(--accent)}.intro-description{margin:0;color:#74817a;font-size:14px}.intro-actions{display:flex;align-items:center;gap:16px}.session-tag{font-size:11px;color:#6a7b70;font-weight:650;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.setup-card{display:grid;grid-template-columns:30% 70%;background:var(--card);border:1px solid var(--line);border-radius:19px;overflow:hidden;min-height:510px;box-shadow:var(--shadow)}.setup-illustration{background:linear-gradient(145deg,#195243,#0b2d2a);display:flex;align-items:center;justify-content:center}.setup-illustration span{font-size:105px;color:#bbe0c9;border:7px solid #6aaf90;letter-spacing:-14px;padding:10px 26px 10px 10px;font-weight:800;transform:rotate(-12deg)}.setup-body{padding:clamp(26px,4.4vw,62px)}h2{letter-spacing:-.6px}.setup-body h2{font-size:27px;margin:0 0 12px}.setup-body>p:not(.micro-label){color:#75817b;line-height:1.65;max-width:630px}.drop-zone{border:2px dashed #a7cbbb;background:#f5fcf7;border-radius:14px;margin:29px 0 17px;min-height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;text-align:center;padding:20px;cursor:pointer;transition:background .2s,border-color .2s}.drop-zone:hover,.drop-zone.drag-over{background:#e5f7ed;border-color:#16835b}.upload-icon{font-size:30px;color:var(--accent);width:54px;height:54px;background:#daf1e4;border-radius:15px;display:grid;place-items:center}.drop-zone strong{font-size:14px}.drop-zone small{font-size:11px;color:var(--muted)}.browse-label{color:var(--accent);font-size:12px;font-weight:750;margin-top:4px}.setup-body .setup-footnote{font-size:11px;color:#81908a}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:19px}.stat-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:21px 22px 20px;box-shadow:var(--shadow)}.stat-header{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:650;color:#7c8981}.stat-icon{width:30px;height:30px;border-radius:9px;background:#eff7f2;display:grid;place-items:center;color:var(--accent);font-size:16px}.stat-value{font-size:35px;font-weight:750;letter-spacing:-1.5px;margin-top:10px;line-height:1.05}.stat-detail{font-size:11px;color:#97a09a;margin-top:8px}.stat-progress{background:var(--green);color:#fff}.stat-progress .stat-header{color:#c8dfd2}.stat-progress .stat-icon{background:#2c6853;color:#bde8d0}.stat-progress .stat-value{color:white}.progress-track{height:6px;background:#376454;border-radius:15px;margin-top:18px;overflow:hidden}.progress-track span{display:block;background:#9adeb1;height:100%;width:0;transition:width .2s}.work-grid{display:grid;grid-template-columns:minmax(320px,1.02fr) minmax(320px,1fr);gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);overflow:hidden}.catalog-panel{display:flex;flex-direction:column;min-height:620px}.panel-header{display:flex;align-items:center;justify-content:space-between;padding:25px 24px 15px}.panel-header h2,.recent-title h2{font-size:19px;margin:0}.count-badge{display:grid;place-items:center;min-width:33px;padding:0 7px;height:30px;border-radius:9px;background:#edf4ed;color:var(--accent);font-size:12px;font-weight:700}.search-box{height:47px;display:flex;align-items:center;margin:0 24px 12px;background:#f8faf8;border:1px solid #e2e9e1;border-radius:9px;padding:0 12px;gap:10px}.search-box>span{font-size:27px;color:#8e9b91}.search-box input{background:transparent;border:0;outline:0!important;width:100%;min-width:0;font-size:12px;color:var(--ink)}.search-box input::placeholder{color:#9ca8a0}.search-box kbd{border:1px solid #e0e9e1;border-radius:5px;font-size:10px;padding:3px 6px;color:#a5b0a7;background:white}.filter-row{display:flex;gap:8px;padding:0 24px 18px}.filter-row select{min-width:0;flex:1;border:1px solid #e4e9e4;border-radius:8px;padding:8px 9px;background:#fff;color:#5f7166;font-size:11px}.filter-row select:last-child{flex:0 0 119px}.list-heading{display:flex;justify-content:space-between;align-items:center;background:#f8faf8;padding:11px 23px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:#a2aea4;font-size:9px;letter-spacing:1.2px;font-weight:800}.product-list{min-height:330px;max-height:490px;overflow:auto;scrollbar-width:thin;flex:1}.product-item{width:100%;padding:14px 23px;text-align:left;background:transparent;border:0;border-bottom:1px solid #eef0eb;display:flex;align-items:center;justify-content:space-between;gap:11px;color:var(--ink);position:relative}.product-item:hover{background:#f7fbf8}.product-item.selected{background:#eaf7ef}.product-item.selected:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}.product-item-left{min-width:0}.product-item-code{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.2px;margin-bottom:4px}.product-item-name{font-size:12px;line-height:1.36;font-weight:690;max-height:32px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.product-item-family{color:#9aa7a0;font-size:10px;margin-top:5px}
@@ -78,7 +78,7 @@
 @media(max-width:430px){.topbar-actions{width:100%}.topbar-actions .button{flex:1}}
 
 
-/* V9 · Consolidación de Excel y estilo de dictado */
+/* V10 · Consolidación de Excel, tiempo y dictado natural */
 .file-merge{background:#e5edf8;color:#295b9a;font-size:19px}
 .merge-cover{z-index:990}
 .merge-dialog{width:min(100%,740px);max-height:min(94vh,880px);overflow:auto}
@@ -91,6 +91,13 @@
 .merge-results h3{font-size:18px;color:#153f31;margin:0 0 13px}.merge-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.merge-stats span{background:#f0f8f2;padding:12px;border-radius:9px;color:#697c70;font-size:11px}.merge-stats strong{display:block;font-size:23px;color:#136847;padding-top:3px}
 .merge-output-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.merge-output-options .button{font-size:11px;white-space:normal;padding:12px 6px}.merge-warnings{background:#fff8e7;border:1px solid #e8d2a0;border-radius:8px;padding:12px;color:#765b22;font-size:12px;line-height:1.5;margin:12px 0}.merge-disclaimer{font-size:11px;color:#74847a;line-height:1.5;margin:13px 0 0}
 @media(max-width:560px){.merge-output-options{grid-template-columns:1fr}.merge-stats{gap:4px}.merge-stats span{padding:9px;font-size:10px}.merge-stats strong{font-size:19px}}
+/* V10: reloj de conteo discreto y lectura natural */
+.timer-widget{display:inline-flex;align-items:center;gap:7px;padding:7px 9px;color:#43735b;background:#edf7ef;border:1px solid #dcece0;border-radius:9px;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.timer-widget strong{color:#15553d;font-size:12px;letter-spacing:.3px}
+.timer-widget button{border:0;border-radius:5px;background:#d8ebde;color:#15553d;font-size:11px;font-weight:800;padding:3px 7px;min-width:25px}
+.timer-widget button:hover{background:#bfddca}.timer-widget.is-paused{background:#fff8eb;border-color:#eee0bf}.timer-widget.is-paused strong{color:#875f23}
+.merge-duration{font-size:12px;font-weight:650;color:#386b4e;background:#f3faf5;border-radius:8px;padding:11px 12px;margin:10px 0}
+@media(max-width:640px){.timer-widget{padding:6px 8px}.intro-actions{flex-wrap:wrap;gap:8px}.session-tag{max-width:95px}}
 </style>
 </head>
 <body>
@@ -111,11 +118,15 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V9 · SUMAR CONTEOS + VOZ</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V10 · TIEMPO + DICTADO NATURAL</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
-          <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel y descarga el reporte final.</p>
+          <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
         <div class="intro-actions" id="hero-actions" hidden>
+          <div class="timer-widget" id="timer-widget" role="timer" aria-label="Tiempo dedicado al conteo" title="Inicia con el primer movimiento y se detiene al finalizar el inventario">
+            <span aria-hidden="true">◷</span><strong id="timer-display">00:00:00</strong>
+            <button type="button" id="timer-toggle" title="Pausar cronómetro" aria-label="Pausar cronómetro" hidden>Ⅱ</button>
+          </div>
           <div id="session-tag" class="session-tag"></div>
           <button id="finalize-btn" type="button" class="button button-primary"><span aria-hidden="true">▣</span> Finalizar inventario <span aria-hidden="true">↗</span></button>
         </div>
@@ -188,7 +199,7 @@
       <div class="modal-head"><div class="modal-seal">▣</div><button type="button" class="icon-button" id="close-modal" aria-label="Cerrar ventana">✕</button></div>
       <p class="micro-label">PASO 04 · DESCARGAR REPORTE</p><h2 id="export-heading">Finalizar inventario</h2>
       <p class="modal-desc">Elige Excel, PDF, Dictado o Sumar Conteos. Para combinar reportes de varios participantes, selecciona Sumar Conteos y carga sus archivos de ConteoVerde.</p>
-      <div class="modal-summary"><span>Productos con conteo</span><strong id="export-quantity">0</strong><span>Total del catálogo</span><strong id="export-total">0</strong></div>
+      <div class="modal-summary"><span>Productos con conteo</span><strong id="export-quantity">0</strong><span>Total del catálogo</span><strong id="export-total">0</strong><span>Tiempo total de conteo</span><strong id="export-duration">00:00:00</strong></div>
       <div class="field-heading">FORMATO DE DESCARGA</div>
       <div class="format-options" role="radiogroup" aria-label="Formato de reporte">
         <label class="format-option"><input type="radio" name="export-format" value="xlsx" checked /><span class="file-icon file-excel">X</span><span><strong>Excel</strong><small>Editable · .xlsx</small></span><span class="radio-indicator"></span></label>
@@ -214,7 +225,6 @@
           <div id="dictation-current" class="dictation-current">Selecciona «Iniciar dictado».</div>
           <div class="dictation-buttons"><button class="button button-primary" id="dictation-play" type="button">▶ Iniciar dictado</button><button class="button button-outline" id="dictation-pause" type="button">Ⅱ Pausar</button></div>
           <div class="dictation-buttons"><button class="button button-outline" id="dictation-prev" type="button">← Anterior</button><button class="button button-outline" id="dictation-next" type="button">Siguiente →</button></div>
-          <label class="dictation-speed" for="dictation-voice-style">Estilo de voz<select id="dictation-voice-style"><option value="grave" selected>Asistente grave</option><option value="natural">Natural</option></select></label>
           <label class="dictation-speed" for="dictation-rate">Velocidad de lectura<select id="dictation-rate"><option value="0.8">Lenta · 0.8×</option><option value="1" selected>Normal · 1×</option><option value="1.2">Rápida · 1.2×</option><option value="1.4">Muy rápida · 1.4×</option></select></label>
           <p class="dictation-note" id="dictation-note">La lectura utiliza la voz disponible en tu navegador. Recomendamos Chrome o Edge. No se envían datos a un servidor de ConteoVerde.</p>
           <button class="button button-primary button-wide" id="dictation-download" type="button">↓ Descargar este PDF</button>
@@ -236,6 +246,7 @@
       <section id="merge-results" class="merge-results" hidden>
         <h3>Consolidación preparada</h3>
         <div class="merge-stats"><span>Reportes sumados<strong id="merge-stat-files">0</strong></span><span>Productos<strong id="merge-stat-products">0</strong></span><span>Con conteo<strong id="merge-stat-counted">0</strong></span></div>
+        <p class="merge-duration" id="merge-duration">Tiempo acumulado de participantes: no disponible</p>
         <div id="merge-warnings" class="merge-warnings" hidden></div>
         <label class="check-row"><input type="checkbox" id="merge-include-zero" checked /><span>Incluir artículos con conteo cero en el reporte unificado</span></label>
         <div class="merge-output-options">
@@ -604,6 +615,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   }
   function row(number, cells, height) { return `<row r="${number}"${height ? ` ht="${height}" customHeight="1"` : ''}>${cells.join('')}</row>`; }
 
+  const durationText = ms => ms == null || !Number.isFinite(ms) ? 'No disponible' : `${String(Math.floor(Math.max(0,ms)/3600000)).padStart(2,'0')}:${String(Math.floor(Math.max(0,ms)/60000)%60).padStart(2,'0')}:${String(Math.floor(Math.max(0,ms)/1000)%60).padStart(2,'0')}`;
   async function exportExcel(products, info) {
     const data = products;
     const withCount = data.filter(p => (p.totalsMilli?.piece || 0) > 0 || (p.totalsMilli?.source || 0) > 0).length;
@@ -611,6 +623,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const cells = [];
     cells.push(row(1, [cell('REPORTE FINAL DE INVENTARIO', 0, 1, 2)], 33));
     cells.push(row(2, [cell(`Generado: ${createdAt.toLocaleString('es-MX')}  ·  Archivo: ${info.filename}`, 0, 2, 3)], 24));
+    cells.push(row(3, [cell(`${(info.durationLabel || 'Tiempo total de conteo').toUpperCase()}: ${durationText(info.elapsedMs)}`, 0, 3, 3)], 23));
     cells.push(row(4, [cell('PRODUCTOS EN REPORTE', 0, 4, 4), cell(data.length, 1, 4, 5, true), cell('CON CONTEO', 2, 4, 4), cell(withCount, 3, 4, 5, true)], 23));
     cells.push(row(6, [cell('Piezas y unidad del Excel se cuentan por separado (sin conversión). El inventario inicial no se suma.', 0, 6, 3)], 23));
     const headers = ['Familia', 'SAP', 'Producto Descripción', 'Piezas', 'Cant. Unid', 'Unidad', 'Registros'];
@@ -624,7 +637,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       cells.push(row(r, [cell(p.family, 0, r, normalStyle), cell(p.code, 1, r, normalStyle), cell(p.description, 2, r, normalStyle), cell((p.totalsMilli?.piece || 0) / 1000, 3, r, centeredNumberStyle, true), other ? cell((p.totalsMilli?.source || 0) / 1000, 4, r, centeredNumberStyle, true) : cell('—', 4, r, centeredTextStyle), cell(p.unit || '—', 5, r, centeredTextStyle), cell(Number.isSafeInteger(p.reportRecordCount) ? p.reportRecordCount : p.history.length, 6, r, i % 2 ? 8 : 5, true)], 23));
     });
     const lastRow = 7 + data.length;
-    const worksheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${MAIN_NS}"><dimension ref="A1:G${Math.max(7,lastRow)}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="7" topLeftCell="A8" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="19"/><cols><col min="1" max="1" width="25" customWidth="1"/><col min="2" max="2" width="17" customWidth="1"/><col min="3" max="3" width="71" customWidth="1"/><col min="4" max="4" width="16" customWidth="1"/><col min="5" max="5" width="16" customWidth="1"/><col min="6" max="6" width="16" customWidth="1"/><col min="7" max="7" width="13" customWidth="1"/></cols><sheetData>${cells.join('')}</sheetData><autoFilter ref="A7:G${Math.max(lastRow,7)}"/><mergeCells count="3"><mergeCell ref="A1:G1"/><mergeCell ref="A2:G2"/><mergeCell ref="A6:G6"/></mergeCells><pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" paperSize="9" fitToHeight="0" fitToWidth="1"/></worksheet>`;
+    const worksheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${MAIN_NS}"><dimension ref="A1:G${Math.max(7,lastRow)}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="7" topLeftCell="A8" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="19"/><cols><col min="1" max="1" width="25" customWidth="1"/><col min="2" max="2" width="17" customWidth="1"/><col min="3" max="3" width="71" customWidth="1"/><col min="4" max="4" width="16" customWidth="1"/><col min="5" max="5" width="16" customWidth="1"/><col min="6" max="6" width="16" customWidth="1"/><col min="7" max="7" width="13" customWidth="1"/></cols><sheetData>${cells.join('')}</sheetData><autoFilter ref="A7:G${Math.max(lastRow,7)}"/><mergeCells count="4"><mergeCell ref="A1:G1"/><mergeCell ref="A2:G2"/><mergeCell ref="A3:G3"/><mergeCell ref="A6:G6"/></mergeCells><pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" paperSize="9" fitToHeight="0" fitToWidth="1"/></worksheet>`;
     const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="${MAIN_NS}"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.###"/></numFmts><fonts count="4"><font><sz val="10"/><name val="Aptos"/><color rgb="FF273D34"/></font><font><b/><sz val="10"/><name val="Aptos"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="19"/><name val="Aptos Display"/><color rgb="FF123E34"/></font><font><sz val="10"/><name val="Aptos"/><color rgb="FF7C8980"/></font></fonts><fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF123E34"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1F8F3"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="14"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="0" xfId="0" applyFill="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="0" fillId="3" borderId="0" xfId="0" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFill="1"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="3" borderId="0" xfId="0" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="164" fontId="0" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
     const zip = new JSZip();
     zip.file('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="${contentTypes}"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`);
@@ -688,12 +701,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     return lines;
   }
   const niceQty = milli => (milli/1000).toLocaleString('es-MX',{maximumFractionDigits:3});
+  const durationText = ms => ms == null || !Number.isFinite(ms) ? 'No disponible' : `${String(Math.floor(Math.max(0,ms)/3600000)).padStart(2,'0')}:${String(Math.floor(Math.max(0,ms)/60000)%60).padStart(2,'0')}:${String(Math.floor(Math.max(0,ms)/1000)%60).padStart(2,'0')}`;
   function topHeader(pageNum, totalPages, products, info) {
     let s='';
     s+=rect(0,0,WIDTH,89,'#123e34');
     s+=rect(LEFT,19,4,47,'#a2d7b2');
     s+=text(LEFT+16,18,'REPORTE FINAL DE INVENTARIO',18,true,'#ffffff');
     s+=text(LEFT+17,46,`Generado: ${new Date().toLocaleString('es-MX')}   ·   Origen: ${fit(info.filename,240,9)}`,8.7,false,'#d4e7dd');
+    s+=text(LEFT+17,65,`${info.durationLabel || 'Tiempo total de conteo'}: ${durationText(info.elapsedMs)}`,9,true,'#c9ebd5');
     s+=text(LEFT,102,`Productos incluidos: ${products.length}`,9.3,true,'#123e34');
     s+=text(LEFT+169,102,`Con conteo: ${products.filter(p=>(p.totalsMilli?.piece || 0)>0 || (p.totalsMilli?.source || 0)>0).length}`,9.3,true,'#123e34');
     s+=text(WIDTH-RIGHT-125,103,`Página ${pageNum} de ${totalPages}`,8.6,false,'#718279');
@@ -922,7 +937,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
 
   </script>
 <script>
-/* ConteoVerde V9: consolidador de reportes ya exportados. Sin servidor. */
+/* ConteoVerde V10: consolidador de reportes ya exportados. Sin servidor. */
 (function(root){
  'use strict';
  const normalize = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
@@ -954,6 +969,17 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
    let hash=2166136261;
    for(const b of bytes){hash^=b;hash=Math.imul(hash,16777619);}
    return `${bytes.length}:${(hash>>>0).toString(16)}`;
+ }
+ function readReportDuration(sheet) {
+   for(const row of (sheet.rows||[]).slice(0,7)){
+     const text=(row||[]).map(clean).find(v=>/^tiempo (total de conteo|sumado de participantes)\s*:/i.test(v));
+     if(!text)continue;
+     const match=text.match(/:\s*(\d+):([0-5]\d):([0-5]\d)\s*$/);
+     if(!match)return null;
+     const result=(Number(match[1])*3600+Number(match[2])*60+Number(match[3]))*1000;
+     return Number.isSafeInteger(result)?result:null;
+   }
+   return null;
  }
  function getReportRows(sheet, filename){
    const rows=sheet.rows || [];
@@ -994,7 +1020,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
    if(!files||files.length<2)throw Error('Selecciona al menos dos reportes .xlsx.');
    if(files.length>30)throw Error('Admite hasta 30 reportes por consolidación.');
    const fingerprints=new Set(), union=new Map(), units=new Map(), seenSap=new Map();
-   const warnings=new Set(),names=[];
+   const warnings=new Set(),names=[],durations=[];
    for(const file of files){
      if(!/\.xlsx$/i.test(file.name))throw Error(`${file.name}: selecciona un reporte .xlsx exportado por ConteoVerde.`);
      if(file.size>20*1024*1024)throw Error(`${file.name}: el archivo excede 20 MB.`);
@@ -1007,6 +1033,8 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
      }));
      if(!itemSheet)throw Error(`${file.name}: no hay una hoja de reporte final de ConteoVerde.`);
      const parsed=getReportRows(itemSheet,file.name);
+     const duration=readReportDuration(itemSheet);
+     if(duration !== null)durations.push(duration);
      names.push(file.name);
      for(const p of parsed){
        const key=identity(p);
@@ -1032,7 +1060,8 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
    const products=[...union.values()].map((p,i)=>({...p,id:`m${i+1}`})).sort((a,b)=>{
      const f=a.family.localeCompare(b.family,'es-MX');return f||a.code.localeCompare(b.code,'es-MX', {numeric:true})||a.description.localeCompare(b.description,'es-MX');
    });
-   return { products, filenames:names, count:files.length, warnings:[...warnings] };
+   if(durations.length !== files.length)warnings.add(`No todos los reportes incluyen tiempo (${durations.length} de ${files.length}). No se puede calcular un tiempo acumulado completo.`);
+   return { products, filenames:names, count:files.length, elapsedMs:durations.length===files.length?durations.reduce((sum,x)=>sum+x,0):null, durationKnown:durations.length, warnings:[...warnings] };
  }
  root.InventoryMerge={consolidate};
 })(window);
@@ -1072,6 +1101,64 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   const dateShort = iso => new Date(iso).toLocaleString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
   let state = null, selectedId = null, toastTimer = null, isImporting = false;
   let selectedUnitKey = 'piece'; // Siempre iniciar el registro de cada artículo en piezas.
+  const newTimer = () => ({elapsedMs:0,runningSince:null});
+  function initTimer(data) {
+    if(data.timer && Number.isFinite(data.timer.elapsedMs) && data.timer.elapsedMs>=0){
+      data.timer.elapsedMs=Math.floor(data.timer.elapsedMs);
+      if(!Number.isFinite(data.timer.runningSince)||data.timer.runningSince<=0)data.timer.runningSince=null;
+    } else {
+      // Migrar inventarios V9: solo es posible estimar desde el primer movimiento.
+      const times=(data.actions||[]).map(a=>Date.parse(a.at)).filter(Number.isFinite);
+      const first=times.length?Math.min(...times):null;
+      data.timer=first?{elapsedMs:0,runningSince:first}:newTimer();
+    }
+    if(data.completedAt && data.timer.runningSince!==null){
+      const finish=Date.parse(data.completedAt);
+      data.timer.elapsedMs+=Math.max(0,(Number.isFinite(finish)?finish:Date.now())-data.timer.runningSince);
+      data.timer.runningSince=null;
+    }
+  }
+  function timerMs(now=Date.now()){
+    if(!state)return 0;
+    initTimer(state);
+    return state.timer.elapsedMs+(state.timer.runningSince===null?0:Math.max(0,now-state.timer.runningSince));
+  }
+  function elapsedText(ms){
+    const secs=Math.floor(Math.max(0,ms)/1000);
+    return `${String(Math.floor(secs/3600)).padStart(2,'0')}:${String(Math.floor(secs/60)%60).padStart(2,'0')}:${String(secs%60).padStart(2,'0')}`;
+  }
+  function renderTimer(){
+    if(!state)return;
+    $('timer-display').textContent=elapsedText(timerMs());
+    const btn=$('timer-toggle'), running=state.timer.runningSince!==null;
+    btn.hidden=Boolean(state.completedAt)||(!running&&state.timer.elapsedMs===0&&!(state.actions||[]).length);
+    btn.textContent=running?'Ⅱ':'▶';
+    btn.title=running?'Pausar el cronómetro para no contar descansos':'Reanudar cronómetro';
+    btn.setAttribute('aria-label',btn.title);
+    $('timer-widget').classList.toggle('is-paused',!running && !state.completedAt && (state.actions||[]).length>0);
+  }
+  function startTimer(){
+    if(!state)return;
+    initTimer(state);
+    if(state.timer.runningSince===null && !state.completedAt)state.timer.runningSince=Date.now();
+  }
+  function toggleTimer(){
+    if(!state||state.completedAt)return;
+    initTimer(state);
+    if(state.timer.runningSince!==null){
+      state.timer.elapsedMs=timerMs();state.timer.runningSince=null;
+      toast('Cronómetro pausado. El tiempo de descanso no se contará.');
+    }else{
+      state.timer.runningSince=Date.now();
+      toast('Cronómetro reanudado.');
+    }
+    save();renderTimer();
+  }
+  function freezeTimer(at=Date.now()){
+    if(!state)return;
+    state.timer.elapsedMs=timerMs(at);
+    state.timer.runningSince=null;
+  }
   const pieceLike = unit => /^(pza|pzas|pz|pieza|piezas|und|un|unidad|unidades)$/.test(normalize(unit).trim());
   const hasOtherUnit = p => Boolean(p.unit && !pieceLike(p.unit));
   function getPackQty(p) {
@@ -1082,9 +1169,28 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     return Number.isSafeInteger(qty) && qty>=1 && qty<=1000000 ? qty : 0;
   }
   function keywordFor(p) {
-    const words = String(p.name||p.description||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().match(/[A-ZÑ]{3,}/g) || [];
-    const ignored = new Set(['CAJA','PZA','PZAS','PIEZA','PIEZAS','STARBUCKS','LAC','FALL','SPR','WIN','FY','CORE','SUM','HOL','CUP','PLSTC','CLDCP','TMBLR','WTR','BTL','VAC','STN','GLASS','RECYCLD','HOT','LID','STL','MATERIAL','SUSTAIN','DE','CON','PARA','THE','AND','WITH','ONE','SET','KIT','DEL','POR']);
-    return words.find(w=>!ignored.has(w) && !/^[A-Z]*FY$/.test(w)) || words[0] || 'PRODUCTO';
+    // Three REAL CONSECUTIVE words from the item's name; never stitch distant words.
+    // Preserve the original spelling/accents, avoiding SAP prefixes and packing when possible.
+    const source=String(p.name||p.description||'').replace(/^\s*\d{5,10}\s*[-–:]\s*/, '').trim();
+    const words=source.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]+/g)||[];
+    if(!words.length)return 'Producto sin descripción';
+    if(words.length<=3)return words.join(' ');
+    const generic=new Set(['CJ','PZA','PZAS','PIEZA','PIEZAS','STARBUCKS','LAC','FALL','SPR','WIN','FY','CORE','SUM','HOL','CUP','PLSTC','CLDCP','TMBLR','WTR','BTL','VAC','STN','GLASS','RECYCLD','HOT','LID','STL','MATERIAL','SUSTAIN','DE','CON','PARA','THE','AND','WITH','SET','KIT','DEL','POR','SS','PP','FY26','FY27','PZ','UND']);
+    let best=0,bestScore=-Infinity;
+    for(let i=0;i<=words.length-3;i++){
+      const part=words.slice(i,i+3);
+      let score=-i*0.15;
+      for(const term of part){
+        const up=term.toUpperCase();
+        if(generic.has(up)||/^CJ\d+PZAS?$/.test(up))score-=0.8;
+        else if(/^\d+$/.test(up))score-=1;
+        else if(/^\d+(OZ|ML|KG|L|PZA)$/.test(up))score-=0.5;
+        else if(up.length>=4)score+=2.5;
+        else score+=0.8;
+      }
+      if(score>bestScore){bestScore=score;best=i;}
+    }
+    return words.slice(best,best+3).join(' ');
   }
   const unitText = (p, key) => key === 'source' && hasOtherUnit(p) ? p.unit : 'pzas';
   const totalFor = (p, key) => Number(p.totalsMilli?.[key]) || 0;
@@ -1135,6 +1241,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
           }
         }
         saved.schemaVersion = 2;
+        initTimer(saved);
         state = saved;
         selectedId = saved.selectedId || saved.products[0].id;
       }
@@ -1244,7 +1351,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       <div class="history-list">${history.length ? history.map(h => `<div class="history-entry"><span>${safe(dateShort(h.at))}</span><strong class="${h.milli < 0 ? 'negative' : ''}">${h.milli < 0 ? '−' : '+'} ${quantity(Math.abs(h.milli))} ${safe(unitText(p,h.unitKey))}</strong></div>`).join('') : '<p class="empty-note">Todavía no hay conteos de este producto.</p>'}</div>`;
     if (closed) $('reopen-btn').addEventListener('click', () => {
       if (confirm('¿Quieres reabrir el inventario para continuar editando los conteos?')) {
-        state.completedAt = null; save(); render(); toast('Inventario reabierto. Ya puedes continuar contando.');
+        state.completedAt = null; startTimer(); save(); render(); toast('Inventario reabierto. Ya puedes continuar contando.');
       }
     });
     else {
@@ -1281,6 +1388,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     p.totalsMilli[unitKey] = nextTotal;
     p.history.push({ id, milli: delta, at, unitKey });
     state.actions.push({ id, productId: p.id, milli: delta, at, unitKey });
+    startTimer();
     save(); render(); toast(`${direction > 0 ? 'Se sumaron' : 'Se restaron'} ${quantity(milli)} ${unitText(p,unitKey)} ${direction > 0 ? 'a' : 'de'} ${p.code || p.name}.`);
   }
   function undoLast() {
@@ -1310,7 +1418,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     if (!state) return;
     $('import-summary-text').textContent = `${state.products.length} SAP/productos · Archivo: ${state.filename} · Hoja: ${state.worksheet || 'Principal'}${state.duplicatesIgnored ? ` · ${state.duplicatesIgnored} filas duplicadas omitidas` : ''}`;
     if (!productById(selectedId)) { selectedId = state.products[0]?.id; selectedUnitKey = 'piece'; }
-    renderStats(); renderList(); renderDetail(); renderRecent();
+    renderStats(); renderList(); renderDetail(); renderRecent(); renderTimer();
   }
   function showImportMessage(message, error = false) {
     const node = $('import-message');
@@ -1326,7 +1434,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     try {
       const imported = await InventoryExcel.readExcel(file);
       if (state && !confirm(`Ya hay un inventario cargado (${state.products.length} productos). Si importas otro Excel, se reemplazará y se perderán los conteos actuales de este navegador. ¿Continuar?`)) return;
-      state = { schemaVersion: 2, filename: imported.filename, worksheet: imported.worksheet, duplicatesIgnored: imported.duplicatesIgnored || 0, importedAt: new Date().toISOString(), completedAt: null, products: imported.products, actions: [], selectedId: imported.products[0].id };
+      state = { schemaVersion: 2, filename: imported.filename, worksheet: imported.worksheet, duplicatesIgnored: imported.duplicatesIgnored || 0, importedAt: new Date().toISOString(), completedAt: null, timer:newTimer(), products: imported.products, actions: [], selectedId: imported.products[0].id };
       selectedId = state.selectedId; selectedUnitKey = 'piece';
       $('search-input').value = ''; $('status-filter').value = 'all';
       const familyOptions = [...new Set(state.products.map(p => p.family))].sort((a,b) => a.localeCompare(b,'es-MX'));
@@ -1346,6 +1454,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     if (!state) return;
     $('export-quantity').textContent = fmt(counts().counted);
     $('export-total').textContent = fmt(state.products.length);
+    $('export-duration').textContent = elapsedText(timerMs());
     $('export-modal').hidden = false;
     $('close-modal').focus();
   }
@@ -1379,7 +1488,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const p=dictation.rows[dictation.index];
     $('dictation-progress').textContent = `Producto ${dictation.rows.length ? dictation.index + 1 : 0} de ${dictation.rows.length}`;
     $('dictation-bar').style.width = `${dictation.rows.length ? ((dictation.index+1)/dictation.rows.length*100) : 0}%`;
-    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>Palabra clave: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
+    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>3 palabras consecutivas: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
     $('dictation-pause').disabled = !dictation.running;
     $('dictation-pause').textContent = dictation.paused ? '▶ Continuar' : 'Ⅱ Pausar';
     $('dictation-prev').disabled = dictation.index<=0;
@@ -1395,13 +1504,13 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     if('speechSynthesis' in window) window.speechSynthesis.cancel();
   }
   function chooseVoice(){
-    const voices=window.speechSynthesis.getVoices().filter(v=>/^es\b|^es[-_]/i.test(v.lang));
-    const grave=$('dictation-voice-style').value==='grave';
-    const maleHint=/pablo|raul|raúl|diego|jorge|alvaro|álvaro|antonio|carlos|enrique|mateo|jorge|javier|male|masculin/i;
-    voices.sort((a,b)=>{
-      const score=v=> (/^es-mx$/i.test(v.lang)?20:0) + (grave && maleHint.test(v.name)?50:0) + (/natural|neural|premium|online/i.test(v.name)?5:0);
-      return score(b)-score(a);
-    });
+    const voices=window.speechSynthesis.getVoices().filter(v=>/^es(?:[-_]|$)/i.test(v.lang));
+    const score=v=>
+      (/^es[-_]MX$/i.test(v.lang)?35:0) +
+      (/natural|neural|premium|enhanced|online/i.test(v.name)?45:0) +
+      (/dalia|sabina|paulina|sofia|sofia|valeria|mar[ií]a|paloma|monica|m[oó]nica/i.test(v.name)?8:0) +
+      (v.localService?2:0);
+    voices.sort((a,b)=>score(b)-score(a));
     return voices[0]||null;
   }
   function sayPart(words, nonce, next){
@@ -1410,8 +1519,8 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const msg=new SpeechSynthesisUtterance(words);
     msg.lang='es-MX';
     msg.voice=chooseVoice();
-    msg.rate=(Number($('dictation-rate').value)||1)*($('dictation-voice-style').value==='grave'?0.94:1);
-    msg.pitch=$('dictation-voice-style').value==='grave'?0.76:1;
+    msg.rate=(Number($('dictation-rate').value)||1)*1.03;
+    msg.pitch=1.08; // Natural, amable y ligeramente animada; la voz real depende del navegador.
     msg.onend=()=>{if(nonce===dictation.nonce&&dictation.running&&next)next();};
     msg.onerror=e=>{if(nonce!==dictation.nonce||e.error==='canceled'||e.error==='interrupted')return;stopSpeaking();renderDictation();toast('No se pudo reproducir la voz. Comprueba el audio del dispositivo.',true);};
     window.speechSynthesis.speak(msg);
@@ -1463,7 +1572,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     dictation.index=0;
     $('dictation-pdf').src=dictation.url;
     $('dictation-modal').hidden=false;
-    $('dictation-note').textContent = 'El dictado sigue el orden exacto del PDF, incluyendo los productos en cero si seleccionaste esa opción. Lee SAP dígito por dígito, una palabra clave, piezas y, cuando corresponda, KG o L. Separa «SAP» y los dígitos con una pausa de 1.15 segundos. El modo de voz grave depende de las voces disponibles en el navegador.';
+    $('dictation-note').textContent = 'El dictado sigue el orden del PDF y pronuncia SAP dígito por dígito, tres palabras consecutivas del nombre, piezas y KG/L cuando corresponda. Conserva la pausa de 1.15 segundos después de «SAP». Se usa automáticamente una voz natural y animada, según las voces disponibles en el navegador.';
     renderDictation();
     $('dictation-play').focus();
   }
@@ -1478,12 +1587,14 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     if (!data.length && !$('include-zero').checked) { toast('No hay productos contabilizados. Activa «Incluir productos sin conteo».', true); return; }
     btn.disabled = true; btn.textContent = 'Generando reporte…';
     try {
-      const info = {filename:state.filename, importedAt:state.importedAt};
+      const stopAt=Date.now();
+      const info = {filename:state.filename, importedAt:state.importedAt, elapsedMs:timerMs(stopAt)};
       const blob = format === 'xlsx' ? await InventoryExcel.exportExcel(data, info) : InventoryPDF.exportPDF(data, info);
       const now = new Date(); const day = [now.getFullYear(), String(now.getMonth()+1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
       if(format==='dictado'){mergeState.result=null;openDictation(data,blob);}
       else download(blob,`Inventario_Contado_${day}.${format}`);
-      state.completedAt = new Date().toISOString(); save();
+      if(!state.completedAt){freezeTimer(stopAt);state.completedAt=new Date(stopAt).toISOString();}
+      save();
       $('export-modal').hidden = true; render();
       toast(format === 'dictado' ? '¡Inventario finalizado! Puedes consultar el PDF e iniciar el dictado.' : `¡Inventario finalizado! Reporte ${format.toUpperCase()} descargado.`);
     } catch(error) { console.error(error); toast('No se pudo generar el reporte: '+(error?.message||'error desconocido'), true); }
@@ -1531,6 +1642,9 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       $('merge-stat-files').textContent=fmt(result.count);
       $('merge-stat-products').textContent=fmt(result.products.length);
       $('merge-stat-counted').textContent=fmt(result.products.filter(hasCount).length);
+      $('merge-duration').textContent=result.elapsedMs===null
+        ? `Tiempo acumulado: no disponible (${result.durationKnown} de ${result.count} participantes informaron su tiempo).`
+        : `Tiempo sumado de participantes: ${elapsedText(result.elapsedMs)} (no equivale al tiempo transcurrido si trabajaron a la vez).`;
       $('merge-results').hidden=false;
       $('merge-warnings').hidden=!result.warnings.length;
       $('merge-warnings').textContent=result.warnings.join('\n');
@@ -1546,7 +1660,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const prior=button.textContent;button.textContent='Preparando…';button.disabled=true;
     try{
       const info={filename:`${mergeState.result.count} reportes unidos: ${mergeState.result.filenames.join(' / ')}`,
-        importedAt:new Date().toISOString()};
+        importedAt:new Date().toISOString(), elapsedMs:mergeState.result.elapsedMs, durationLabel:'Tiempo sumado de participantes'};
       const blob=format==='xlsx' ? await InventoryExcel.exportExcel(products,info) : InventoryPDF.exportPDF(products,info);
       const day=new Date().toISOString().slice(0,10);
       if(format==='dictado'){
@@ -1581,7 +1695,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       // Only publish the new mapping after a successful parse and explicit approval.
       localStorage.setItem(MERCH_KEY,JSON.stringify(result));
       applyMerch(result);
-      if(state){for(const p of state.products){p.totalsMilli={piece:0,source:0};p.history=[];}state.actions=[];state.completedAt=null;selectedUnitKey='piece';save();}
+      if(state){for(const p of state.products){p.totalsMilli={piece:0,source:0};p.history=[];}state.actions=[];state.completedAt=null;state.timer=newTimer();selectedUnitKey='piece';save();}
       render();showImportMessage('');toast(`Lista Merch actualizada (${result.count} equivalencias). Inventario reiniciado a cero.`);
     } catch(error){console.error(error);showImportMessage('No fue posible actualizar Merch: '+(error?.message||'Error desconocido')+'. Los conteos no se modificaron.',true);toast('No se actualizó Merch. Los conteos siguen intactos.',true);}
     finally {input.value='';isImporting=false;}
@@ -1591,7 +1705,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     if (!state) return;
     if (!confirm('¿Reiniciar todos los conteos? Esto pondrá los totales en cero y borrará el historial. Esta acción no se puede deshacer.')) return;
     for (const p of state.products) { p.totalsMilli = {piece:0,source:0}; p.history = []; }
-    state.actions = []; state.completedAt = null;
+    state.actions = []; state.completedAt = null; state.timer=newTimer();
     save(); render(); toast('Se reiniciaron los conteos de todos los productos.');
   }
   function wire() {
@@ -1650,10 +1764,12 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       download(dictation.blob,`Inventario_Contado_${day}.pdf`);
     });
     $('reset-btn').addEventListener('click',resetCounts);
+    $('timer-toggle').addEventListener('click',toggleTimer);
   }
   restore();
   if (state) setFamilyOptions([...new Set(state.products.map(p=>p.family))].sort((a,b)=>a.localeCompare(b,'es-MX')));
   wire(); render();
+  setInterval(()=>{if(state&&!document.hidden)renderTimer();},1000);
 })();
 
 </script>
