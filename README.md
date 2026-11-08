@@ -1,34 +1,42 @@
-# ConteoVerde V12 — Corrección del lector Merch C1/C2
+# ConteoVerde V13 — Pick Pack mejorado
 
-## Problema corregido
+## Qué se corrigió
 
-El lector de PDF de V11 identificaba **Código SAP** y **SKU POS** usando coordenadas fijas de las columnas del formato C1. El PDF **Lista de Precios Merch XMAS 2026_WK 45 C2 1 (1).pdf** tiene una distribución distinta: los dos códigos se encuentran más a la derecha y el documento tiene 24 páginas (incluidas páginas de precios). Por eso, V11 daba el mensaje de que no encontraba códigos SAP o SKU POS.
+Se revisaron todas las descripciones del catálogo aportado de 285 SAP únicos. La versión anterior reconocía únicamente 61 presentaciones: exigía un sufijo PZA/PZAS al final de la expresión, por lo que no reconocía los códigos seguidos de capacidades, pesos o paquetes internos.
 
-En V12 el lector detecta las posiciones de las columnas por sus encabezados dentro del PDF y utiliza ese diseño en las siguientes páginas. Omite las páginas que solo incluyen precios y no mezcla información de precios con el catálogo de búsqueda.
+El nuevo detector permite:
+- `CJ1500` / `CJ1500PZAS` → botón `+ 1 CJ (1,500 pzas)`.
+- `CJ24PZAS` / `CJ24PZAS110GR` → `+ 1 CJ (24 pzas)`.
+- `CJ/1000PZAS` y `CJ 1000 PZA` → 1,000 piezas.
+- `CJ12BLIST3PZAS` → 12 × 3 = **36 piezas**.
+- `CJ25PQT24PZAS` → 25 × 24 = **600 piezas**.
+- `C100P`, `C500P`, `C12B`, `C12BOL` → cantidades por presentación expresadas en piezas o bolsas.
+- `PQT100PZAS`, `ROL500PZAS`, `BOL6PZAS`, `CHA12PZAS` → botones por paquete, rollo, bolsa o charola.
+
+La aplicación **no convierte** piezas a kilogramos/litros. Cuando la descripción informa, por ejemplo, `CJ12LT`, muestra una advertencia en lugar de inventar una cantidad de piezas. Ante descripciones sin cantidad de empaque, permanecen disponibles la suma manual y los botones +1, +5 y +10.
+
+## Resultados de la auditoría
+
+Catálogo de 285 SAP: **246 presentaciones detectadas**, 38 sin un número de empaque explícito y 1 con unidad ambigua que requiere revisión manual (`CJ12LT`). Distribución: 147 con prefijo CJ, 92 con CnP/CnB/CnBOL y 7 en paquetes/rollos/bolsas/charolas.
+
+El archivo de auditoría (`ConteoVerde_V13_Auditoria_PickPack_285_SAP.xlsx`) se entrega **por separado** y no debe subirse al repositorio, ya que contiene datos internos del inventario.
 
 ## Pruebas realizadas
 
-- Lista Merch C1 anterior: **341 equivalencias SAP–SKU POS** importadas correctamente.
-- Lista Merch C2 aportada: **341 equivalencias SAP–SKU POS** importadas correctamente.
-- Inventario `ReporteInventario_NP2893.xls`: **285 productos** importados.
-- Búsqueda de SKU POS `50737` con ese inventario: localiza SAP `154150`.
-- Un inventario con un producto contado se reinicia después de confirmar la actualización Merch.
-- Un PDF inválido no reemplaza el catálogo Merch cargado ni borra conteos.
-- No hay errores JavaScript en la prueba automatizada de navegador.
+- Se importó `ReporteInventario_NP2893.xls` con 285 productos SAP únicos.
+- Se importó `lista.xlsx` con 262 productos.
+- Se verificó en navegador el botón de `CJ1500PZAS` (1,500 piezas) y su acumulación.
+- Se verificó `CJ12BLISTER3PZAS` (36 piezas), `CJ6PQT25PZAS` (150 piezas), `C100P` (100 piezas) y `CJ24PZAS` (24 piezas).
+- `CJ12LT` muestra una advertencia y no añade un botón que pudiera contar piezas incorrectamente.
+- No se detectaron errores JavaScript en los recorridos de prueba.
 
-## Cómo instalar la actualización en GitHub Pages
+## Instalación en GitHub Pages
 
-1. Descarga el ZIP V12 y extrae su contenido.
-2. En el repositorio que ya aloja ConteoVerde, reemplaza `index.html` por el nuevo archivo.
-3. Confirma el cambio y recarga GitHub Pages con **Ctrl + Shift + R**.
-4. Verifica que se muestre **V12 · LECTOR MERCH C1/C2**.
-5. Haz clic en **Actualizar lista Merch** y selecciona el PDF de C2.
-6. Revisa las equivalencias detectadas; **antes de confirmar**, exporta cualquier conteo activo que quieras conservar. La actualización sí reinicia los conteos, por diseño.
-7. Confirma la actualización solo si quieres iniciar un conteo desde cero.
+1. Descarga el ZIP y extrae el archivo `index.html`.
+2. Sustituye el `index.html` actual de tu repositorio por el nuevo.
+3. Guarda los cambios en la rama publicada.
+4. Recarga el sitio publicado con **Ctrl + Shift + R**.
+5. Confirma que se muestre `V13 · PICK PACK MEJORADO`.
+6. Carga tu Excel de inventario. El botón de empaque aparecerá únicamente cuando la descripción permita reconocer una cantidad confiable.
 
-### Seguridad y datos
-
-- Los datos del PDF se procesan en el navegador y las equivalencias se guardan en el almacenamiento local del dispositivo. No se adjunta el PDF a la distribución de GitHub.
-- El catálogo Merch se usa exclusivamente como equivalencia de búsqueda y **no agrega productos que no existan en el Excel de inventario cargado**.
-- Esta versión mantiene las funciones de ConteoVerde V11: sumar/restar, pick pack, cronómetro, dictado con pausas de 1 a 5 segundos, Excel/PDF y Sumar Conteos.
-- La lista de Merch contiene información interna; no publiques el PDF original ni las equivalencias en un repositorio público.
+**Nota:** la actualización del archivo HTML no reinicia por sí sola el inventario guardado en el mismo navegador. Importar un Excel nuevo o actualizar Merch sí puede reemplazar el inventario según las confirmaciones habituales del sistema. Exporta tu conteo antes de esos cambios.

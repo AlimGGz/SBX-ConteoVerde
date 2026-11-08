@@ -60,6 +60,7 @@
 .merch-status{padding:10px 14px;margin:-6px 0 18px;border:1px solid #d5e5d9;border-radius:10px;background:#f0f8f2;color:#466c58;font-size:12px;line-height:1.5}
 .pack-button{background:#e0f2e6!important;border-color:#93cdaa!important;color:#08573c!important;font-weight:850!important}
 .pack-explanation{font-size:11px;margin:9px 0 0;color:#4d7860;line-height:1.5}
+.pack-caution{color:#7d510f;background:#fff7e7;border:1px solid #f0dda8;padding:9px;border-radius:8px}
 .file-voice{background:#deefe6;color:#0b684d;font-size:13px;min-width:30px}
 .dictation-cover{position:fixed;inset:0;z-index:1000;background:rgba(10,34,28,.82);padding:18px;overflow:auto}
 .dictation-dialog{height:min(930px,calc(100dvh - 36px));min-height:540px;max-width:1360px;margin:auto;background:white;border-radius:17px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 80px #092b2544}
@@ -121,7 +122,7 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V12 · LECTOR MERCH C1/C2</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V13 · PICK PACK MEJORADO</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -1178,12 +1179,81 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   }
   const pieceLike = unit => /^(pza|pzas|pz|pieza|piezas|und|un|unidad|unidades)$/.test(normalize(unit).trim());
   const hasOtherUnit = p => Boolean(p.unit && !pieceLike(p.unit));
-  function getPackQty(p) {
-    const text = [p.name,p.description].filter(Boolean).join(' ');
-    const match = /(?:^|[^a-zA-Z0-9])CJ\s*([1-9][0-9.,]{0,8})\s*(?:PZAS?|PZS?|PIEZAS?)\b/i.exec(text);
-    if(!match) return 0;
-    const qty = Number(match[1].replace(/[.,]/g,''));
-    return Number.isSafeInteger(qty) && qty>=1 && qty<=1000000 ? qty : 0;
+  /**
+   * Lee la presentación DIRECTAMENTE del nombre original del inventario.
+   * Unidades por caja en piezas físicas (no convierte KG/L ni pesos por porción).
+   * Reconoce CJ1500, CJ/1000PZAS, CJ24PZAS110GR, C100P,
+   * CJ12BLIST3PZAS -> 12 x 3, CJ25PQT24PZAS -> 25 x 24.
+   * Si el patrón es ambiguo no muestra el botón de suma automática.
+   */
+  function getPackInfo(p) {
+    const text = String(p.description || p.name || '').normalize('NFKC').replace(/\u00a0/g,' ').toUpperCase();
+    const pieceWord = '(?:PZAS?|PZS?|PIEZAS?|UND|UNIDADES?)';
+    const variants = [];
+    const cj = /(?:^|[^A-Z0-9])(?:CJ|CAJA)\s*(?:[\/-]\s*)?(\d{1,6})(?!\d)/g;
+    for (const match of text.matchAll(cj)) {
+      const outer = Number(match[1]);
+      if(!Number.isSafeInteger(outer) || outer < 1 || outer > 1000000) continue;
+      const after = text.slice(match.index + match[0].length);
+      if (/^[.,]\d/.test(after)) continue; // Cantidad decimal: no es un número entero de piezas.
+      const beginning = 'CJ' + outer;
+      // Presentaciones compuestas: 12 blísters de 3 piezas = 36 piezas por caja.
+      const nested = new RegExp('^\\s*(BLISTERS?|BLIST|PQT|PQTS?|PAQ(?:UETES?)?)\\s*(\\d{1,5})\\s*(' + pieceWord + ')','i').exec(after);
+      if(nested){
+        const inner = Number(nested[2]);
+        const qty=outer*inner;
+        if(Number.isSafeInteger(qty) && qty <= 1000000)
+          variants.push({qty, label: beginning+after.slice(0,nested[0].length).trim(), explanation: `${outer} paquetes × ${inner} piezas = ${qty} piezas`});
+        continue;
+      }
+      // Cantidad directa con sufijo de piezas, sobres, bolsas, botellas o rebanadas.
+      const units = new RegExp('^\\s*(' + pieceWord + '|REB(?:ANADAS?)?|SOB(?:RES?)?|BOL(?:SAS?)?|BTL|BOTELLAS?|PQT|PAQ(?:UETES?)?)','i').exec(after);
+      if(units){
+        const unit=units[1];
+        variants.push({qty:outer, label: beginning+after.slice(0,units[0].length).trim(), explanation: `${outer} ${/^REB/.test(unit)?'rebanadas':/^SOB/.test(unit)?'sobres':/^BOL/.test(unit)?'bolsas':/^BTL|^BOT/.test(unit)?'botellas':/^PQT|^PAQ/.test(unit)?'paquetes':'piezas'} por caja`});
+        continue;
+      }
+      // CJ12LT describe volumen, no doce piezas. No hacer conversiones implícitas.
+      if(/^\s*(?:LT|LTS|LITROS?|ML|KG|GRS?)(?![A-Z])/i.test(after)){
+        variants.push({qty:0, label:beginning, caution:`${beginning} se expresa en volumen o peso: verifica la cantidad por envase; no se asumieron piezas.`});
+        continue;
+      }
+      // CJ1500 sin sufijo de unidad también es válido, si termina o hay separador.
+      if(!after || /^[\s,;:)]/.test(after) || /^[-–]/.test(after)){
+        variants.push({qty:outer,label:beginning,explanation:`${outer} piezas por caja (presentación sin sufijo explícito)`});
+        continue;
+      }
+      variants.push({qty:0,label:beginning,caution:`No se identificó con seguridad la presentación ${beginning}. Confirma el empaque físico.`});
+    }
+    if(variants.length>1){
+      const positives=[...new Set(variants.filter(x=>x.qty).map(x=>x.qty))];
+      if(positives.length>1 || variants.some(x=>x.caution))return {qty:0,caution:'Se encontraron varias presentaciones de caja en el nombre. Verifica el empaque antes de sumar.'};
+      return variants.find(x=>x.qty) || variants[0];
+    }
+    if(variants.length===1)return variants[0];
+    // CnP = caja de n piezas; CnB = caja de n bolsas. No confundir con C/ en nombres.
+    const code=/(?:^|[^A-Z0-9])C(\d{1,6})([PB])(?=$|[^A-Z0-9])/.exec(text);
+    if(code){
+      const qty=Number(code[1]);
+      if(Number.isSafeInteger(qty)&&qty>=1&&qty<=1000000)
+        return {qty,label:`C${qty}${code[2]}`, buttonUnit:'CJ', explanation:code[2]==='B'?`${qty} bolsas por caja`:`${qty} piezas por caja`};
+    }
+    // Otra variante de caja: C12BOL1KG significa doce bolsas, no doce kilos.
+    const cBol=/(?:^|[^A-Z0-9])C(\d{1,6})BOL(?=$|[^A-Z0-9]|\d)/.exec(text);
+    if(cBol){
+      const qty=Number(cBol[1]);
+      if(Number.isSafeInteger(qty)&&qty>=1&&qty<=1000000)
+        return {qty,label:`C${qty}BOL`,buttonUnit:'CJ',explanation:`${qty} bolsas por caja (el peso no se convierte a piezas)`};
+    }
+    // Algunos productos indican el empaque físico sin CJ: PQT100PZAS,
+    // ROL500PZAS, BOL6PZAS o CHA12PZAS.
+    const standalone=/(?:^|[^A-Z0-9])(PQT|ROL|BOL|CHA)\s*(\d{1,6})\s*(PZAS?|PZS?|PIEZAS?)(?![A-Z])/.exec(text);
+    if(standalone){
+      const qty=Number(standalone[2]), kind=standalone[1];
+      if(Number.isSafeInteger(qty)&&qty>=1&&qty<=1000000)
+        return {qty,label:`${kind}${qty}${standalone[3]}`,buttonUnit:kind,explanation:`${qty} piezas en ${kind==='PQT'?'un paquete':kind==='ROL'?'un rollo':kind==='BOL'?'una bolsa':'una charola'}`};
+    }
+    return {qty:0};
   }
   function keywordFor(p) {
     // Three REAL CONSECUTIVE words from the item's name; never stitch distant words.
@@ -1336,7 +1406,8 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     $('detail-status').textContent = closed ? 'Finalizado' : (hasCount(p) ? '✓ Con conteo' : 'Sin conteo');
     $('detail-status').className = 'status-pill' + (closed ? ' closed' : (hasCount(p) ? ' done' : ''));
     const history = [...p.history].reverse().slice(0, 5);
-    const packQty = getPackQty(p);
+    const packInfo = getPackInfo(p);
+    const packQty = packInfo.qty || 0;
     const skuCodes = skuPosFor(p);
     const skuMeta = skuCodes.length
       ? `<span class="meta-tag meta-tag-pos" title="${skuCodes.length > 1 ? 'Varios SKU POS relacionados con este SAP: verifica la descripción' : 'SKU POS del catálogo auxiliar'}">SKU POS ${safe(skuCodes.join(' / '))}</span>`
@@ -1363,7 +1434,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       <div class="total-card"><span>TOTAL CONTADO POR UNIDAD</span>${totals}</div>
       ${closed ? `<div class="closed-note">Este inventario está finalizado. Puedes descargar el reporte o reabrirlo para corregir algún conteo.</div><button class="button button-outline reopen-button" id="reopen-btn" type="button">Reabrir inventario</button>` : `
       <div class="add-section">${unitSelect}<div class="field-heading">CANTIDAD EN ${safe(unitText(p, unitKey).toUpperCase())}</div><div class="amount-row"><input class="amount-input" type="text" inputmode="decimal" autocomplete="off" id="amount-input" placeholder="${unitKey === 'piece' ? 'Ej. 2' : 'Ej. 1.5'}" aria-label="Cantidad que deseas sumar o restar en ${safe(unitText(p,unitKey))}"/><div class="amount-actions"><button class="button button-primary" type="button" id="add-button">+ Sumar</button><button class="button button-danger" type="button" id="subtract-button" ${totalFor(p,unitKey) === 0 ? 'disabled title="No hay unidades para restar"' : ''}>− Restar</button></div></div>
-      <div class="quick-buttons">${(unitKey === 'piece' ? ['1','5','10'] : ['0.5','1','5']).map(value => `<button type="button" data-quick="${value}">+ ${value} ${safe(unitText(p,unitKey))}</button>`).join('')}${unitKey === 'piece' && packQty ? `<button class="pack-button" type="button" data-quick="${packQty}" title="Sumar el contenido de una caja según el pick pack del Excel">+ 1 CJ (${fmt(packQty)} pzas)</button>` : ''}</div>${unitKey === 'piece' && packQty ? `<p class="pack-explanation">Pick pack detectado en el Excel: <strong>CJ ${fmt(packQty)} PZA</strong>. Cada clic suma ${fmt(packQty)} piezas.</p>` : ''}</div>`}
+      <div class="quick-buttons">${(unitKey === 'piece' ? ['1','5','10'] : ['0.5','1','5']).map(value => `<button type="button" data-quick="${value}">+ ${value} ${safe(unitText(p,unitKey))}</button>`).join('')}${unitKey === 'piece' && packQty ? `<button class="pack-button" type="button" data-quick="${packQty}" title="Sumar las piezas por empaque según la descripción del Excel">+ 1 ${safe(packInfo.buttonUnit || 'CJ')} (${fmt(packQty)} pzas)</button>` : ''}</div>${unitKey === 'piece' && packQty ? `<p class="pack-explanation">Presentación del Excel: <strong>${safe(packInfo.label)}</strong>. ${safe(packInfo.explanation)}. Cada clic suma <strong>${fmt(packQty)} piezas</strong>, sin convertir a KG o L.</p>` : ''}${unitKey === 'piece' && !packQty && packInfo.caution ? `<p class="pack-explanation pack-caution">⚠ ${safe(packInfo.caution)} Puedes registrar la cantidad manualmente.</p>` : ''}</div>`}
       <div class="history-head"><strong>Historial del producto</strong><button type="button" class="text-button" id="undo-button" ${closed || !p.history.length ? 'disabled' : ''}>↶ Deshacer último</button></div>
       <div class="history-list">${history.length ? history.map(h => `<div class="history-entry"><span>${safe(dateShort(h.at))}</span><strong class="${h.milli < 0 ? 'negative' : ''}">${h.milli < 0 ? '−' : '+'} ${quantity(Math.abs(h.milli))} ${safe(unitText(p,h.unitKey))}</strong></div>`).join('') : '<p class="empty-note">Todavía no hay conteos de este producto.</p>'}</div>`;
     if (closed) $('reopen-btn').addEventListener('click', () => {
