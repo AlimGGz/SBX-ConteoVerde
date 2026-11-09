@@ -1,67 +1,32 @@
-# ConteoVerde V14 — Dictado más claro
+# ConteoVerde V15 — Dictado especial para Material LSM normal
 
-Esta versión se basa en ConteoVerde V13 y **mantiene** la importación de inventarios `.xls`/`.xlsx`, el catálogo auxiliar Merch, la búsqueda SAP y SKU POS, los botones de suma, resta y Pick Pack, el cronómetro, la generación de PDF/Excel y **Sumar Conteos**.
+Esta versión incorpora una excepción **solo en el dictado** para los productos cuya familia en el Excel sea `Material LSM normal`. No modifica el SAP, las descripciones originales, los totales, los reportes ni los conteos existentes.
 
-## Cambios en el dictado
+## Ajuste realizado
 
-### 1. Palabras clave sin códigos, números ni presentaciones
+- Para **Material LSM normal**, se buscan **tres palabras consecutivas** de la descripción que contengan únicamente letras. Se aceptan abreviaturas como `PLSTC`, `CLDCP`, `GID`, `SS`, `TMBLR` y `THRLD`, que antes eran descartadas.
+- Se excluyen los fragmentos con números (por ejemplo, `SM26`, `C2P`, `24OZ`, `CJ24PZAS`) y los números escritos como palabras (por ejemplo, «DOS»).
+- Se prioriza una secuencia de tres palabras **realmente adyacentes** en el nombre original. Si las cifras interrumpen la secuencia, se ignoran los fragmentos numéricos y se eligen palabras alfabéticas consecutivas de la lista limpia.
+- Cuando hay varias ternas válidas, el programa elige una de forma variada pero **estable para el mismo SAP** (no cambia inesperadamente al repetir un artículo).
+- Si el nombre original solo contiene **una o dos palabras alfabéticas**, se dictan esas palabras. No se inventa una tercera ni se añade un número para completar tres.
+- Para **todas las demás familias**, continúa funcionando exactamente el filtro estricto de V14: sin números, códigos ni presentaciones de Pick Pack en las palabras clave.
 
-La aplicación busca **hasta tres palabras consecutivas** en la descripción original del artículo. Descarta cualquier bloque que incluya una cifra o un término utilizado para códigos, unidades de peso, capacidad, cajas, paquetes y Pick Pack.
+## Ejemplos de Material LSM normal
 
-Ejemplos:
-
-| Descripción original | Palabras clave que se leen |
+| Producto en Excel | Ejemplo de palabras pronunciadas |
 | --- | --- |
-| `CAKE POP VAINILLA CJ12BLISTER3PZAS1.66KG` | `CAKE POP VAINILLA` |
-| `CJ24PZAS110GR GALLETAS DE AVENA 24G` | `GALLETAS DE AVENA` |
-| `COLD BREW CONCENTRADO 1L CJ6PZAS` | `COLD BREW CONCENTRADO` |
-| `CJ1500` | `Descripción no identificable` |
+| `78934 C2P SM26 PLSTC CLDCP GID 24OZ` | `PLSTC CLDCP GID` |
+| `78973 C2P SM26 SS TMBLR DRNK THRLD 16OZ` | Tres palabras consecutivas del tramo `SS TMBLR DRNK THRLD` |
+| `79003 C2P SM26 PLSTC CLDCP 24OZ` | `PLSTC CLDCP` (solo tiene dos palabras sin cifras) |
 
-**Importante:** si hay menos de tres palabras consecutivas válidas, se pronuncian solo las disponibles. Nunca se juntan palabras distantes saltando códigos para alcanzar tres artificialmente. El SAP se sigue dictando **por separado**, dígito por dígito.
+**Advertencia:** «palabras» se entiende como fragmentos alfabéticos del nombre original. Las abreviaturas técnicas pueden sonar letra por letra o con la pronunciación disponible en el navegador. Los archivos XLSX y PDF **no se modifican**.
 
-### 2. Pausa independiente entre piezas y KG/L
+## Actualizar GitHub Pages
 
-Cuando un artículo tiene una cantidad contabilizada en kilogramos o litros, el dictado sigue este flujo:
+1. Descarga el ZIP y extrae su `index.html`.
+2. Reemplaza el archivo `index.html` existente en tu repositorio, sin modificar el catálogo de inventario.
+3. Publica el cambio y recarga la aplicación con **Ctrl + Shift + R**.
+4. Comprueba la etiqueta `V15 · LSM SIN NÚMEROS`.
+5. En un conteo de prueba, selecciona un producto de **Material LSM normal** y ve a **Finalizar inventario → Dictado**.
 
-1. Dice «SAP».
-2. Espera **1.15 segundos**.
-3. Dice los dígitos, las palabras clave y la cantidad en piezas.
-4. Espera **1.25 segundos**.
-5. Dice la cantidad en kilogramos o litros.
-6. Espera el intervalo configurable de **1 a 5 segundos** antes del siguiente artículo.
-
-Las esperas comienzan cuando termina la voz anterior (no se simulan solo con puntuación). Si se pulsa **Pausar**, se conserva el tiempo pendiente y se reanuda después.
-
-### 3. Pronunciación mejorada de anglicismos
-
-Los nombres del Excel, PDF y pantalla **no se modifican**. Solo al hablar se aplican pronunciaciones adaptadas al español para anglicismos frecuentes, por ejemplo:
-
-- `CAKE POP` → «quéik pop».
-- `COOKIE` → «cúqui».
-- `COLD BREW` → «cóuld brú».
-- `BROWNIE` → «bráuni».
-- `TUMBLER` → «támbler».
-- `SNOOPY` → «snúpi».
-
-La claridad final depende de las voces de síntesis que ofrezcan Windows, Chrome, Edge o el dispositivo. No es una grabación de voz preinstalada ni un servicio externo.
-
-## Instalar la actualización en GitHub Pages
-
-1. Descarga el ZIP de la V14.
-2. Extrae `index.html` y reemplaza el archivo del mismo nombre en tu repositorio.
-3. Confirma los cambios en la rama utilizada por GitHub Pages.
-4. Actualiza la página con **Ctrl + Shift + R**.
-5. Comprueba que diga `V14 · DICTADO MÁS CLARO`.
-6. Carga tu Excel, realiza un conteo de prueba y elige **Finalizar inventario → Dictado**.
-
-No es necesario actualizar la lista Merch ni reiniciar el inventario por el simple hecho de reemplazar `index.html`. Antes de comenzar cualquier prueba en un inventario real, guarda una copia del reporte.
-
-## Verificaciones realizadas
-
-- Importación del Excel proporcionado con **285 SAP únicos**.
-- Selección de palabras clave contra las **285 descripciones**: sin cifras, gramajes, códigos SAP/SKU ni términos de Pick Pack en las frases seleccionadas.
-- Prueba temporal de voz simulada verificando **1.15 s tras SAP** y **1.25 s antes de KG/L**.
-- Verificación de que la pausa conserva el tiempo pendiente y que el siguiente producto respeta la configuración de **1 s**.
-- Validación de sintaxis de los siete scripts integrados y ausencia de errores de JavaScript durante las pruebas del dictado.
-
-La pronunciación audible exacta no puede garantizarse en todos los navegadores; recomendamos probarla en Chrome o Edge en el equipo donde se use.
+El cambio no reinicia los conteos ni afecta la lista Merch. Se mantienen la pausa tras decir «SAP», la pausa entre piezas y KG/L, la espera de 1 a 5 segundos entre artículos, y la consolidación de reportes.

@@ -122,7 +122,7 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V14 · DICTADO MÁS CLARO</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V15 · LSM SIN NÚMEROS</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -219,7 +219,7 @@
 
   <div id="dictation-modal" class="dictation-cover" hidden>
     <section class="dictation-dialog" role="dialog" aria-modal="true" aria-labelledby="dictation-heading">
-      <header class="dictation-head"><div><p class="micro-label">REPORTE FINAL · LECTURA DE INVENTARIO</p><h2 id="dictation-heading">Modo Dictado</h2><p>Consulta el PDF mientras escuchas el SAP, hasta tres palabras consecutivas sin códigos ni gramajes y las cantidades.</p></div><button class="icon-button" id="dictation-close" type="button" aria-label="Cerrar modo Dictado">✕</button></header>
+      <header class="dictation-head"><div><p class="micro-label">REPORTE FINAL · LECTURA DE INVENTARIO</p><h2 id="dictation-heading">Modo Dictado</h2><p>Consulta el PDF mientras escuchas el SAP, las palabras clave y las cantidades. Para Material LSM normal se permiten abreviaturas sin números.</p></div><button class="icon-button" id="dictation-close" type="button" aria-label="Cerrar modo Dictado">✕</button></header>
       <div class="dictation-grid">
         <div class="dictation-pdf"><iframe id="dictation-pdf" title="Vista del reporte final en PDF" loading="lazy"></iframe></div>
         <aside class="dictation-sidebar">
@@ -1282,10 +1282,46 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   function dictationNorm(word){
     return String(word||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
   }
+  // Excepción deliberada: los nombres de Material LSM normal suelen ser
+  // abreviaturas (PLSTC, CLDCP, TMBLR) que el filtro estricto rechaza.
+  // Solo para esta familia se permiten tres palabras consecutivas compuestas
+  // exclusivamente por letras, sin cifras ni números escritos con palabras.
+  const LSM_NUMBER_WORDS = new Set([
+    'CERO','UNO','UNA','UN','DOS','TRES','CUATRO','CINCO','SEIS','SIETE',
+    'OCHO','NUEVE','DIEZ','ONCE','DOCE','TRECE','CATORCE','QUINCE',
+    'VEINTE','TREINTA','CUARENTA','CINCUENTA','CIEN','CIENTO','MIL'
+  ]);
+  function isMaterialLSMNormal(p){
+    return dictationNorm(p.family||'').replace(/\s+/g,' ').trim()==='MATERIAL LSM NORMAL';
+  }
+  function lsmKeywordTokens(words,p){
+    const valid = word => /^[\p{L}]+$/u.test(word) && !LSM_NUMBER_WORDS.has(dictationNorm(word));
+    // Primero buscamos ternas realmente adyacentes en el texto original.
+    let windows=[];
+    for(let i=0;i+3<=words.length;i++){
+      const part=words.slice(i,i+3);
+      if(part.every(valid)) windows.push(part);
+    }
+    // Si los códigos numéricos interrumpen el nombre, se descartan antes
+    // de buscar una terna de palabras alfabéticas consecutivas.
+    if(!windows.length){
+      const alphabetic=words.filter(valid);
+      for(let i=0;i+3<=alphabetic.length;i++) windows.push(alphabetic.slice(i,i+3));
+      // Una descripción con solo una o dos palabras genuinas no se rellena
+      // con cifras ni códigos inventados: se leen las disponibles.
+      if(!windows.length) return alphabetic.slice(0,3);
+    }
+    // Elección variada entre productos, pero estable para un mismo SAP.
+    const seed=String(p.code||'')+'|'+String(p.name||p.description||'');
+    let hash=2166136261;
+    for(let i=0;i<seed.length;i++) hash=Math.imul(hash^seed.charCodeAt(i),16777619)>>>0;
+    return windows[hash%windows.length];
+  }
   function keywordTokens(p){
     const source=String(p.name||p.description||'')
       .replace(/^\s*\d{5,12}\s*[-–:]\s*/, '').trim();
     const words=source.match(/[\p{L}\p{N}]+/gu)||[];
+    if(isMaterialLSMNormal(p)) return lsmKeywordTokens(words,p);
     const permitted = word => {
       const upper=dictationNorm(word);
       if(!upper || /\d/.test(upper) || upper.length<2) return false;
@@ -1703,7 +1739,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const p=dictation.rows[dictation.index];
     $('dictation-progress').textContent = `Producto ${dictation.rows.length ? dictation.index + 1 : 0} de ${dictation.rows.length}`;
     $('dictation-bar').style.width = `${dictation.rows.length ? ((dictation.index+1)/dictation.rows.length*100) : 0}%`;
-    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>Palabras clave limpias: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
+    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>Palabras clave: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
     $('dictation-pause').disabled = !dictation.running;
     $('dictation-pause').textContent = dictation.paused ? '▶ Continuar' : 'Ⅱ Pausar';
     $('dictation-prev').disabled = dictation.index<=0;
@@ -1797,7 +1833,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     dictation.index=0;
     $('dictation-pdf').src=dictation.url;
     $('dictation-modal').hidden=false;
-    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP dígito por dígito, hasta tres palabras seguidas sin números ni Pick Pack, piezas y, cuando aplique, KG/L. Hay 1.15 s después de «SAP», 1.25 s entre piezas y KG/L y de 1 a 5 s entre artículos. Los términos ingleses frecuentes usan pronunciación adaptada al español.';
+    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP dígito por dígito, hasta tres palabras seguidas, piezas y, cuando aplique, KG/L. En Material LSM normal se admiten abreviaturas, pero no cifras; las otras familias mantienen el filtro de códigos y Pick Pack. Hay 1.15 s después de «SAP», 1.25 s entre piezas y KG/L y de 1 a 5 s entre artículos. Los términos ingleses frecuentes usan pronunciación adaptada al español.';
     renderDictation();
     $('dictation-play').focus();
   }
