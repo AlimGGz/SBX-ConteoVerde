@@ -1,42 +1,67 @@
-# ConteoVerde V13 — Pick Pack mejorado
+# ConteoVerde V14 — Dictado más claro
 
-## Qué se corrigió
+Esta versión se basa en ConteoVerde V13 y **mantiene** la importación de inventarios `.xls`/`.xlsx`, el catálogo auxiliar Merch, la búsqueda SAP y SKU POS, los botones de suma, resta y Pick Pack, el cronómetro, la generación de PDF/Excel y **Sumar Conteos**.
 
-Se revisaron todas las descripciones del catálogo aportado de 285 SAP únicos. La versión anterior reconocía únicamente 61 presentaciones: exigía un sufijo PZA/PZAS al final de la expresión, por lo que no reconocía los códigos seguidos de capacidades, pesos o paquetes internos.
+## Cambios en el dictado
 
-El nuevo detector permite:
-- `CJ1500` / `CJ1500PZAS` → botón `+ 1 CJ (1,500 pzas)`.
-- `CJ24PZAS` / `CJ24PZAS110GR` → `+ 1 CJ (24 pzas)`.
-- `CJ/1000PZAS` y `CJ 1000 PZA` → 1,000 piezas.
-- `CJ12BLIST3PZAS` → 12 × 3 = **36 piezas**.
-- `CJ25PQT24PZAS` → 25 × 24 = **600 piezas**.
-- `C100P`, `C500P`, `C12B`, `C12BOL` → cantidades por presentación expresadas en piezas o bolsas.
-- `PQT100PZAS`, `ROL500PZAS`, `BOL6PZAS`, `CHA12PZAS` → botones por paquete, rollo, bolsa o charola.
+### 1. Palabras clave sin códigos, números ni presentaciones
 
-La aplicación **no convierte** piezas a kilogramos/litros. Cuando la descripción informa, por ejemplo, `CJ12LT`, muestra una advertencia en lugar de inventar una cantidad de piezas. Ante descripciones sin cantidad de empaque, permanecen disponibles la suma manual y los botones +1, +5 y +10.
+La aplicación busca **hasta tres palabras consecutivas** en la descripción original del artículo. Descarta cualquier bloque que incluya una cifra o un término utilizado para códigos, unidades de peso, capacidad, cajas, paquetes y Pick Pack.
 
-## Resultados de la auditoría
+Ejemplos:
 
-Catálogo de 285 SAP: **246 presentaciones detectadas**, 38 sin un número de empaque explícito y 1 con unidad ambigua que requiere revisión manual (`CJ12LT`). Distribución: 147 con prefijo CJ, 92 con CnP/CnB/CnBOL y 7 en paquetes/rollos/bolsas/charolas.
+| Descripción original | Palabras clave que se leen |
+| --- | --- |
+| `CAKE POP VAINILLA CJ12BLISTER3PZAS1.66KG` | `CAKE POP VAINILLA` |
+| `CJ24PZAS110GR GALLETAS DE AVENA 24G` | `GALLETAS DE AVENA` |
+| `COLD BREW CONCENTRADO 1L CJ6PZAS` | `COLD BREW CONCENTRADO` |
+| `CJ1500` | `Descripción no identificable` |
 
-El archivo de auditoría (`ConteoVerde_V13_Auditoria_PickPack_285_SAP.xlsx`) se entrega **por separado** y no debe subirse al repositorio, ya que contiene datos internos del inventario.
+**Importante:** si hay menos de tres palabras consecutivas válidas, se pronuncian solo las disponibles. Nunca se juntan palabras distantes saltando códigos para alcanzar tres artificialmente. El SAP se sigue dictando **por separado**, dígito por dígito.
 
-## Pruebas realizadas
+### 2. Pausa independiente entre piezas y KG/L
 
-- Se importó `ReporteInventario_NP2893.xls` con 285 productos SAP únicos.
-- Se importó `lista.xlsx` con 262 productos.
-- Se verificó en navegador el botón de `CJ1500PZAS` (1,500 piezas) y su acumulación.
-- Se verificó `CJ12BLISTER3PZAS` (36 piezas), `CJ6PQT25PZAS` (150 piezas), `C100P` (100 piezas) y `CJ24PZAS` (24 piezas).
-- `CJ12LT` muestra una advertencia y no añade un botón que pudiera contar piezas incorrectamente.
-- No se detectaron errores JavaScript en los recorridos de prueba.
+Cuando un artículo tiene una cantidad contabilizada en kilogramos o litros, el dictado sigue este flujo:
 
-## Instalación en GitHub Pages
+1. Dice «SAP».
+2. Espera **1.15 segundos**.
+3. Dice los dígitos, las palabras clave y la cantidad en piezas.
+4. Espera **1.25 segundos**.
+5. Dice la cantidad en kilogramos o litros.
+6. Espera el intervalo configurable de **1 a 5 segundos** antes del siguiente artículo.
 
-1. Descarga el ZIP y extrae el archivo `index.html`.
-2. Sustituye el `index.html` actual de tu repositorio por el nuevo.
-3. Guarda los cambios en la rama publicada.
-4. Recarga el sitio publicado con **Ctrl + Shift + R**.
-5. Confirma que se muestre `V13 · PICK PACK MEJORADO`.
-6. Carga tu Excel de inventario. El botón de empaque aparecerá únicamente cuando la descripción permita reconocer una cantidad confiable.
+Las esperas comienzan cuando termina la voz anterior (no se simulan solo con puntuación). Si se pulsa **Pausar**, se conserva el tiempo pendiente y se reanuda después.
 
-**Nota:** la actualización del archivo HTML no reinicia por sí sola el inventario guardado en el mismo navegador. Importar un Excel nuevo o actualizar Merch sí puede reemplazar el inventario según las confirmaciones habituales del sistema. Exporta tu conteo antes de esos cambios.
+### 3. Pronunciación mejorada de anglicismos
+
+Los nombres del Excel, PDF y pantalla **no se modifican**. Solo al hablar se aplican pronunciaciones adaptadas al español para anglicismos frecuentes, por ejemplo:
+
+- `CAKE POP` → «quéik pop».
+- `COOKIE` → «cúqui».
+- `COLD BREW` → «cóuld brú».
+- `BROWNIE` → «bráuni».
+- `TUMBLER` → «támbler».
+- `SNOOPY` → «snúpi».
+
+La claridad final depende de las voces de síntesis que ofrezcan Windows, Chrome, Edge o el dispositivo. No es una grabación de voz preinstalada ni un servicio externo.
+
+## Instalar la actualización en GitHub Pages
+
+1. Descarga el ZIP de la V14.
+2. Extrae `index.html` y reemplaza el archivo del mismo nombre en tu repositorio.
+3. Confirma los cambios en la rama utilizada por GitHub Pages.
+4. Actualiza la página con **Ctrl + Shift + R**.
+5. Comprueba que diga `V14 · DICTADO MÁS CLARO`.
+6. Carga tu Excel, realiza un conteo de prueba y elige **Finalizar inventario → Dictado**.
+
+No es necesario actualizar la lista Merch ni reiniciar el inventario por el simple hecho de reemplazar `index.html`. Antes de comenzar cualquier prueba en un inventario real, guarda una copia del reporte.
+
+## Verificaciones realizadas
+
+- Importación del Excel proporcionado con **285 SAP únicos**.
+- Selección de palabras clave contra las **285 descripciones**: sin cifras, gramajes, códigos SAP/SKU ni términos de Pick Pack en las frases seleccionadas.
+- Prueba temporal de voz simulada verificando **1.15 s tras SAP** y **1.25 s antes de KG/L**.
+- Verificación de que la pausa conserva el tiempo pendiente y que el siguiente producto respeta la configuración de **1 s**.
+- Validación de sintaxis de los siete scripts integrados y ausencia de errores de JavaScript durante las pruebas del dictado.
+
+La pronunciación audible exacta no puede garantizarse en todos los navegadores; recomendamos probarla en Chrome o Edge en el equipo donde se use.

@@ -122,7 +122,7 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V13 · PICK PACK MEJORADO</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V14 · DICTADO MÁS CLARO</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -219,7 +219,7 @@
 
   <div id="dictation-modal" class="dictation-cover" hidden>
     <section class="dictation-dialog" role="dialog" aria-modal="true" aria-labelledby="dictation-heading">
-      <header class="dictation-head"><div><p class="micro-label">REPORTE FINAL · LECTURA DE INVENTARIO</p><h2 id="dictation-heading">Modo Dictado</h2><p>Consulta el PDF mientras escuchas el SAP, tres palabras consecutivas y las cantidades.</p></div><button class="icon-button" id="dictation-close" type="button" aria-label="Cerrar modo Dictado">✕</button></header>
+      <header class="dictation-head"><div><p class="micro-label">REPORTE FINAL · LECTURA DE INVENTARIO</p><h2 id="dictation-heading">Modo Dictado</h2><p>Consulta el PDF mientras escuchas el SAP, hasta tres palabras consecutivas sin códigos ni gramajes y las cantidades.</p></div><button class="icon-button" id="dictation-close" type="button" aria-label="Cerrar modo Dictado">✕</button></header>
       <div class="dictation-grid">
         <div class="dictation-pdf"><iframe id="dictation-pdf" title="Vista del reporte final en PDF" loading="lazy"></iframe></div>
         <aside class="dictation-sidebar">
@@ -1255,29 +1255,100 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     }
     return {qty:0};
   }
-  function keywordFor(p) {
-    // Three REAL CONSECUTIVE words from the item's name; never stitch distant words.
-    // Preserve the original spelling/accents, avoiding SAP prefixes and packing when possible.
-    const source=String(p.name||p.description||'').replace(/^\s*\d{5,10}\s*[-–:]\s*/, '').trim();
-    const words=source.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]+/g)||[];
-    if(!words.length)return 'Producto sin descripción';
-    if(words.length<=3)return words.join(' ');
-    const generic=new Set(['CJ','PZA','PZAS','PIEZA','PIEZAS','STARBUCKS','LAC','FALL','SPR','WIN','FY','CORE','SUM','HOL','CUP','PLSTC','CLDCP','TMBLR','WTR','BTL','VAC','STN','GLASS','RECYCLD','HOT','LID','STL','MATERIAL','SUSTAIN','DE','CON','PARA','THE','AND','WITH','SET','KIT','DEL','POR','SS','PP','FY26','FY27','PZ','UND']);
-    let best=0,bestScore=-Infinity;
-    for(let i=0;i<=words.length-3;i++){
-      const part=words.slice(i,i+3);
-      let score=-i*0.15;
-      for(const term of part){
-        const up=term.toUpperCase();
-        if(generic.has(up)||/^CJ\d+PZAS?$/.test(up))score-=0.8;
-        else if(/^\d+$/.test(up))score-=1;
-        else if(/^\d+(OZ|ML|KG|L|PZA)$/.test(up))score-=0.5;
-        else if(up.length>=4)score+=2.5;
-        else score+=0.8;
+  // Las palabras clave salen únicamente de la descripción original del artículo.
+  // Se toman palabras consecutivas: no unimos fragmentos alejados por códigos,
+  // gramajes, capacidades ni expresiones de caja o Pick Pack.
+  const DICTATION_EXCLUDED = new Set([
+    'SAP','SKU','POS','COD','CODIGO','CODIGOS','INTL','DIA','FY','FYI','C1','C2',
+    'CJ','CJA','CAJA','CAJAS','CAJ','PQT','PQTE','PQTAS','PQTOS','PAQ','PAQUETE','PAQUETES',
+    'PACK','PACKS','PCK','PIEZA','PIEZAS','PZA','PZAS','PZ','PZS','PCS','PC',
+    'BOL','BOLS','BOLSA','BOLSAS','BLIST','BLISTER','BLISTERS','ROL','ROLLO','ROLLOS',
+    'CHAROLA','CHAROLAS','CHA','TIRA','TIRAS','ENVASE','ENVASES','UNDS','UND','UNID',
+    'UNIDADES','UNIDAD','CAJON','CAJONES', 'CONTENEDOR', 'CONTENEDORES',
+    'GR','GRS','GRAM','GRAMO','GRAMOS','G','MG','K','KG','KGS','KILO','KILOS',
+    'KILOGRAMO','KILOGRAMOS','LT','LTS','LTR','LITRO','LITROS','L','ML','MLS',
+    'MILILITRO','MILILITROS','OZ','ONZA','ONZAS','LB','LBS','LIBRA','LIBRAS',
+    'CM','MM','METRO','METROS','CC','CL','GAL','GALON','GALONES',
+    'UNO','DOS','TRES','CUATRO','CINCO','SEIS','SIETE','OCHO','NUEVE','DIEZ',
+    'DOCE','CIEN','CIENTO','MIL','MEDIA','MEDIO',
+    'SS','STN','PLSTC','RECYCLD','VAC','TMBLR','WTR','BTL','CLDCP','FY26','FY27','LAC',
+    'SR','SDS','RES','SII','NC','NP','SBX','CORE','SUM','FALL','SPR','WIN','HOL',
+    'GID','GMRS','PRD','HTCLD','HTCDCP','HTCD','CDCP','CCUP','CLD','DRNK','THRLD',
+    'CHRM','ANVRSRY','RCLD','DMLD','SHLL','GLSS','WTRBTL','STNLY','FRP',
+    'BIS','SD','MAP','COMPOS','COMP','BEBC','BEBF','ECOF','BLS','HTCLD',
+    'BTB','LIDCP','CDCP','HTCDCP','LAC','LST','RCYLD','PAS','GND','PF' 
+  ]);
+  const DICTATION_FILLER = new Set(['DE','DEL','LA','LAS','EL','LOS','CON','PARA','POR','EN','Y','A','THE','AND','WITH','OF','TO','FOR','UN','UNA']);
+  function dictationNorm(word){
+    return String(word||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+  }
+  function keywordTokens(p){
+    const source=String(p.name||p.description||'')
+      .replace(/^\s*\d{5,12}\s*[-–:]\s*/, '').trim();
+    const words=source.match(/[\p{L}\p{N}]+/gu)||[];
+    const permitted = word => {
+      const upper=dictationNorm(word);
+      if(!upper || /\d/.test(upper) || upper.length<2) return false;
+      if(DICTATION_EXCLUDED.has(upper)) return false;
+      // Identificadores alfanuméricos o series técnicas no deben dictarse.
+      if(/^(?:C|CJ|PQT|BOL|ROL|BLIST|SKU|SAP|FY|CJA)[A-Z]*\d*/.test(upper) && /\d/.test(upper))return false;
+      return true;
+    };
+    let best=[]; let score=-Infinity;
+    // Primero buscar tres palabras VÁLIDAS y ADYACENTES en el nombre original.
+    // Nunca saltear una palabra inválida para construir una terna artificial.
+    for(let length=3;length>=1;length--){
+      for(let i=0;i+length<=words.length;i++){
+        const part=words.slice(i,i+length);
+        if(!part.every(permitted))continue;
+        const rating=part.reduce((sum,word)=>{
+          const u=dictationNorm(word);
+          return sum+(DICTATION_FILLER.has(u)?-.6:(u.length>=4?2.4:1.1));
+        },0)-i*.06;
+        if(rating>score){score=rating;best=part;}
       }
-      if(score>bestScore){bestScore=score;best=i;}
+      if(best.length)break;
     }
-    return words.slice(best,best+3).join(' ');
+    return best;
+  }
+  function keywordFor(p){
+    const selected=keywordTokens(p);
+    return selected.length?selected.join(' '):'Descripción no identificable';
+  }
+  // Solo modificamos la pronunciación utilizada por la voz, no el nombre visible
+  // ni los reportes PDF/Excel. Fonética orientativa para voces españolas TTS.
+  const ANGLO_PRONUNCIATION = {
+    'COOKIE':'cúqui','COOKIES':'cúquis','CAKE':'quéik','POP':'pop','POPS':'pops',
+    'BROWNIE':'bráuni','BROWNIES':'bráunis','MUFFIN':'máfin','MUFFINS':'máfins',
+    'CHEESECAKE':'chísqueik','CHEESE':'chís','CREAM':'crím','BAGEL':'béiguel',
+    'BAGELS':'béiguels','DONUT':'dónat','DONUTS':'dónats','DOUGHNUT':'dónat',
+    'CINNAMON':'sínamon','PUMPKIN':'pámkin','SPICE':'espáis','ICED':'áist',
+    'COLD':'cóuld','BREW':'brú','BLONDE':'blónd','BLEND':'blénd','ROAST':'róust',
+    'ESPRESSO':'esprésso','FRAPPUCCINO':'frapuchino','CAPPUCCINO':'capuchino',
+    'MACCHIATO':'makiato','LATTE':'láte','CHAI':'chái','MOCHA':'moka',
+    'TUMBLER':'támbler','STANLEY':'estánli','SNOOPY':'snúpi','CHARM':'chárm',
+    'BEARISTA':'berísta','STRAW':'estró','STRAWBERRY':'stróberri',
+    'BLUEBERRY':'blúberri','RASPBERRY':'rásberri','SMOOTHIE':'esmúdi',
+    'SHAKE':'shéik','MILKSHAKE':'milkshéik','WHITE':'uáit','BLACK':'blák',
+    'GREEN':'grín','BLUE':'blú','PINK':'pink','BROWN':'bráun','RED':'red',
+    'PLUSH':'plásh','MUG':'mag','CUP':'cap','GLASS':'glás','BOTTLE':'bótol',
+    'HANDLE':'jándol','TWIST':'tuíst','SLEEVE':'slív','KEYCHAIN':'kéichein',
+    'TOTE':'tóut','HOLIDAY':'jólidei','REUSABLE':'riúsabol','SNOWGLOBE':'snóugloub',
+    'CARAMEL':'cáramel','BRULEE':'brulé','ROLL':'róul','ROLLS':'róuls',
+    'MATCHA':'matcha','MERCH':'mérch','CROISSANT':'cruasán',
+    'WITH':'uiz','POUR':'pór','OVER':'óuver','PASSION':'páshon',
+    'TEAVANA':'teavána','SANDWICH':'sánduich','WAFFLE':'uáfel',
+    'TOPPING':'tóping','COFFEE':'cófi','POWDER':'páuder','SWIRL':'suérl',
+    'DOME':'dóum','LIGHT':'lait','FRAPUCCINO':'frapuchino',
+    'PEANUT':'pínat','SNOW':'snóu','GLOBE':'glóub','PANINI':'paníni',
+    'STRAWBERRIES':'stróberris','BAG':'bag','MAKER':'méiker',
+    'ZARZM':'zarzamora','CHOC':'chocolate','BCO':'blanco',
+    'CAFE':'café','TE':'té','CARTON':'cartón','PANQUE':'panqué',
+    'LIMON':'limón','NARINO':'nariño','AZUCAR':'azúcar',
+    'FOOD':'fud','PAPER':'péiper','CARD':'card','BARISTA':'barísta'
+  };
+  function spokenKeywords(p){
+    return keywordTokens(p).map(word=>ANGLO_PRONUNCIATION[dictationNorm(word)]||word).join(' ')||'Descripción no identificable';
   }
   const unitText = (p, key) => key === 'source' && hasOtherUnit(p) ? p.unit : 'pzas';
   const totalFor = (p, key) => Number(p.totalsMilli?.[key]) || 0;
@@ -1561,9 +1632,10 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   }
   function updateDictationWaitStatus(){
     const el=$('dictation-wait-state');
-    if(dictation.waitKind!=='item') {el.hidden=true;el.textContent='';return;}
+    if(dictation.waitKind!=='item' && dictation.waitKind!=='unit') {el.hidden=true;el.textContent='';return;}
     el.hidden=false;
-    el.textContent=dictation.paused?'Dictado pausado · se conservará la espera restante antes del siguiente artículo.':`Pausa entre artículos: ${selectedGapMs()/1000} s · próximo artículo en preparación`;
+    if(dictation.paused){el.textContent='Dictado pausado · se conservará la espera restante.';return;}
+    el.textContent=dictation.waitKind==='unit'?'Pausa de 1.25 s entre piezas y kilogramos/litros.':`Pausa entre artículos: ${selectedGapMs()/1000} s · próximo artículo en preparación`;
   }
   // Las pausas de voz y entre artículos son independientes de la velocidad de lectura.
   // Al pausar, detenemos el temporizador y conservamos exactamente el tiempo restante.
@@ -1605,28 +1677,33 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     if(['1','2','3','4','5'].includes(savedGap))$('dictation-gap').value=savedGap;
   }catch(_error){}
   const spokenNumbers = ['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve'];
-  const spellDigits = value => String(value).split('').map(d=>spokenNumbers[Number(d)]||d).join(' ');
+  const spellDigits = value => /^\d+$/.test(String(value||'')) ? String(value).split('').map(d=>spokenNumbers[Number(d)]).join(' ') : 'sin código';
   function spokenQty(milli) {
     const value = (Number(milli||0)/1000).toString();
     if(!value.includes('.'))return value;
     const [integer, decimal]=value.split('.');
     return `${integer} punto ${decimal.split('').map(d=>spokenNumbers[Number(d)]).join(' ')}`;
   }
-  function speechText(p) {
-    // Etiqueta «SAP» se pronuncia por separado para garantizar >= 1 segundo de silencio.
-    let phrase=`${spellDigits(p.code||'sin código')}. ${keywordFor(p)}. Piezas ${spokenQty(p.totalsMilli?.piece)}.`;
-    if(hasOtherUnit(p) && (p.totalsMilli?.source||0)>0){
-      const unit=normalize(p.unit);
-      const expanded=unit.includes('kg')?'kilogramos':unit==='l'||unit.includes('lit')?'litros':p.unit;
-      phrase+=` ${expanded} ${spokenQty(p.totalsMilli.source)}.`;
-    }
-    return phrase;
+  const SAP_SILENCE_MS=1150;
+  const UNITS_SILENCE_MS=1250;
+  function speechPiecesText(p){
+    // SAP se dice en una emisión separada. Aquí solo se leen el código,
+    // tres palabras identificativas limpias y el total de piezas.
+    return `${spellDigits(p.code||'sin código')}. ${spokenKeywords(p)}. Piezas ${spokenQty(p.totalsMilli?.piece)}.`;
+  }
+  function hasUnitsToSpeak(p){
+    return hasOtherUnit(p) && (p.totalsMilli?.source||0)>0;
+  }
+  function speechUnitsText(p){
+    const unit=normalize(p.unit);
+    const expanded=unit.includes('kg')?'kilogramos':unit==='l'||unit.includes('lit')?'litros':p.unit;
+    return `${expanded} ${spokenQty(p.totalsMilli?.source)}.`;
   }
   function renderDictation() {
     const p=dictation.rows[dictation.index];
     $('dictation-progress').textContent = `Producto ${dictation.rows.length ? dictation.index + 1 : 0} de ${dictation.rows.length}`;
     $('dictation-bar').style.width = `${dictation.rows.length ? ((dictation.index+1)/dictation.rows.length*100) : 0}%`;
-    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>3 palabras consecutivas: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
+    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>Palabras clave limpias: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
     $('dictation-pause').disabled = !dictation.running;
     $('dictation-pause').textContent = dictation.paused ? '▶ Continuar' : 'Ⅱ Pausar';
     $('dictation-prev').disabled = dictation.index<=0;
@@ -1691,8 +1768,16 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       else{dictation.running=false;dictation.paused=false;renderDictation();toast('Dictado terminado.');}
     };
     sayPart('SAP',nonce,()=>{
-      // Silencio real entre terminar de pronunciar «SAP» y comenzar los dígitos.
-      scheduleDictationWait(1150,nonce,()=>sayPart(speechText(p),nonce,afterNumber),'sap');
+      // Silencio real entre pronunciar «SAP» y comenzar los dígitos del código.
+      scheduleDictationWait(SAP_SILENCE_MS,nonce,()=>{
+        sayPart(speechPiecesText(p),nonce,()=>{
+          if(hasUnitsToSpeak(p)){
+            // Separar físicamente el total de piezas de la cantidad en KG/L.
+            // Si el usuario pausa aquí, conservamos el tiempo restante.
+            scheduleDictationWait(UNITS_SILENCE_MS,nonce,()=>sayPart(speechUnitsText(p),nonce,afterNumber),'unit');
+          } else afterNumber();
+        });
+      },'sap');
     });
   }
   function closeDictation() {
@@ -1712,7 +1797,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     dictation.index=0;
     $('dictation-pdf').src=dictation.url;
     $('dictation-modal').hidden=false;
-    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP dígito por dígito, tres palabras consecutivas, piezas y KG/L. La pausa después de «SAP» se mantiene en 1.15 segundos; la espera entre artículos se configura de 1 a 5 segundos. Se utiliza una voz natural disponible en el navegador.';
+    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP dígito por dígito, hasta tres palabras seguidas sin números ni Pick Pack, piezas y, cuando aplique, KG/L. Hay 1.15 s después de «SAP», 1.25 s entre piezas y KG/L y de 1 a 5 s entre artículos. Los términos ingleses frecuentes usan pronunciación adaptada al español.';
     renderDictation();
     $('dictation-play').focus();
   }
