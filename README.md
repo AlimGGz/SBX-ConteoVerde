@@ -1,9 +1,9 @@
-# ConteoVerde V16 · Unidades y dictado
+# ConteoVerde V16.1 · Unidades y dictado
 
 ## Instalación
 1. Exporta cualquier inventario en curso como respaldo antes de actualizar.
 2. Sustituye `index.html` en tu repositorio de GitHub Pages. No es necesario crear otro repositorio.
-3. Recarga la página (Ctrl + Shift + R). Comprueba que aparezca V16 · UNIDADES Y DICTADO.
+3. Recarga la página (Ctrl + Shift + R). Comprueba que aparezca V16.1 · UNIDADES Y DICTADO.
 
 ## Unidades de conteo
 - SAP 149438, 149463 y 149469: PQT (un paquete por registro de una unidad). KG sigue disponible como cantidad independiente.

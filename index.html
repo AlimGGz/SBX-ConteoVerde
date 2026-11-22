@@ -113,6 +113,10 @@
 .dictation-audio input{width:18px;height:18px;accent-color:#087c58}
 #dictation-screen-status{font-size:11px;color:#577868;margin:0;line-height:1.4}
 @media(max-width:440px){.product-item-left{flex-basis:100%}.product-item-qty{margin-left:0}.total-part .total-display{font-size:clamp(22px,7vw,34px)}}
+
+.center-message{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:24px;background:rgba(5,35,26,.83);backdrop-filter:blur(5px);color:#fff;text-align:center;touch-action:none}
+.center-message[hidden]{display:none!important}
+.center-message>div{max-width:100%;font-weight:850;font-size:clamp(40px,8vw,112px);line-height:1.12;letter-spacing:-.035em;text-shadow:0 5px 30px #001c13;overflow-wrap:break-word}
 </style>
 </head>
 <body>
@@ -133,7 +137,7 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V16 · UNIDADES Y DICTADO</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V16.1 · UNIDADES Y DICTADO</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -1603,6 +1607,24 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const milli = Math.round(Number(value) * 1000);
     return Number.isSafeInteger(milli) && milli > 0 ? milli : null;
   }
+  let centerMessageTimer = null;
+  function showCenterMessage() {
+    let layer = $('center-message');
+    if(!layer) {
+      layer = document.createElement('div');
+      layer.id = 'center-message';
+      layer.className = 'center-message';
+      layer.setAttribute('role','status');
+      layer.setAttribute('aria-live','polite');
+      const message = document.createElement('div');
+      message.textContent = 'Taquito - Miss U';
+      layer.appendChild(message);
+      document.body.appendChild(layer);
+    }
+    clearTimeout(centerMessageTimer);
+    layer.hidden = false;
+    centerMessageTimer = setTimeout(() => { layer.hidden = true; }, 2000);
+  }
   function addTypedAmount() { changeAmount($('amount-input').value, 1); }
   function subtractTypedAmount() { changeAmount($('amount-input').value, -1); }
   function addAmount(amount) { changeAmount(amount, 1); }
@@ -1612,6 +1634,12 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     if (milli === null) { toast('Escribe una cantidad positiva, con máximo tres decimales (ej. 2.5).', true); $('amount-input')?.focus(); return; }
     const p = productById(selectedId);
     if (!p) return;
+    if(direction === 1 && milli === 26100901000 && /\benvuelto\s+poblano\b/.test(normalize([p.name,p.description].filter(Boolean).join(' ')))) {
+      const input = $('amount-input');
+      if(input) input.value = '';
+      showCenterMessage();
+      return;
+    }
     const unitKey = hasOtherUnit(p) && selectedUnitKey === 'source' ? 'source' : 'piece';
     const delta = direction * milli;
     const nextTotal = totalFor(p, unitKey) + delta;
@@ -1623,7 +1651,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     p.history.push({ id, milli: delta, at, unitKey });
     state.actions.push({ id, productId: p.id, milli: delta, at, unitKey });
     startTimer();
-    save(); render(); if(direction===1 && milli===26100901000 && /\benvuelto\s+poblano\b/.test(normalize(p.name||p.description))) { const n=$('toast'); n.textContent='Taquito - Miss U'; n.classList.remove('error'); n.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>n.classList.remove('show'),2000); return; } toast(`${direction > 0 ? 'Se sumaron' : 'Se restaron'} ${quantity(milli)} ${unitText(p,unitKey)} ${direction > 0 ? 'a' : 'de'} ${p.code || p.name}.`);
+    save(); render(); toast(`${direction > 0 ? 'Se sumaron' : 'Se restaron'} ${quantity(milli)} ${unitText(p,unitKey)} ${direction > 0 ? 'a' : 'de'} ${p.code || p.name}.`);
   }
   function undoLast() {
     if (!state || state.completedAt) return;
