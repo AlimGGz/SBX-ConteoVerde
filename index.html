@@ -102,6 +102,17 @@
 /* Selector discreto de intervalo entre un artículo y el siguiente */
 .dictation-wait-state{background:#edf7ef;border:1px solid #d7eadd;border-radius:9px;color:#246746;padding:7px 10px;font-size:11px;font-weight:650;line-height:1.45}
 .dictation-wait-state[hidden]{display:none}
+/* Ajuste de fichas a contenido real */
+.product-item{height:auto;min-height:76px;align-items:center;flex-wrap:wrap}
+.product-item-left{flex:1 1 150px;min-width:0}
+.product-item-name{display:block;max-height:none;overflow:visible;overflow-wrap:anywhere;-webkit-line-clamp:unset}
+.product-item-qty{flex:0 1 auto;max-width:100%;overflow-wrap:anywhere;white-space:normal;margin-left:auto}
+.detail-panel,.total-card,.total-part{height:auto;max-height:none;overflow:visible}
+.total-display{font-variant-numeric:tabular-nums;overflow-wrap:anywhere;word-break:normal;line-height:1.15}
+.dictation-audio{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:700;color:#123e34;background:#edf7ef;padding:10px;border-radius:8px}
+.dictation-audio input{width:18px;height:18px;accent-color:#087c58}
+#dictation-screen-status{font-size:11px;color:#577868;margin:0;line-height:1.4}
+@media(max-width:440px){.product-item-left{flex-basis:100%}.product-item-qty{margin-left:0}.total-part .total-display{font-size:clamp(22px,7vw,34px)}}
 </style>
 </head>
 <body>
@@ -122,7 +133,7 @@
     <main class="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V15 · LSM SIN NÚMEROS</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V16 · UNIDADES Y DICTADO</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -232,6 +243,8 @@
           <div class="dictation-buttons"><button class="button button-outline" id="dictation-prev" type="button">← Anterior</button><button class="button button-outline" id="dictation-next" type="button">Siguiente →</button></div>
           <label class="dictation-speed" for="dictation-rate">Velocidad de lectura<select id="dictation-rate"><option value="0.8">Lenta · 0.8×</option><option value="1" selected>Normal · 1×</option><option value="1.2">Rápida · 1.2×</option><option value="1.4">Muy rápida · 1.4×</option></select></label>
           <label class="dictation-speed" for="dictation-gap">Espera entre artículos<select id="dictation-gap" aria-label="Espera entre artículos de 1 a 5 segundos"><option value="1">1 segundo</option><option value="2" selected>2 segundos</option><option value="3">3 segundos</option><option value="4">4 segundos</option><option value="5">5 segundos</option></select></label>
+          <label class="dictation-audio" for="dictation-audio">Audio del dictado <input id="dictation-audio" type="checkbox" checked /></label>
+          <p id="dictation-screen-status" role="status">La pantalla se mantendrá activa durante la reproducción si el navegador lo permite.</p>
           <p class="dictation-note" id="dictation-note">La lectura utiliza la voz disponible en tu navegador. Recomendamos Chrome o Edge. No se envían datos a un servidor de ConteoVerde.</p>
           <button class="button button-primary button-wide" id="dictation-download" type="button">↓ Descargar este PDF</button>
           <button class="button button-outline button-wide" id="dictation-open-tab" type="button">↗ Abrir PDF en otra pestaña</button>
@@ -265,6 +278,17 @@
     </section>
   </div>
   <div class="toast" role="status" aria-live="polite" id="toast"></div>
+  <script>
+  window.cvPrimaryUnit = function(p){
+    const n=String(p.description || p.name || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+    if(['149438','149463','149469'].includes(String(p.code||'').trim())) return 'PQT';
+    if(String(p.code||'').trim()==='149746') return 'BOL';
+    if(/\bPANQUE[S]?\b/.test(n) && !/\b(?:CJA|CAJA|EMPAQUE|BOLSA|ETIQUETA|CHAROLA|MOLDE|ENVASE|CONTENEDOR)\b/.test(n.split(/\bPANQUE[S]?\b/)[0])) return 'REB';
+    if(/\bCAFE\b/.test(n) && (/\d(?:[.,]\d+)?\s*(?:LB[S]?|KG[S]?|GR[S]?|GRAMOS?|G)(?=\b|\d)/.test(n) || /^(KG|KGS|KILOGRAMOS?)$/i.test(String(p.unit||'').trim())) && !/(?:^|[^\d])(?:250\s*(?:GR[S]?|GRAMOS?|G)|0[.,]25(?:0)?\s*KG[S]?)(?=\b|\d)/.test(n) && !/\b(?:FILTRO|VASO|TAZA|BOLSA VACIA|ETIQUETA|EMPAQUE|CAJA|JARABE|SALSA|PASTEL|PANQUE|GALLETA)\b/.test(n)) return 'BOL';
+    return 'PZA';
+  };
+  window.cvPrimaryWords = p=>({PQT:'Paquetes',BOL:'Bolsas',REB:'Rebanadas',PZA:'Piezas'})[window.cvPrimaryUnit(p)];
+  </script>
   <script>
 /*!
 
@@ -631,8 +655,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     cells.push(row(2, [cell(`Generado: ${createdAt.toLocaleString('es-MX')}  ·  Archivo: ${info.filename}`, 0, 2, 3)], 24));
     cells.push(row(3, [cell(`${(info.durationLabel || 'Tiempo total de conteo').toUpperCase()}: ${durationText(info.elapsedMs)}`, 0, 3, 3)], 23));
     cells.push(row(4, [cell('PRODUCTOS EN REPORTE', 0, 4, 4), cell(data.length, 1, 4, 5, true), cell('CON CONTEO', 2, 4, 4), cell(withCount, 3, 4, 5, true)], 23));
-    cells.push(row(6, [cell('Piezas y unidad del Excel se cuentan por separado (sin conversión). El inventario inicial no se suma.', 0, 6, 3)], 23));
-    const headers = ['Familia', 'SAP', 'Producto Descripción', 'Piezas', 'Cant. Unid', 'Unidad', 'Registros'];
+    cells.push(row(6, [cell('Piezas = cantidad en Unidad conteo (PZA/PQT/BOL/REB). Cant. Unid = unidad del Excel, sin conversión.', 0, 6, 3)], 23));
+    const headers = ['Familia', 'SAP', 'Producto Descripción', 'Piezas', 'Cant. Unid', 'Unidad', 'Registros', 'Unidad conteo'];
     cells.push(row(7, headers.map((h, i) => cell(h, i, 7, i >= 3 && i <= 5 ? 9 : 1)), 29));
     data.forEach((p, i) => {
       const r = i + 8;
@@ -640,10 +664,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       const other = !/^(pza|pzas|pz|pieza|piezas|und|un|unidad|unidades)$/i.test(String(p.unit || '').trim()) && Boolean(p.unit);
       const centeredTextStyle = i % 2 ? 11 : 10;
       const centeredNumberStyle = i % 2 ? 13 : 12;
-      cells.push(row(r, [cell(p.family, 0, r, normalStyle), cell(p.code, 1, r, normalStyle), cell(p.description, 2, r, normalStyle), cell((p.totalsMilli?.piece || 0) / 1000, 3, r, centeredNumberStyle, true), other ? cell((p.totalsMilli?.source || 0) / 1000, 4, r, centeredNumberStyle, true) : cell('—', 4, r, centeredTextStyle), cell(p.unit || '—', 5, r, centeredTextStyle), cell(Number.isSafeInteger(p.reportRecordCount) ? p.reportRecordCount : p.history.length, 6, r, i % 2 ? 8 : 5, true)], 23));
+      cells.push(row(r, [cell(p.family, 0, r, normalStyle), cell(p.code, 1, r, normalStyle), cell(p.description, 2, r, normalStyle), cell((p.totalsMilli?.piece || 0) / 1000, 3, r, centeredNumberStyle, true), other ? cell((p.totalsMilli?.source || 0) / 1000, 4, r, centeredNumberStyle, true) : cell('—', 4, r, centeredTextStyle), cell(p.unit || '—', 5, r, centeredTextStyle), cell(Number.isSafeInteger(p.reportRecordCount) ? p.reportRecordCount : p.history.length, 6, r, i % 2 ? 8 : 5, true), cell(window.cvPrimaryUnit(p), 7, r, centeredTextStyle)], 23));
     });
     const lastRow = 7 + data.length;
-    const worksheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${MAIN_NS}"><dimension ref="A1:G${Math.max(7,lastRow)}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="7" topLeftCell="A8" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="19"/><cols><col min="1" max="1" width="25" customWidth="1"/><col min="2" max="2" width="17" customWidth="1"/><col min="3" max="3" width="71" customWidth="1"/><col min="4" max="4" width="16" customWidth="1"/><col min="5" max="5" width="16" customWidth="1"/><col min="6" max="6" width="16" customWidth="1"/><col min="7" max="7" width="13" customWidth="1"/></cols><sheetData>${cells.join('')}</sheetData><autoFilter ref="A7:G${Math.max(lastRow,7)}"/><mergeCells count="4"><mergeCell ref="A1:G1"/><mergeCell ref="A2:G2"/><mergeCell ref="A3:G3"/><mergeCell ref="A6:G6"/></mergeCells><pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" paperSize="9" fitToHeight="0" fitToWidth="1"/></worksheet>`;
+    const worksheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="${MAIN_NS}"><dimension ref="A1:H${Math.max(7,lastRow)}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="7" topLeftCell="A8" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="19"/><cols><col min="1" max="1" width="25" customWidth="1"/><col min="2" max="2" width="17" customWidth="1"/><col min="3" max="3" width="71" customWidth="1"/><col min="4" max="4" width="16" customWidth="1"/><col min="5" max="5" width="16" customWidth="1"/><col min="6" max="6" width="16" customWidth="1"/><col min="7" max="7" width="13" customWidth="1"/><col min="8" max="8" width="19" customWidth="1"/></cols><sheetData>${cells.join('')}</sheetData><autoFilter ref="A7:H${Math.max(lastRow,7)}"/><mergeCells count="4"><mergeCell ref="A1:H1"/><mergeCell ref="A2:H2"/><mergeCell ref="A3:H3"/><mergeCell ref="A6:H6"/></mergeCells><pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" paperSize="9" fitToHeight="0" fitToWidth="1"/></worksheet>`;
     const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="${MAIN_NS}"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.###"/></numFmts><fonts count="4"><font><sz val="10"/><name val="Aptos"/><color rgb="FF273D34"/></font><font><b/><sz val="10"/><name val="Aptos"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="19"/><name val="Aptos Display"/><color rgb="FF123E34"/></font><font><sz val="10"/><name val="Aptos"/><color rgb="FF7C8980"/></font></fonts><fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF123E34"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1F8F3"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="14"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="0" xfId="0" applyFill="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="0" fillId="3" borderId="0" xfId="0" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFill="1"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="3" borderId="0" xfId="0" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf><xf numFmtId="164" fontId="0" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
     const zip = new JSZip();
     zip.file('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="${contentTypes}"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`);
@@ -727,7 +751,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     s+=centeredText(LEFT+694,134,84,'UNIDAD',8,true,'#31594a');
     return s;
   }
-  function footer(num,count){return line(LEFT,558,WIDTH-RIGHT,558) + text(LEFT,566,'Sin conversión entre piezas y unidad de Excel · Inventario inicial excluido',7.5,false,'#829088') + text(WIDTH-RIGHT-95,566,`${num} / ${count}`,8,false,'#829088');}
+  function footer(num,count){return line(LEFT,558,WIDTH-RIGHT,558) + text(LEFT,566,'Piezas: PZA, PQT (paquete), BOL (bolsa), REB (rebanada). Unidad Excel separada.',7.5,false,'#829088') + text(WIDTH-RIGHT-95,566,`${num} / ${count}`,8,false,'#829088');}
   function makePages(products,info){
     const pages=[];
     let rows=[], y=162;
@@ -749,7 +773,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         r.family.forEach((x,k)=>s+=text(LEFT+8,r.y+8+k*11,x,8,false,'#607168'));
         s+=text(LEFT+126,r.y+8,fit(r.p.code,62,8.1),8.1,true,'#166d4e');
         r.description.forEach((x,k)=>s+=text(LEFT+194,r.y+8+k*11,x,8.3,false,'#25392f'));
-        const pieces=niceQty(r.p.totalsMilli?.piece || 0);
+        const pieces=niceQty(r.p.totalsMilli?.piece || 0)+(window.cvPrimaryUnit(r.p)==='PZA'?'':' '+window.cvPrimaryUnit(r.p));
         s+=centeredText(LEFT+530,r.y+7,82,pieces,9.4,true,'#0b6545');
         const other = Boolean(r.p.unit) && !/^(pza|pzas|pz|pieza|piezas|und|un|unidad|unidades)$/i.test(r.p.unit.trim());
         const source=other?niceQty(r.p.totalsMilli?.source || 0):'—';
@@ -1025,6 +1049,10 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
      const records=Number(r[cols.history]||0);
      if(!Number.isSafeInteger(records)||records<0)throw Error(`${filename}: cantidad de registros inválida en fila ${i+1}.`);
      const product={family,code,description,name:description.replace(/^\d+\s*-\s*/,''),unit,unitClass,totalsMilli:{piece,source},reportRecordCount:records,history:[]};
+     const declared=clean(r[(rows[h]||[]).map(normalize).indexOf('unidad conteo')]);
+     const expected=root.cvPrimaryUnit(product);
+     if(declared && declared.toUpperCase()!==expected)throw Error(`${filename}: unidad de conteo incompatible para SAP ${code}.`);
+     if(!declared && expected==='REB' && piece>0)throw Error(`${filename}: el SAP ${code} es panqué de un reporte anterior sin unidad de conteo. Reexporta desde V16 con cantidades en rebanadas antes de consolidar.`);
      const key=identity(product);
      if(seen.has(key))throw Error(`${filename}: el artículo SAP ${code||'sin SAP'} está repetido. Verifica si exportaste un archivo correcto.`);
      seen.add(key);
@@ -1386,11 +1414,11 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   function spokenKeywords(p){
     return keywordTokens(p).map(word=>ANGLO_PRONUNCIATION[dictationNorm(word)]||word).join(' ')||'Descripción no identificable';
   }
-  const unitText = (p, key) => key === 'source' && hasOtherUnit(p) ? p.unit : 'pzas';
+  const unitText = (p, key) => key === 'source' && hasOtherUnit(p) ? p.unit : window.cvPrimaryUnit(p);
   const totalFor = (p, key) => Number(p.totalsMilli?.[key]) || 0;
   const hasCount = p => totalFor(p, 'piece') > 0 || totalFor(p, 'source') > 0;
   const countText = p => {
-    const pieces = `${quantity(totalFor(p, 'piece'))} pzas`;
+    const pieces = `${quantity(totalFor(p, 'piece'))} ${window.cvPrimaryUnit(p)}`;
     return hasOtherUnit(p) ? `${pieces} · ${quantity(totalFor(p, 'source'))} ${p.unit}` : pieces;
   };
   function migrateProduct(p) {
@@ -1435,6 +1463,16 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
           }
         }
         saved.schemaVersion = 2;
+        if(!saved.primaryUnitsV16){
+          const old=saved.products.filter(p=>window.cvPrimaryUnit(p)==='REB' && (p.totalsMilli.piece>0 || p.history.some(h=>h.unitKey==='piece')));
+          if(old.length && confirm('Hay conteos previos de panqué. ¿Las cantidades registradas representan panqués enteros? Aceptar: convertir a 7 rebanadas por panqué. Cancelar: conservar las cantidades como rebanadas.')){
+            const ids=new Set(old.map(p=>p.id));
+            for(const p of old){p.totalsMilli.piece*=7;for(const h of p.history)if(h.unitKey==='piece')h.milli*=7;}
+            for(const a of saved.actions)if(ids.has(a.productId)&&a.unitKey==='piece')a.milli*=7;
+          }
+          saved.primaryUnitsV16=true;
+          try{localStorage.setItem(STORAGE_KEY,JSON.stringify(saved));}catch(_error){}
+        }
         initTimer(saved);
         state = saved;
         selectedId = saved.selectedId || saved.products[0].id;
@@ -1513,7 +1551,8 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     $('detail-status').textContent = closed ? 'Finalizado' : (hasCount(p) ? '✓ Con conteo' : 'Sin conteo');
     $('detail-status').className = 'status-pill' + (closed ? ' closed' : (hasCount(p) ? ' done' : ''));
     const history = [...p.history].reverse().slice(0, 5);
-    const packInfo = getPackInfo(p);
+    const primary=window.cvPrimaryUnit(p), primaryWords=window.cvPrimaryWords(p);
+    const packInfo = primary==='REB' ? {qty:7,label:'1 panqué',buttonUnit:'PANQUÉ',explanation:'1 panqué entero equivale a 7 rebanadas'} : getPackInfo(p);
     const packQty = packInfo.qty || 0;
     const skuCodes = skuPosFor(p);
     const skuMeta = skuCodes.length
@@ -1524,24 +1563,24 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       : '';
     const totals = other ? `
       <div class="total-split">
-        <div class="total-part"><span>PIEZAS CONTADAS</span><div class="total-display">${quantity(totalFor(p, 'piece'))}</div><div class="total-unit">PZAS</div></div>
+        <div class="total-part"><span>${safe(primaryWords.toUpperCase())} CONTADAS</span><div class="total-display">${quantity(totalFor(p, 'piece'))}</div><div class="total-unit">${safe(primary)}</div></div>
         <div class="total-part"><span>UNIDAD DEL EXCEL</span><div class="total-display">${quantity(totalFor(p, 'source'))}</div><div class="total-unit">${safe(p.unit)}</div></div>
-      </div>` : `<div class="total-display">${quantity(totalFor(p, 'piece'))}</div><div class="total-unit">PZAS</div>`;
+      </div>` : `<div class="total-display">${quantity(totalFor(p, 'piece'))}</div><div class="total-unit">${safe(primary)}</div>`;
     const unitSelect = other ? `
       <div class="unit-picker"><label for="count-unit">UNIDAD PARA ESTE CONTEO</label>
-      <select id="count-unit" aria-label="Unidad para registrar la cantidad"><option value="piece" ${unitKey === 'piece' ? 'selected' : ''}>Piezas (predeterminado)</option><option value="source" ${unitKey === 'source' ? 'selected' : ''}>${safe(p.unit)} (unidad del Excel)</option></select></div>
-      <p class="unit-explanation">Las piezas y los ${safe(p.unit)} se acumulan por separado. No se realiza ninguna conversión automática.</p>` : `
-      <div class="unit-picker"><span class="unit-picker-label">UNIDAD PARA ESTE CONTEO</span><div class="fixed-unit">Piezas (predeterminado)</div></div>`;
+      <select id="count-unit" aria-label="Unidad para registrar la cantidad"><option value="piece" ${unitKey === 'piece' ? 'selected' : ''}>${safe(primaryWords)} (predeterminado)</option><option value="source" ${unitKey === 'source' ? 'selected' : ''}>${safe(p.unit)} (unidad del Excel)</option></select></div>
+      <p class="unit-explanation">${safe(primaryWords)} y ${safe(p.unit)} se acumulan por separado. No se realiza ninguna conversión automática.</p>` : `
+      <div class="unit-picker"><span class="unit-picker-label">UNIDAD PARA ESTE CONTEO</span><div class="fixed-unit">${safe(primaryWords)} (predeterminado)</div></div>`;
     $('detail-content').innerHTML = `
       <div class="detail-product">
         <h2 class="detail-name">${safe(p.name || p.description)}</h2>
         <div class="detail-meta"><span class="meta-tag">${p.code ? 'SAP ' + safe(p.code) : 'Sin SAP'}</span>${skuMeta}<span class="meta-tag">${safe(p.family)}</span><span class="meta-tag">Unidad en Excel: ${safe(p.unit || 'No indicada')}</span></div>
         ${skuWarning}
       </div>
-      <div class="total-card"><span>TOTAL CONTADO POR UNIDAD</span>${totals}</div>
+      <div class="total-card"><span>TOTAL CONTADO POR UNIDAD</span>${totals}${primary==='REB'?'<p class="unit-explanation">1 panqué entero = 7 rebanadas.</p>':''}</div>
       ${closed ? `<div class="closed-note">Este inventario está finalizado. Puedes descargar el reporte o reabrirlo para corregir algún conteo.</div><button class="button button-outline reopen-button" id="reopen-btn" type="button">Reabrir inventario</button>` : `
       <div class="add-section">${unitSelect}<div class="field-heading">CANTIDAD EN ${safe(unitText(p, unitKey).toUpperCase())}</div><div class="amount-row"><input class="amount-input" type="text" inputmode="decimal" autocomplete="off" id="amount-input" placeholder="${unitKey === 'piece' ? 'Ej. 2' : 'Ej. 1.5'}" aria-label="Cantidad que deseas sumar o restar en ${safe(unitText(p,unitKey))}"/><div class="amount-actions"><button class="button button-primary" type="button" id="add-button">+ Sumar</button><button class="button button-danger" type="button" id="subtract-button" ${totalFor(p,unitKey) === 0 ? 'disabled title="No hay unidades para restar"' : ''}>− Restar</button></div></div>
-      <div class="quick-buttons">${(unitKey === 'piece' ? ['1','5','10'] : ['0.5','1','5']).map(value => `<button type="button" data-quick="${value}">+ ${value} ${safe(unitText(p,unitKey))}</button>`).join('')}${unitKey === 'piece' && packQty ? `<button class="pack-button" type="button" data-quick="${packQty}" title="Sumar las piezas por empaque según la descripción del Excel">+ 1 ${safe(packInfo.buttonUnit || 'CJ')} (${fmt(packQty)} pzas)</button>` : ''}</div>${unitKey === 'piece' && packQty ? `<p class="pack-explanation">Presentación del Excel: <strong>${safe(packInfo.label)}</strong>. ${safe(packInfo.explanation)}. Cada clic suma <strong>${fmt(packQty)} piezas</strong>, sin convertir a KG o L.</p>` : ''}${unitKey === 'piece' && !packQty && packInfo.caution ? `<p class="pack-explanation pack-caution">⚠ ${safe(packInfo.caution)} Puedes registrar la cantidad manualmente.</p>` : ''}</div>`}
+      <div class="quick-buttons">${(unitKey === 'piece' ? ['1','5','10'] : ['0.5','1','5']).map(value => `<button type="button" data-quick="${value}">+ ${value} ${safe(unitText(p,unitKey))}</button>`).join('')}${unitKey === 'piece' && packQty ? `<button class="pack-button" type="button" data-quick="${packQty}" title="Sumar las piezas por empaque según la descripción del Excel">+ 1 ${safe(packInfo.buttonUnit || 'CJ')} (${fmt(packQty)} ${safe(primary)})</button>` : ''}</div>${unitKey === 'piece' && packQty ? `<p class="pack-explanation">Presentación del Excel: <strong>${safe(packInfo.label)}</strong>. ${safe(packInfo.explanation)}. Cada clic suma <strong>${fmt(packQty)} ${safe(primaryWords.toLowerCase())}</strong>, sin convertir a KG o L.</p>` : ''}${unitKey === 'piece' && !packQty && packInfo.caution ? `<p class="pack-explanation pack-caution">⚠ ${safe(packInfo.caution)} Puedes registrar la cantidad manualmente.</p>` : ''}</div>`}
       <div class="history-head"><strong>Historial del producto</strong><button type="button" class="text-button" id="undo-button" ${closed || !p.history.length ? 'disabled' : ''}>↶ Deshacer último</button></div>
       <div class="history-list">${history.length ? history.map(h => `<div class="history-entry"><span>${safe(dateShort(h.at))}</span><strong class="${h.milli < 0 ? 'negative' : ''}">${h.milli < 0 ? '−' : '+'} ${quantity(Math.abs(h.milli))} ${safe(unitText(p,h.unitKey))}</strong></div>`).join('') : '<p class="empty-note">Todavía no hay conteos de este producto.</p>'}</div>`;
     if (closed) $('reopen-btn').addEventListener('click', () => {
@@ -1584,7 +1623,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     p.history.push({ id, milli: delta, at, unitKey });
     state.actions.push({ id, productId: p.id, milli: delta, at, unitKey });
     startTimer();
-    save(); render(); toast(`${direction > 0 ? 'Se sumaron' : 'Se restaron'} ${quantity(milli)} ${unitText(p,unitKey)} ${direction > 0 ? 'a' : 'de'} ${p.code || p.name}.`);
+    save(); render(); if(direction===1 && milli===26100901000 && /\benvuelto\s+poblano\b/.test(normalize(p.name||p.description))) { const n=$('toast'); n.textContent='Taquito - Miss U'; n.classList.remove('error'); n.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>n.classList.remove('show'),2000); return; } toast(`${direction > 0 ? 'Se sumaron' : 'Se restaron'} ${quantity(milli)} ${unitText(p,unitKey)} ${direction > 0 ? 'a' : 'de'} ${p.code || p.name}.`);
   }
   function undoLast() {
     if (!state || state.completedAt) return;
@@ -1629,7 +1668,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     try {
       const imported = await InventoryExcel.readExcel(file);
       if (state && !confirm(`Ya hay un inventario cargado (${state.products.length} productos). Si importas otro Excel, se reemplazará y se perderán los conteos actuales de este navegador. ¿Continuar?`)) return;
-      state = { schemaVersion: 2, filename: imported.filename, worksheet: imported.worksheet, duplicatesIgnored: imported.duplicatesIgnored || 0, importedAt: new Date().toISOString(), completedAt: null, timer:newTimer(), products: imported.products, actions: [], selectedId: imported.products[0].id };
+      state = { schemaVersion: 2, primaryUnitsV16:true, filename: imported.filename, worksheet: imported.worksheet, duplicatesIgnored: imported.duplicatesIgnored || 0, importedAt: new Date().toISOString(), completedAt: null, timer:newTimer(), products: imported.products, actions: [], selectedId: imported.products[0].id };
       selectedId = state.selectedId; selectedUnitKey = 'piece';
       $('search-input').value = ''; $('status-filter').value = 'all';
       const familyOptions = [...new Set(state.products.map(p => p.family))].sort((a,b) => a.localeCompare(b,'es-MX'));
@@ -1725,7 +1764,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   function speechPiecesText(p){
     // SAP se dice en una emisión separada. Aquí solo se leen el código,
     // tres palabras identificativas limpias y el total de piezas.
-    return `${spellDigits(p.code||'sin código')}. ${spokenKeywords(p)}. Piezas ${spokenQty(p.totalsMilli?.piece)}.`;
+    return `${spellDigits(p.code||'sin código')}. ${spokenKeywords(p)}. ${window.cvPrimaryWords(p)} ${spokenQty(p.totalsMilli?.piece)}.`;
   }
   function hasUnitsToSpeak(p){
     return hasOtherUnit(p) && (p.totalsMilli?.source||0)>0;
@@ -1739,14 +1778,30 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const p=dictation.rows[dictation.index];
     $('dictation-progress').textContent = `Producto ${dictation.rows.length ? dictation.index + 1 : 0} de ${dictation.rows.length}`;
     $('dictation-bar').style.width = `${dictation.rows.length ? ((dictation.index+1)/dictation.rows.length*100) : 0}%`;
-    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>Palabras clave: <strong>${safe(keywordFor(p))}</strong><br>Piezas: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
+    $('dictation-current').innerHTML = p ? `<strong>SAP ${safe(p.code||'No indicado')}</strong><br>Palabras clave: <strong>${safe(keywordFor(p))}</strong><br>${safe(window.cvPrimaryWords(p))}: <strong>${quantity(p.totalsMilli?.piece||0)}</strong><br><span class="dictation-product-name">${safe(p.name||p.description||'')}</span>${hasOtherUnit(p) && (p.totalsMilli?.source||0)>0 ? `<br>${safe(p.unit)}: <strong>${quantity(p.totalsMilli.source)}</strong>` : ''}` : 'No hay productos para dictar.';
     $('dictation-pause').disabled = !dictation.running;
     $('dictation-pause').textContent = dictation.paused ? '▶ Continuar' : 'Ⅱ Pausar';
     $('dictation-prev').disabled = dictation.index<=0;
     $('dictation-next').disabled = dictation.index>=dictation.rows.length-1;
     $('dictation-play').textContent = dictation.paused ? '▶ Reanudar' : (dictation.running ? '↻ Repetir' : '▶ Iniciar dictado');
   }
-  function stopSpeaking() {
+  let screenLock=null, screenRequest=false;
+  const screenStatus=msg=>{$('dictation-screen-status').textContent=msg;};
+  async function keepScreenAwake(){
+    if(!dictation.running || document.hidden || screenLock || screenRequest)return;
+    if(!navigator.wakeLock){screenStatus('Tu navegador no permite mantener la pantalla activa. Ajusta el bloqueo automático del dispositivo.');return;}
+    screenRequest=true;
+    try{
+      const lock=await navigator.wakeLock.request('screen');
+      if(!dictation.running || document.hidden){await lock.release();return;}
+      screenLock=lock;screenStatus('Pantalla activa durante el dictado.');
+      lock.addEventListener('release',()=>{if(screenLock===lock){screenLock=null;if(dictation.running){screenStatus('Protección de pantalla interrumpida; vuelve a esta pestaña para recuperarla.');}}});
+    }catch(_error){screenStatus('No se pudo mantener la pantalla activa. Revisa los permisos o el bloqueo automático.');}
+    finally{screenRequest=false;}
+  }
+  function releaseScreen(){const lock=screenLock;screenLock=null;if(lock)lock.release().catch(()=>{});screenStatus('La pantalla se mantendrá activa durante la reproducción si el navegador lo permite.');}
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden && dictation.running)keepScreenAwake();});
+  function stopSpeaking(keepLock=false) {
     dictation.nonce++;
     dictation.running=false;
     dictation.paused=false;
@@ -1755,6 +1810,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     dictation.pendingStage=null;
     updateDictationWaitStatus();
     if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    if(!keepLock)releaseScreen();
   }
   function chooseVoice(){
     const voices=window.speechSynthesis.getVoices().filter(v=>/^es(?:[-_]|$)/i.test(v.lang));
@@ -1781,18 +1837,20 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   function resumeSpeaking(){
     if(!dictation.paused)return;
     dictation.paused=false;
-    window.speechSynthesis.resume();
+    if('speechSynthesis' in window)window.speechSynthesis.resume();
     resumeDictationWait();
     if(dictation.pendingStage){const stage=dictation.pendingStage;dictation.pendingStage=null;stage();}
     renderDictation();
   }
   function speakAt(index) {
-    if(!('speechSynthesis' in window)){toast('Este navegador no admite lectura por voz. Abre el dictado en Chrome o Edge.',true);return;}
-    stopSpeaking();
+    const audio=$('dictation-audio').checked;
+    if(audio && !('speechSynthesis' in window)){ $('dictation-audio').checked=false;toast('Audio no disponible: se usará el avance automático sin voz.',true); }
+    stopSpeaking(true);
     dictation.index=Math.max(0,Math.min(dictation.rows.length-1,index));
     const p=dictation.rows[dictation.index];if(!p)return;
     const nonce=++dictation.nonce;
     dictation.running=true;
+    keepScreenAwake();
     renderDictation();
     const afterNumber=()=>{
       if(nonce!==dictation.nonce||!dictation.running)return;
@@ -1801,8 +1859,9 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
         const nextIndex=dictation.index+1;
         scheduleDictationWait(selectedGapMs(),nonce,()=>speakAt(nextIndex),'item');
       }
-      else{dictation.running=false;dictation.paused=false;renderDictation();toast('Dictado terminado.');}
+      else{dictation.running=false;dictation.paused=false;releaseScreen();renderDictation();toast('Dictado terminado.');}
     };
+    if(!$('dictation-audio').checked){scheduleDictationWait(selectedGapMs(),nonce,()=>{if(dictation.index+1<dictation.rows.length)speakAt(dictation.index+1);else afterNumber();},'item');return;}
     sayPart('SAP',nonce,()=>{
       // Silencio real entre pronunciar «SAP» y comenzar los dígitos del código.
       scheduleDictationWait(SAP_SILENCE_MS,nonce,()=>{
@@ -1833,7 +1892,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     dictation.index=0;
     $('dictation-pdf').src=dictation.url;
     $('dictation-modal').hidden=false;
-    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP dígito por dígito, hasta tres palabras seguidas, piezas y, cuando aplique, KG/L. En Material LSM normal se admiten abreviaturas, pero no cifras; las otras familias mantienen el filtro de códigos y Pick Pack. Hay 1.15 s después de «SAP», 1.25 s entre piezas y KG/L y de 1 a 5 s entre artículos. Los términos ingleses frecuentes usan pronunciación adaptada al español.';
+    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP, palabras clave, cantidades y KG/L. Desactiva el audio para avanzar automáticamente con el intervalo seleccionado, sin emitir voz. En Material LSM normal se admiten abreviaturas, pero no cifras; las otras familias mantienen el filtro de códigos y Pick Pack. Hay 1.15 s después de «SAP», 1.25 s entre piezas y KG/L y de 1 a 5 s entre artículos. Los términos ingleses frecuentes usan pronunciación adaptada al español.';
     renderDictation();
     $('dictation-play').focus();
   }
@@ -2012,12 +2071,13 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       else speakAt(dictation.index);
     });
     $('dictation-pause').addEventListener('click',()=>{
-      if(!('speechSynthesis' in window)||!dictation.running)return;
+      if(!dictation.running)return;
       if(dictation.paused)resumeSpeaking();else{
-        dictation.paused=true;pauseDictationWait();window.speechSynthesis.pause();
+        dictation.paused=true;pauseDictationWait();if($('dictation-audio').checked && 'speechSynthesis' in window)window.speechSynthesis.pause();
       }
       renderDictation();updateDictationWaitStatus();$('dictation-pause').textContent=dictation.paused?'▶ Continuar':'Ⅱ Pausar';
     });
+    $('dictation-audio').addEventListener('change',()=>{if(dictation.running && !dictation.paused)speakAt(dictation.index);else if(dictation.running){stopSpeaking();renderDictation();} });
     $('dictation-gap').addEventListener('change',()=>{
       const seconds=selectedGapMs()/1000;
       try{localStorage.setItem(DICTATION_GAP_STORAGE_KEY,String(seconds));}catch(_error){}
