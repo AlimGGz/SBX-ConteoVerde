@@ -117,6 +117,57 @@
 .center-message{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:24px;background:rgba(5,35,26,.83);backdrop-filter:blur(5px);color:#fff;text-align:center;touch-action:none}
 .center-message[hidden]{display:none!important}
 .center-message>div{max-width:100%;font-weight:850;font-size:clamp(40px,8vw,112px);line-height:1.12;letter-spacing:-.035em;text-shadow:0 5px 30px #001c13;overflow-wrap:break-word}
+/* Conteo diario V17: menú lateral y paneles responsivos. */
+.daily-menu-button{border-color:#8cbe9f;color:#fff;gap:7px}
+.daily-drawer-shade{position:fixed;inset:0;background:#092c2699;z-index:5000}
+.daily-drawer{position:fixed;z-index:5001;right:0;top:0;bottom:0;width:min(390px,92vw);background:#fff;box-shadow:-15px 0 45px #092c2640;transform:translateX(105%);transition:transform .2s ease;display:flex;flex-direction:column;padding:25px 22px 35px;overflow-y:auto;visibility:hidden}
+.daily-drawer.open{visibility:visible;transform:translateX(0)}
+.daily-drawer-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e3eae4;padding-bottom:14px;margin-bottom:20px}
+.daily-drawer-head h2{font-size:23px;margin:0;color:#123e34}
+.daily-drawer-head button{border:0;background:#edf7ef;font-size:22px;border-radius:9px;padding:8px 12px}
+.daily-nav-link{display:flex;gap:13px;align-items:center;padding:17px 14px;width:100%;text-align:left;background:#fff;border:1px solid #e4ece5;border-radius:12px;margin:0 0 12px;color:#193c30;font-weight:800}
+.daily-nav-link.current{background:#e7f7ed;border-color:#9dd5b0}
+.daily-nav-link small{display:block;font-size:11px;color:#799188;margin-top:6px;font-weight:500}
+.daily-nav-link>.daily-nav-icon{font-size:24px;background:#eff8f1;border-radius:10px;padding:8px}
+.daily-drawer-foot{margin-top:auto;font-size:11px;color:#758a80;line-height:1.6;padding-top:18px}
+.daily-main .intro{margin-bottom:22px}.daily-top-title{display:flex;align-items:center;gap:15px}.daily-top-title .daily-large-icon{display:grid;place-items:center;width:55px;height:55px;font-size:30px;background:#ebf6ee;border-radius:13px}
+.daily-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.daily-toolbar .daily-session-meta{font-size:12px;color:#607d70;line-height:1.6}
+.daily-toolbar .daily-session-meta strong{color:#123e34}.daily-session-control{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.daily-session-control select{border:1px solid #dce6dc;border-radius:9px;padding:10px;max-width:260px;background:#fff;color:#123e34}
+.daily-setup{background:#fff;border:1px solid #dce8de;border-radius:17px;max-width:800px;margin:auto;box-shadow:var(--shadow);padding:clamp(20px,4vw,45px)}
+.daily-setup h2{margin:0 0 10px;font-size:27px}.daily-setup p{font-size:14px;color:#647b70;line-height:1.6}
+.daily-setup label,.daily-field{display:flex;flex-direction:column;gap:8px;font-size:12px;font-weight:750;color:#1c4c37;margin-bottom:17px}
+.daily-setup input,.daily-field input,.daily-field select,.daily-new-form input,.daily-new-form select{height:46px;padding:10px 12px;border:1px solid #cddfd0;border-radius:10px;background:white;font-size:14px;color:#1c312c;width:100%}
+.daily-setup input:focus,.daily-field input:focus{outline:2px solid #8fceb0}
+.daily-setup .button{margin-top:7px}
+.daily-setup .daily-guide{background:#f1f9f4;color:#476452;padding:13px;border-radius:10px;margin:18px 0;font-size:12px;line-height:1.6}
+.daily-notice{padding:11px 15px;color:#176742;border:1px solid #a9d2b9;border-radius:10px;background:#ecf9ef;font-size:12px;margin-bottom:15px;line-height:1.5}
+.daily-notice.error{color:#8d3b25;background:#fff0ec;border-color:#eebcad}
+.daily-top-stats{margin-bottom:20px}.daily-main .catalog-panel{min-height:580px}.daily-main .detail-panel{min-height:580px;height:auto;overflow:visible}
+.daily-main .product-list{max-height:600px}.daily-main .detail-name{overflow-wrap:anywhere;font-size:20px}
+.daily-toolbar-cta{display:flex;gap:9px;flex-wrap:wrap}.daily-toolbar-cta .button{white-space:normal}
+.daily-expiry-note{background:#fff7e7;border:1px solid #ead8a7;color:#795e27;border-radius:9px;padding:10px 12px;margin:0 0 16px;font-size:12px;line-height:1.5}
+.daily-secondary-total{font-size:12px;color:#567667;font-weight:700}.daily-lots{border:1px solid #e0ece1;border-radius:11px;padding:13px;margin-top:16px;background:#fafcf9;font-size:12px;line-height:1.6}
+.daily-lots>strong{color:#174a34}.daily-lot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #e8eee8}
+.daily-lot:last-child{border:0}.expiry-warning{color:#a73d2a}
+.daily-add{margin-top:22px}.daily-add .amount-row{margin-bottom:8px}.daily-add .quick-buttons{margin:16px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.daily-add .quick-buttons button{border:1px solid #afd8bc;background:#e9f7ed;color:#115c3f;border-radius:10px;padding:10px;min-height:43px;font-weight:750;overflow-wrap:anywhere}
+.daily-add .quick-buttons .pack-button{grid-column:1/-1}
+.daily-field{margin:13px 0}.daily-field small{font-weight:500;color:#70867a;line-height:1.55}
+.required-asterisk{color:#a94235}.daily-subtract{margin-top:5px;font-size:12px;padding:9px 14px}
+.daily-modal{position:fixed;inset:0;z-index:6000;background:#102c259c;display:grid;place-items:center;padding:15px}
+.daily-modal-panel{width:min(100%,550px);max-height:95dvh;overflow:auto;background:#fff;border-radius:16px;padding:25px;box-shadow:0 25px 65px #0003}
+.daily-modal-head{display:flex;align-items:center;justify-content:space-between}.daily-modal-panel h2{margin:4px 0 12px}
+.daily-modal-panel p{font-size:12px;line-height:1.5;color:#637b6d}.daily-modal-panel label{font-weight:700;font-size:12px;margin:12px 0;display:flex;flex-direction:column;gap:8px}
+.daily-new-form .daily-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:23px}
+.daily-error{font-size:12px;color:#a63130;min-height:17px}
+.daily-field-note{font-size:11px;color:#779180}
+@media(max-width:820px){.daily-main .work-grid{grid-template-columns:1fr}.daily-main .catalog-panel{min-height:420px}.daily-main .detail-panel{min-height:0}.daily-main .product-list{max-height:430px}}
+@media(max-width:470px){.daily-menu-button{flex:1}.daily-main .intro h1{font-size:27px}.daily-top-title .daily-large-icon{width:45px;height:45px;font-size:22px}.daily-top-stats{grid-template-columns:repeat(2,1fr)}.daily-add .amount-row{flex-wrap:wrap}.daily-add .amount-row .button{flex:1 1 100%}.daily-toolbar-cta{width:100%}.daily-toolbar-cta .button{flex:1}.daily-modal-panel{padding:18px}}
+
+.daily-restore-wrap{border-top:1px solid #dbe8df;padding-top:15px;margin-top:25px}.daily-restore-wrap select{min-height:43px;border:1px solid #cddfd0;border-radius:9px;padding:8px;width:100%;margin-bottom:11px}.daily-restore-wrap .button{margin:0}.daily-new-form input:focus,.daily-new-form select:focus{outline:2px solid #8fceb0;outline-offset:1px}
+
 </style>
 </head>
 <body>
@@ -131,13 +182,14 @@
         <button class="button button-subtle" id="merge-shortcut" type="button" title="Sumar reportes de varios participantes">Σ Sumar Conteos</button>
         <button class="button button-subtle" id="merch-upload-btn" type="button" title="Actualizar equivalencias SAP y SKU POS desde PDF o Excel">↥ Actualizar lista Merch</button>
         <button class="button button-subtle" id="change-file-btn" type="button" disabled> <span class="button-icon">↥</span> Cambiar Excel</button>
+        <button class="button button-subtle daily-menu-button" id="daily-menu-button" type="button" aria-haspopup="true" aria-controls="daily-drawer" aria-expanded="false">☰ Menú</button>
       </div>
     </header>
 
-    <main class="main-container">
+    <main class="main-container" id="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V16.1 · UNIDADES Y DICTADO</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V17 · CONTEO DIARIO</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -208,6 +260,65 @@
         <footer class="site-footer"><p>ConteoVerde · Inventario de tienda</p><p>Guardado automático en este navegador · Sin cuentas ni servidores</p></footer>
       </section>
     </main>
+
+  <div class="daily-drawer-shade" id="daily-drawer-shade" hidden></div>
+  <aside class="daily-drawer" id="daily-drawer" role="navigation" aria-label="Menú lateral de ConteoVerde">
+    <div class="daily-drawer-head"><h2>Menú</h2><button type="button" id="daily-drawer-close" aria-label="Cerrar menú">✕</button></div>
+    <button type="button" class="daily-nav-link current" id="daily-drawer-general"><span class="daily-nav-icon">▦</span><span>Inventario general<small>Excel · PDF · Dictado · Sumar Conteos</small></span></button>
+    <p class="micro-label">CONTEO DIARIO</p>
+    <button type="button" class="daily-nav-link" id="daily-drawer-alimentos"><span class="daily-nav-icon">🥐</span><span>Alimentos<small>41 artículos · Fechas de caducidad</small></span></button>
+    <button type="button" class="daily-nav-link" id="daily-drawer-leches"><span class="daily-nav-icon">🥛</span><span>Leches<small>10 artículos · Conteo de existencias</small></span></button>
+    <p class="daily-drawer-foot">Cada tipo de conteo guarda sus propios registros en este navegador. Exportación diaria únicamente en PDF.</p>
+  </aside>
+  <main id="daily-main" class="main-container daily-main" hidden>
+    <div class="intro"><div class="daily-top-title"><div id="daily-mode-icon" class="daily-large-icon">🥐</div><div><p class="eyebrow">CONTEOVERDE / CONTEO DIARIO <span class="version-tag">V17</span></p><h1 id="daily-mode-title">Conteo diario</h1><p class="intro-description" id="daily-mode-label">Control de existencias</p></div></div><button class="button button-outline" type="button" id="daily-home">← Inventario general</button></div>
+    <div id="daily-notice" class="daily-notice" role="status" hidden></div>
+    <section id="daily-create" class="daily-setup" hidden>
+      <p class="micro-label">PASO 01 · IDENTIFICAR AL RESPONSABLE</p>
+      <h2>¿Quién realizará este conteo?</h2>
+      <p>Antes de contar, escribe tu nombre. La fecha y hora de inicio se guardarán automáticamente cuando presiones «Iniciar conteo».</p>
+      <label for="daily-name">Nombre de quien cuenta <span class="required-asterisk">*</span><input type="text" id="daily-name" maxlength="100" autocomplete="name" placeholder="Nombre completo" required></label>
+      <div class="daily-guide"><strong>Importante:</strong> los datos de los PDF que dieron origen a la lista son solo el catálogo de artículos. Todas las cantidades comienzan en 0. No se copia el conteo previo.</div>
+      <p id="daily-create-count">Artículos precargados: <strong id="daily-item-count">0</strong></p>
+      <button class="button button-primary" id="daily-start" type="button">▶ Iniciar conteo</button>
+      <div id="daily-restore-wrap" class="daily-restore-wrap" hidden><p><strong>¿Ya empezaste un conteo anteriormente?</strong> Puedes retomarlo sin crear otro.</p><select id="daily-restore-select" aria-label="Conteos guardados disponibles"></select><button class="button button-outline" type="button" id="daily-restore-btn">↻ Continuar conteo guardado</button></div>
+    </section>
+    <section id="daily-workspace" hidden>
+      <div class="daily-toolbar"><div class="daily-session-meta"><strong>Responsable:</strong> <span id="daily-operator"></span><br><strong>Inicio:</strong> <span id="daily-started"></span></div><div class="daily-session-control"><label id="daily-session-label" for="daily-session-select" hidden>Sesión guardada</label><select id="daily-session-select" aria-label="Cambiar sesión de conteo" hidden></select><button class="button button-outline" id="daily-new-session" type="button">＋ Nuevo conteo</button></div></div>
+      <div class="daily-toolbar daily-toolbar-cta"><div class="daily-toolbar-cta"><button class="button button-outline" id="daily-add-new" type="button">＋ Agregar artículo nuevo</button><button class="button button-primary" id="daily-export" type="button">↓ Exportar PDF</button></div><small class="daily-field-note">Sin Excel ni dictado en Conteo diario.</small></div>
+      <div id="daily-expiry-hint" class="daily-expiry-note">Para alimentos, cada suma o resta requiere una fecha de caducidad. Un artículo puede tener varias fechas distintas, que aparecerán por separado en el PDF.</div>
+      <div class="summary-grid daily-top-stats">
+        <article class="stat-card"><div class="stat-header">Artículos en lista</div><div class="stat-value" id="daily-total-products">0</div><div class="stat-detail"><span id="daily-extra-count">0</span> añadidos manualmente</div></article>
+        <article class="stat-card"><div class="stat-header">Con conteo</div><div class="stat-value" id="daily-counted">0</div><div class="stat-detail">Artículos con existencias</div></article>
+        <article class="stat-card"><div class="stat-header">Pendientes</div><div class="stat-value" id="daily-pending">0</div><div class="stat-detail">Sin registro de cantidad</div></article>
+        <article class="stat-card stat-progress"><div class="stat-header">Avance de conteo</div><div class="stat-value" id="daily-progress">0%</div><div class="progress-track"><span id="daily-progress-fill"></span></div></article>
+      </div>
+      <div class="work-grid">
+        <section class="panel catalog-panel" aria-label="Artículos del conteo diario"><div class="panel-header"><div><p class="micro-label">PASO 02 · BUSCAR</p><h2>Catálogo de productos</h2></div><span class="count-badge" id="daily-visible-count">0</span></div>
+          <label class="search-box"><span aria-hidden="true">⌕</span><input id="daily-search" type="search" placeholder="Buscar por artículo o SAP..." autocomplete="off"></label>
+          <div class="filter-row"><select id="daily-status-filter" aria-label="Filtrar artículos"><option value="all">Todos los artículos</option><option value="counted">Con conteo</option><option value="pending">Pendientes</option></select></div>
+          <div class="list-heading"><span>ARTÍCULO</span><span>CONTEO</span></div><div class="product-list" id="daily-product-list"></div><div class="list-bottom"><span>Selecciona un artículo para contarlo.</span></div>
+        </section>
+        <section class="panel detail-panel" id="daily-detail" aria-label="Registrar cantidades y fecha de caducidad"></section>
+      </div>
+      <section class="recent-panel panel"><div class="recent-title"><div><p class="micro-label">MOVIMIENTOS GUARDADOS</p><h2>Últimos registros</h2></div><span class="count-badge">Diario</span></div><div class="recent-content" id="daily-recent"></div></section>
+      <footer class="site-footer"><p>ConteoVerde · Conteo diario</p><p>Guardado automático en este dispositivo · Exportación PDF</p></footer>
+    </section>
+  </main>
+  </div>
+  <div class="daily-modal" id="daily-new-modal" hidden>
+    <section class="daily-modal-panel" role="dialog" aria-modal="true" aria-labelledby="daily-new-heading">
+      <div class="daily-modal-head"><h2 id="daily-new-heading">Agregar artículo nuevo</h2><button type="button" class="icon-button" id="daily-new-close" aria-label="Cerrar">✕</button></div>
+      <p>Este artículo quedará guardado solo en el conteo diario actual. Aparecerá en el PDF junto a los artículos precargados.</p>
+      <form id="daily-new-form" class="daily-new-form">
+        <label>Nombre del artículo *<input type="text" maxlength="180" id="daily-new-name" required placeholder="Ej. Croissant chocolate especial"></label>
+        <label>Código SAP (opcional)<input type="text" inputmode="numeric" maxlength="10" id="daily-new-sap" placeholder="Ej. 149000"></label>
+        <label>Familia (opcional)<input type="text" maxlength="60" id="daily-new-family" placeholder="Ej. Comida - Congelados"></label>
+        <label>Unidad del catálogo<select id="daily-new-unit"><option value="PZA">PZA · Piezas</option><option value="UND">UND · Unidades</option><option value="KG">KG · Kilogramos</option><option value="L">L · Litros</option></select></label>
+        <div class="daily-error" id="daily-new-error" role="alert"></div>
+        <div class="daily-modal-actions"><button class="button button-outline" type="button" id="daily-new-cancel">Cancelar</button><button type="submit" class="button button-primary">Agregar artículo</button></div>
+      </form>
+    </section>
   </div>
 
   <input id="merch-file-input" type="file" accept=".pdf,.xls,.xlsx,.csv,application/pdf,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
@@ -819,7 +930,86 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     return new Blob([concatChunks(parts)],{type:'application/pdf'});
   }
   function exportPDF(products,info){return writePDF(makePages(products,info));}
-  root.InventoryPDF={exportPDF};
+  // Reporte específico para Conteo Diario: caducidades por lote y responsable.
+  // Reutiliza el escritor PDF local; nunca genera ni requiere XLSX.
+  function exportDailyPDF(info) {
+    const food=info.type==='alimentos';
+    const primary=p=>root.cvPrimaryUnit?.(p)||'PZA';
+    const isOther=p=>!!p.unit && !/^(?:PZA|PZAS|PZ|PIEZAS?|UND|UN|UNIDAD(?:ES)?)$/i.test(p.unit.trim());
+    const records=Array.isArray(info.records)?info.records:[];
+    const rows=[];let counted=0,expiring=0;
+    const now=new Date();
+    const day = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    for(const p of info.products||[]) {
+      const rr=records.filter(r=>r.productId===p.id);
+      let totals={piece:0,source:0};
+      for(const r of rr)totals[r.unitKey==='source'?'source':'piece']+=r.milli;
+      if(totals.piece>0 || totals.source>0)counted++;
+      const lots=new Map();
+      for(const r of rr) {
+        const k=food?(r.expiry||'SIN FECHA'):'—';
+        const prev=lots.get(k)||{piece:0,source:0};prev[r.unitKey==='source'?'source':'piece']+=r.milli;lots.set(k,prev);
+      }
+      let actual=[...lots].filter(([,v])=>v.piece>0||v.source>0);
+      if(!actual.length)actual=[['—',{piece:0,source:0}]];
+      if(food)actual.sort((a,b)=>a[0].localeCompare(b[0]));
+      for(const [expiry,amount] of actual){
+        if(food && expiry!=='—'&&expiry!=='SIN FECHA'&&expiry<day && (amount.piece>0||amount.source>0))expiring++;
+        rows.push({p,expiry,amount});
+      }
+    }
+    const pageRows=[];let current=[],y=160;
+    for(const row of rows){
+      const description=wrap(row.p.name||row.p.description,315,8.25,2);
+      const family=wrap(row.p.family||'',92,7.7,2);
+      const height=Math.max(description.length,family.length)*11+12;
+      if(y+height>BODY_BOTTOM && current.length){pageRows.push(current);current=[];y=160;}
+      current.push({...row,y,height,description,family});y+=height;
+    }
+    if(current.length||!pageRows.length)pageRows.push(current);
+    const dt=iso=>new Date(iso).toLocaleString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const date=expiry=>/^\d{4}-\d{2}-\d{2}$/.test(expiry)?`${expiry.slice(8)}/${expiry.slice(5,7)}/${expiry.slice(0,4)}`:expiry;
+    const pages=pageRows.map((group,index)=>{
+      let s=rect(0,0,WIDTH,98,'#123e34');
+      s+=rect(LEFT,16,4,65,'#a2d7b2');
+      s+=text(LEFT+17,13,`CONTEO DIARIO · ${food?'ALIMENTOS':'LECHES'}`,18,true,'#ffffff');
+      s+=text(LEFT+17,40,`Responsable: ${fit(info.name,350,9)}`,9.3,true,'#d5eddf');
+      s+=text(LEFT+17,57,`Inicio del conteo: ${dt(info.startedAt)}`,8.5,false,'#d5eddf');
+      s+=text(LEFT+17,74,`Reporte generado: ${new Date().toLocaleString('es-MX')}`,8.5,false,'#d5eddf');
+      s+=text(LEFT,109,`Artículos en lista: ${info.products.length}  ·  Con existencias: ${counted}  ·  Renglones: ${rows.length}`,9.5,true,'#123e34');
+      if(food&&expiring) s+=text(LEFT+495,109,`Lotes vencidos: ${expiring}`,9,true,'#9e4831');
+      s+=text(WIDTH-RIGHT-112,124,`Página ${index+1} de ${pageRows.length}`,8.2,false,'#708379');
+      s+=rect(LEFT,133,WIDTH-LEFT-RIGHT,24,'#e9f3ec');
+      s+=text(LEFT+6,140,'FAMILIA',7.8,true,'#31594a');
+      s+=text(130,140,'SAP',7.8,true,'#31594a');
+      s+=text(192,140,'PRODUCTO',7.8,true,'#31594a');
+      s+=centeredText(526,140,70,'PIEZAS',7.8,true,'#31594a');
+      s+=centeredText(596,140,62,'CANT. UNID.',7.6,true,'#31594a');
+      s+=centeredText(658,140,43,'UNIDAD',7.6,true,'#31594a');
+      s+=centeredText(701,140,109,food?'CADUCIDAD':'—',7.6,true,'#31594a');
+      for(let j=0;j<group.length;j++) {
+        const r=group[j];if(j%2===1)s+=rect(LEFT,r.y,WIDTH-LEFT-RIGHT,r.height,'#f7faf7');
+        s+=line(LEFT,r.y+r.height,WIDTH-RIGHT,r.y+r.height,'#e5ece5');
+        r.family.forEach((v,k)=>s+=text(LEFT+6,r.y+5+k*11,v,7.8,false,'#607168'));
+        s+=text(130,r.y+5,fit(r.p.code||'—',60,8.5),8.4,true,'#156648');
+        r.description.forEach((v,k)=>s+=text(192,r.y+5+k*11,v,8.25,false,'#24382e'));
+        const count=niceQty(r.amount.piece)+(primary(r.p)==='PZA'?'':' '+primary(r.p));
+        s+=centeredText(526,r.y+5,70,count,8.8,true,'#0b6545');
+        s+=centeredText(596,r.y+5,62,isOther(r.p)?niceQty(r.amount.source):'—',8.8,true,'#0b6545');
+        s+=centeredText(658,r.y+5,43,r.p.unit||'PZA',8,false,'#526d5e');
+        const late=food && r.expiry!=='—' && r.expiry<day && (r.amount.piece>0||r.amount.source>0);
+        const exp=food?(late?'VENCIDO '+date(r.expiry):date(r.expiry)):'—';
+        s+=centeredText(701,r.y+5,109,exp,late?7.4:8,false,late?'#a43e2b':'#344e3e');
+      }
+      s+=line(LEFT,558,WIDTH-RIGHT,558);
+      s+=text(LEFT,566,`Conteo diario de ${info.title} · Fecha y hora registradas automáticamente · Datos guardados en el dispositivo`,7.5,false,'#7c8b80');
+      s+=text(WIDTH-RIGHT-40,566,`${index+1}/${pageRows.length}`,7.5,false,'#7c8b80');
+      return s;
+    });
+    return writePDF(pages);
+  }
+
+  root.InventoryPDF={exportPDF,exportDailyPDF};
 })(window);
 
 </script>
@@ -2126,6 +2316,260 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   if (state) setFamilyOptions([...new Set(state.products.map(p=>p.family))].sort((a,b)=>a.localeCompare(b,'es-MX')));
   wire(); render();
   setInterval(()=>{if(state&&!document.hidden)renderTimer();},1000);
+})();
+
+</script>
+<script>
+/* Conteo diario: sesiones independientes de alimentos y leches, solo PDF. */
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const KEY = 'conteoverde_daily_v17';
+  const BASE_CATALOGS = {"alimentos":[{"code":"149286","family":"Comida - Refrigerado","description":"149286 - IFC MAP PIADINI CLARAS Y ESPINACA PZA - PZA","unit":"PZA"},{"code":"149290","family":"Comida - Congelados","description":"149290 - BAGEL THOMA´S CJ12PZAS - PZA","unit":"PZA"},{"code":"149293","family":"Comida - Refrigerado","description":"149293 - IFC MAP PANINI TRES QUESOS NUEVO PZA - PZA","unit":"PZA"},{"code":"149295","family":"Comida - Refrigerado","description":"149295 - IFC MAP PANINI PAVO Y PANELA PZA - PZA","unit":"PZA"},{"code":"149299","family":"Comida - Congelados","description":"149299 - SD 1/2 CHEESECAKE BRULEE CJ7REB - PZA","unit":"PZA"},{"code":"149300","family":"Comida - Congelados","description":"149300 - SD PASTEL CHOCOLATE CJ7REB - PZA","unit":"PZA"},{"code":"149303","family":"Comida - Congelados","description":"149303 - SD PASTEL RED VELVET CJ7REB - PZA","unit":"PZA"},{"code":"149305","family":"Comida - Congelados","description":"149305 - SD PAN ESTILO PANQUE LIMON CJ1PZA - PZA","unit":"PZA"},{"code":"149379","family":"Comida - Refrigerado","description":"149379 - IFC MAP SANDWICH GRILLED CHEESE V19 PZA - PZA","unit":"PZA"},{"code":"149385","family":"Comida - Refrigerado","description":"149385 - SUPREMAS TORONJA C/JUGO UVA CJ2PZAS310GR - PZA","unit":"PZA"},{"code":"149395","family":"Comida - Congelados","description":"149395 - SD TARTA ZARZM C/CHOC BCO CJ6PZAS - PZA","unit":"PZA"},{"code":"149397","family":"PAN Y PASTELES","description":"149397 - MAP ENVUELTO POBLANO COA PZA - PZA","unit":"PZA"},{"code":"149398","family":"Comida - Congelados","description":"149398 - SD TARTA BLUEB C/CHOC BCO CJ6PZAS - PZA","unit":"PZA"},{"code":"149400","family":"Comida - Refrigerado","description":"149400 - MIX MANZANA Y UVA CJ2PZAS - PZA","unit":"PZA"},{"code":"149410","family":"Comida - Congelados","description":"149410 - SD MUFFIN CHOCOLATE NUEVO CJ6PZAS - PZA","unit":"PZA"},{"code":"149416","family":"Comida - Congelados","description":"149416 - SD PASTEL ZANAHORIA CJ7REB - PZA","unit":"PZA"},{"code":"149435","family":"Comida - Congelados","description":"149435 - ROSCA REYES CJ12PZAS - PZA","unit":"PZA"},{"code":"149437","family":"Comida - Refrigerado","description":"149437 - HOGAZA NAVIDENA MXMC PZA - PZA","unit":"PZA"},{"code":"149450","family":"Comida - Congelados","description":"149450 - DONA OLD FASHION CHOCOLATE V23 CJ18PZAS - PZA","unit":"PZA"},{"code":"149460","family":"Comida - Congelados","description":"149460 - BOLITAS ALMIDON MANDIOCA/QUESO CJ3BOL1KG - PZA","unit":"PZA"},{"code":"149564","family":"Bebida","description":"149564 - YOGUR MXMH FRESA MORA AZUL MXMH CJ4PZA - PZA","unit":"PZA"},{"code":"149733","family":"Comida - Congelados","description":"149733 - MEDIA BAGUETTE PRECORTADA CJ70 PZAS115GR - PZA","unit":"PZA"},{"code":"149734","family":"Comida - Congelados","description":"149734 - BIS NAL CHCAKE ROULET MAXI CJ54PZAS125GR - PZA","unit":"PZA"},{"code":"149736","family":"Comida - Congelados","description":"149736 - BIS NAL CROISSANT CURV C/S CJ38PZAS95GR - PZA","unit":"PZA"},{"code":"149777","family":"Comida - Congelados","description":"149777 - SANDWICH POLLO CHIERBAS CJ6PZAS240GR - PZA","unit":"PZA"},{"code":"149778","family":"Comida - Congelados","description":"149778 - SANDWICH ENSALADA POLLO CJ8PZAS235GR - PZA","unit":"PZA"},{"code":"149779","family":"Comida - Refrigerado","description":"149779 - ENSALADA CESAR CJ2PZAS187GR - PZA","unit":"PZA"},{"code":"149782","family":"Comida - Congelados","description":"149782 - ENSALADA PASTA AL PESTO CJ4PZAS295GR - PZA","unit":"PZA"},{"code":"149881","family":"Comida - Congelados","description":"149881 - SD PANQUE NARANJA CJ1PZA890GR - PZA","unit":"PZA"},{"code":"149887","family":"Comida - Congelados","description":"149887 - PAN DE ELOTE CJ6PZAS121GR - PZA","unit":"PZA"},{"code":"149891","family":"Comida - Congelados","description":"149891 - ROL CANELA CJ10PZAS130GR - PZA","unit":"PZA"},{"code":"149956","family":"Comida - Congelados","description":"149956 - BIS PAN CHOCO/MARGARINA CJ68PZAS100GR - PZA","unit":"PZA"},{"code":"152557","family":"Comida - Congelados","description":"152557 - BIS GALLETA DUBAI CJ20PZAS80GR - UND","unit":"UND"},{"code":"155938","family":"PAN Y PASTELES","description":"155938 - BIS GALLETA DULCE D/LECHE CJ20PZAS110GR - PZA","unit":"PZA"},{"code":"155958","family":"Comida - Congelados","description":"155958 - BIS GALLETA CHISPAS/CHOCO CJ18PZAS110GR - PZA","unit":"PZA"},{"code":"156009","family":"Comida - Refrigerado","description":"156009 - MAP ENVUELTO BOLOGNESA PZA - PZA","unit":"PZA"},{"code":"156334","family":"Comida - Congelados","description":"156334 - BIS NAL SUPER CROISSANT CJ40PZAS90GR - PZA","unit":"PZA"},{"code":"163006","family":"PAN Y PASTELES","description":"163006 - CAKE POP BEARISTA CJ12BLIST3PZAS39GR - PZA","unit":"PZA"},{"code":"163932","family":"PAN Y PASTELES","description":"163932 - PINO NAVIDAD ROJO CJ30PZS85GR - PZA","unit":"PZA"},{"code":"163933","family":"PAN Y PASTELES","description":"163933 - PINO NAVIDAD CHOCOLATE CJ30PZS85GR - PZA","unit":"PZA"},{"code":"164034","family":"PAN Y PASTELES","description":"164034 - BIS GALLETA RED VELVET CJ20PZAS110GR - PZA","unit":"PZA"}],"leches":[{"code":"149239","family":"Bebida","description":"149239 - 20112 C8P LECHE SOYA ORGANIC 64OZ - L","unit":"L"},{"code":"149278","family":"LACTEOS","description":"149278 - CREMA HALF Y HALF CJ12PZAS1KG - KG","unit":"KG"},{"code":"149873","family":"Bebida","description":"149873 - BEBIDA AVENA CJ6PZAS1LT - L","unit":"L"},{"code":"150178","family":"LACTEOS","description":"150178 - LECHE ENTERA CJ6PZAS2LT - L","unit":"L"},{"code":"150180","family":"LACTEOS","description":"150180 - LECHE LIGHT CJ12PZAS1LT - L","unit":"L"},{"code":"150181","family":"LACTEOS","description":"150181 - LECHE DESLACTOSADA LIGHT CJ12PZAS1LT - L","unit":"L"},{"code":"150186","family":"LACTEOS","description":"150186 - LECHE DESLACTOSADA SUPREMA CJ12PZAS1LT - L","unit":"L"},{"code":"152630","family":"Comida - Seco","description":"152630 - LECHE PROTEINA 100 CJ12LT - L","unit":"L"},{"code":"155868","family":"LACTEOS","description":"155868 - 74136 C8B LECHE COCONUT 1.89LT - L","unit":"L"},{"code":"162528","family":"ABARROTES","description":"162528 - LECHE D/ALMENDRA CJ12PZAS946ML - L","unit":"L"}]};
+  const TYPES = { alimentos: {title:'Alimentos', icon:'🥐'}, leches: {title:'Leches', icon:'🥛'} };
+  const norm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const escape = v => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  const fmt = v => Number(v).toLocaleString('es-MX',{maximumFractionDigits:3});
+  const nice = milli => fmt(Math.round(milli)/1000);
+  const startDate = iso => new Date(iso).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'});
+  const niceDate = value => !value ? '—' : `${value.slice(8,10)}/${value.slice(5,7)}/${value.slice(0,4)}`;
+  const milliOf = raw => {const s=String(raw).trim().replace(',','.');if(!/^\d+(?:\.\d{1,3})?$/.test(s))return null;const n=Math.round(Number(s)*1000);return Number.isSafeInteger(n)&&n>0?n:null;};
+  const uid = () => 'd'+Date.now().toString(36)+Math.random().toString(36).slice(2,9);
+  const catalog = key => BASE_CATALOGS[key].map(p=>({...p,id:'sap:'+p.code,name:p.description.replace(/^\d{6}\s*-\s*/, '').replace(/\s+-\s+(?:PZA|UND|L|KG)$/i,'').trim(),unit:p.unit}));
+  let storage={schema:1,sessions:{alimentos:[],leches:[]},selected:{alimentos:null,leches:null}};
+  try {
+    const saved=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(saved&&saved.sessions&&Array.isArray(saved.sessions.alimentos)&&Array.isArray(saved.sessions.leches)){
+      storage=saved;
+      storage.selected=storage.selected||{alimentos:null,leches:null};
+    }
+  }catch(_e){}
+  let mode=null, selectedProduct=null, selectedUnit='piece',expiryById={},lastFocus=null;
+  let statusFilter='all';
+  const saved = () => {try{localStorage.setItem(KEY,JSON.stringify(storage));}catch(_e){notice('No se pudo guardar. Exporta el PDF antes de cerrar.',true);}};
+  const records = () => active()?.records || [];
+  const active = () => storage.sessions[mode]?.find(s=>s.id===storage.selected[mode]) || null;
+  const list = () => {const s=active();return [...catalog(mode),...(s?.extra||[])];};
+  const product = id => list().find(p=>p.id===id);
+  const primaryUnit = p => window.cvPrimaryUnit?.(p)||'PZA';
+  const hasSource = p => !!p.unit && !/^(?:pza|pzas|pzs|pz|pieza|piezas|und|un|unidad|unidades)$/i.test(p.unit.trim());
+  const units = p => selectedUnit==='source'&&hasSource(p)?p.unit:primaryUnit(p);
+  const sum = (id,kind='piece',expiry) => records().filter(r=>r.productId===id&&r.unitKey===kind&&(expiry===undefined||r.expiry===expiry)).reduce((n,r)=>n+r.milli,0);
+  const hasCount = p => sum(p.id,'piece')>0 || sum(p.id,'source')>0;
+  const countText = p => `${nice(sum(p.id))} ${primaryUnit(p)}${hasSource(p)?` · ${nice(sum(p.id,'source'))} ${p.unit}`:''}`;
+  const localDay = () => {const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+  const isToday = exp => !!exp && exp<localDay();
+  function notice(text,err=false){const t=$('daily-notice');t.textContent=text;t.classList.toggle('error',err);t.hidden=false;clearTimeout(notice.timeout);notice.timeout=setTimeout(()=>{t.hidden=true;},5500);}
+  function closeDrawer(){ $('daily-drawer').classList.remove('open'); $('daily-drawer-shade').hidden=true; $('daily-menu-button').setAttribute('aria-expanded','false'); }
+  function openDrawer(){lastFocus=document.activeElement;$('daily-drawer-shade').hidden=false;$('daily-drawer').classList.add('open');$('daily-menu-button').setAttribute('aria-expanded','true');$('daily-drawer-close').focus();}
+  function showMode(key){
+    if(key!==null && !TYPES[key])return;
+    mode=key;selectedProduct=null;expiryById={};selectedUnit='piece';statusFilter='all';
+    $('daily-search').value='';$('daily-status-filter').value='all';
+    $('main-container').hidden=!!mode;
+    $('daily-main').hidden=!mode;
+    $('daily-drawer-general').classList.toggle('current',!mode);
+    for(const type of Object.keys(TYPES))$('daily-drawer-'+type).classList.toggle('current',mode===type);
+    closeDrawer();if(mode)render();
+    window.scrollTo?.({top:0,behavior:'instant'});
+  }
+  function renderHistorySelector(){
+    const s=active();
+    const sessions=storage.sessions[mode].slice().reverse();
+    $('daily-session-select').replaceChildren(...sessions.map(record=>{
+      const option=document.createElement('option');option.value=record.id;
+      option.textContent=`${startDate(record.startedAt)} · ${record.name}`;
+      return option;
+    }));
+    if(s)$('daily-session-select').value=s.id;
+    $('daily-session-select').hidden=sessions.length<2;
+    $('daily-session-label').hidden=sessions.length<2;
+  }
+  function render(){
+    const spec=TYPES[mode],s=active();
+    $('daily-mode-title').textContent=`Conteo diario · ${spec.title}`;
+    $('daily-mode-label').textContent=mode==='alimentos'?'Control de caducidades y existencias':'Registro diario de existencias';
+    $('daily-mode-icon').textContent=spec.icon;
+    $('daily-create').hidden=!!s;
+    $('daily-workspace').hidden=!s;
+    renderHistorySelector();
+    if(!s){
+      $('daily-name').value='';$('daily-item-count').textContent=BASE_CATALOGS[mode].length;
+      const prior=storage.sessions[mode].slice().reverse();
+      $('daily-restore-wrap').hidden=prior.length===0;
+      $('daily-restore-select').replaceChildren(...prior.map(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=startDate(r.startedAt)+' · '+r.name;return o;}));
+      return;
+    }
+    $('daily-restore-wrap').hidden=true;
+    $('daily-operator').textContent=s.name;
+    $('daily-started').textContent=startDate(s.startedAt);
+    $('daily-item-count').textContent=list().length;
+    $('daily-total-products').textContent=list().length;
+    const n=list().filter(hasCount).length;
+    $('daily-counted').textContent=n;
+    $('daily-pending').textContent=list().length-n;
+    $('daily-progress').textContent=`${Math.round(n/list().length*100)}%`;
+    $('daily-progress-fill').style.width=`${Math.round(n/list().length*100)}%`;
+    $('daily-extra-count').textContent=s.extra.length;
+    $('daily-expiry-hint').hidden=mode!=='alimentos';
+    if(!selectedProduct || !product(selectedProduct))selectedProduct=list()[0]?.id;
+    renderList();renderDetail();renderRecent();
+  }
+  function renderList(){
+    const q=norm($('daily-search').value.trim());const kind=$('daily-status-filter').value;
+    const source=list();
+    const matches=source.filter(p=> (!q||norm(p.name+' '+p.description+' '+p.code+' '+p.family).includes(q))&&(kind==='all'||(kind==='counted'?hasCount(p):!hasCount(p))));
+    $('daily-visible-count').textContent=matches.length;
+    const fragment=document.createDocumentFragment();
+    for(const p of matches){
+      const item=document.createElement('button');item.type='button';
+      item.className='product-item'+(selectedProduct===p.id?' selected':'');
+      const left=document.createElement('div');left.className='product-item-left';
+      left.innerHTML=`<div class="product-item-code">${p.code?'SAP '+escape(p.code):'SIN SAP'}${p.manual?' · ARTÍCULO AGREGADO':''}</div><div class="product-item-name">${escape(p.name)}</div><div class="product-item-family">${escape(p.family)}</div>`;
+      const badge=document.createElement('span');badge.className='product-item-qty'+(hasCount(p)?' positive':'');badge.textContent=countText(p);
+      item.append(left,badge);
+      item.addEventListener('click',()=>{selectedProduct=p.id;selectedUnit='piece';renderList();renderDetail();});
+      fragment.append(item);
+    }
+    if(!matches.length){const msg=document.createElement('div');msg.className='no-results';msg.textContent='No hay artículos con esos filtros. Puedes agregar uno nuevo.';fragment.append(msg);}
+    $('daily-product-list').replaceChildren(fragment);
+  }
+  function packQty(p){
+    if(primaryUnit(p)==='REB')return {qty:7,label:'1 panqué (7 REB)'};
+    const t=(p.description||p.name||'').toUpperCase();
+    const composite=/(?:^|\W)CJ\s*\/?\s*(\d{1,5})\s*(?:BLIST(?:ER)?S?|PQTS?|PAQ(?:UETES?)?)\s*(\d{1,4})\s*PZAS?/.exec(t);
+    if(composite)return {qty:Number(composite[1])*Number(composite[2]),label:'1 caja'};
+    const m=/(?:^|\W)(?:CJ|CAJA)\s*\/?\s*(\d{1,5})\s*(?:PZAS?|PZS?|REB(?:ANADAS?)?|BOL(?:SAS?)?|PQT|UND|$|\s)/.exec(t);
+    if(m)return {qty:Number(m[1]),label:'1 caja'};
+    const c=/(?:^|\W)C(\d{1,5})[PB](?=\W|$)/.exec(t);
+    if(c)return {qty:Number(c[1]),label:'1 caja'};
+    return null;
+  }
+  function renderDetail(){
+    const p=product(selectedProduct),container=$('daily-detail');
+    if(!p){container.innerHTML='<p class="empty-note">Selecciona un artículo para empezar.</p>';return;}
+    const isFood=mode==='alimentos',source=hasSource(p),defaultUnit=primaryUnit(p);
+    const itemRecords=records().filter(r=>r.productId===p.id).slice().reverse();
+    const expRows=new Map();
+    if(isFood)for(const r of itemRecords){const d=r.expiry||'—';expRows.set(d,(expRows.get(d)||0)+r.milli);}
+    const isExpired=(date)=>date && isToday(date);
+    const expireHtml=isFood?`<label class="daily-field" for="daily-expiry">Fecha de caducidad <span class="required-asterisk">*</span><input id="daily-expiry" type="date" required value="${escape(expiryById[p.id]||'')}"><small>Obligatoria al agregar alimentos. Puedes contar el mismo artículo con diferentes fechas.</small></label>`:'';
+    const part=packQty(p);
+    const unit=selectedUnit==='source'&&source?p.unit:defaultUnit;
+    const lotHtml=isFood&&expRows.size?`<div class="daily-lots"><strong>Cantidades por caducidad</strong>${[...expRows].filter(([,qty])=>qty>0).sort((a,b)=>a[0].localeCompare(b[0])).map(([date,qty])=>`<div class="daily-lot"><span>${escape(niceDate(date))}${isExpired(date)?' · <b class="expiry-warning">VENCIDO</b>':''}</span><b>${nice(qty)} ${defaultUnit}</b></div>`).join('')}</div>`:'';
+    container.innerHTML=`<p class="micro-label">PASO 03 · CONTABILIZAR</p>
+      <h2 class="detail-name">${escape(p.name)}</h2>
+      <div class="detail-meta"><span class="meta-tag">${p.code?'SAP '+escape(p.code):'Sin SAP'}</span><span class="meta-tag">${escape(p.family)}</span><span class="meta-tag">Unidad ${escape(p.unit||'PZA')}</span></div>
+      <div class="total-card"><span>TOTAL CONTADO</span><div class="total-display">${nice(sum(p.id))}</div><div class="total-unit">${escape(defaultUnit)}</div>${source?`<p class="daily-secondary-total">${nice(sum(p.id,'source'))} ${escape(p.unit)} por separado</p>`:''}</div>
+      ${lotHtml}
+      ${source?`<label class="daily-field" for="daily-unit">Unidad para este movimiento<select id="daily-unit"><option value="piece" ${selectedUnit==='piece'?'selected':''}>${escape(defaultUnit)} (predeterminado)</option><option value="source" ${selectedUnit==='source'?'selected':''}>${escape(p.unit)} (unidad del catálogo)</option></select><small>Las piezas y ${escape(p.unit)} se contabilizan por separado; no hay conversión automática.</small></label>`:''}
+      <div class="daily-add"><div class="field-heading">REGISTRAR CANTIDAD EN ${escape(unit)}</div>${expireHtml}
+      <div class="amount-row"><input class="amount-input" id="daily-amount" type="text" inputmode="decimal" autocomplete="off" placeholder="Ej. 1 o 2.5" aria-label="Cantidad a contar"><button class="button button-primary" id="daily-add-btn">＋ Sumar</button></div>
+      <button class="button button-outline daily-subtract" id="daily-sub-btn" type="button">− Restar cantidad</button>
+      <div class="quick-buttons"><button type="button" data-daily-quick="1">+1</button><button type="button" data-daily-quick="5">+5</button><button type="button" data-daily-quick="10">+10</button>${selectedUnit==='piece'&&part&&part.qty>1?`<button type="button" class="pack-button" data-daily-quick="${part.qty}">+ ${escape(part.label)} (${fmt(part.qty)} ${escape(defaultUnit)})</button>`:''}</div></div>
+      <div class="history-head"><strong>Historial del artículo</strong><button class="text-button" id="daily-undo" ${itemRecords.length?'':'disabled'}>↶ Deshacer último</button></div>
+      <div class="history-list">${itemRecords.length?itemRecords.slice(0,7).map(r=>`<div class="history-entry"><span>${escape(new Date(r.at).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}))}${isFood?' · '+escape(niceDate(r.expiry)):''}</span><strong class="${r.milli<0?'negative':''}">${r.milli<0?'−':'+'} ${nice(Math.abs(r.milli))} ${escape(r.unitKey==='source'?p.unit:defaultUnit)}</strong></div>`).join(''):'<p class="empty-note">Aún no hay movimientos.</p>'}</div>`;
+    $('daily-expiry')?.addEventListener('change',e=>{expiryById[p.id]=e.target.value;});
+    $('daily-unit')?.addEventListener('change',e=>{selectedUnit=e.target.value;renderDetail();});
+    $('daily-amount').addEventListener('keydown',e=>{if(e.key==='Enter')changeAmount($('daily-amount').value,1);});
+    $('daily-add-btn').addEventListener('click',()=>changeAmount($('daily-amount').value,1));
+    $('daily-sub-btn').addEventListener('click',()=>changeAmount($('daily-amount').value,-1));
+    container.querySelectorAll('[data-daily-quick]').forEach(b=>b.addEventListener('click',()=>changeAmount(b.dataset.dailyQuick,1)));
+    $('daily-undo').addEventListener('click',()=>{
+      const last=records().filter(r=>r.productId===p.id).at(-1);
+      if(!last)return;
+      const index=active().records.findIndex(r=>r.id===last.id);if(index<0)return;
+      active().records.splice(index,1);saved();render();notice('Se deshizo el último movimiento.');
+    });
+  }
+  function changeAmount(raw,dir){
+    const p=product(selectedProduct),s=active();if(!p||!s)return;
+    const milli=milliOf(raw);
+    if(milli===null){notice('Escribe una cantidad positiva con máximo 3 decimales.',true);$('daily-amount')?.focus();return;}
+    const exp=mode==='alimentos'?(expiryById[p.id]||$('daily-expiry')?.value||''):'';
+    if(mode==='alimentos'&&!/^\d{4}-\d{2}-\d{2}$/.test(exp)){notice('Selecciona la fecha de caducidad antes de sumar o restar.',true);$('daily-expiry').focus();return;}
+    const kind=selectedUnit==='source'&&hasSource(p)?'source':'piece';
+    const current=sum(p.id,kind,exp);
+    if(dir<0&&milli>current){notice('No puedes restar más de lo contado para esa unidad y caducidad.',true);return;}
+    const item={id:uid(),productId:p.id,milli:dir*milli,unitKey:kind,expiry:exp,at:new Date().toISOString()};
+    s.records.push(item);saved();render();
+    notice(`${dir>0?'Se sumaron':'Se restaron'} ${nice(milli)} ${kind==='source'?p.unit:primaryUnit(p)} · ${p.name}`);
+  }
+  function renderRecent(){
+    const rs=records().slice(-8).reverse();
+    $('daily-recent').innerHTML=rs.length?rs.map(r=>{
+      const p=product(r.productId);if(!p)return '';
+      return `<div class="recent-row"><div><strong>${escape(p.name)}</strong><small>${escape(p.code?'SAP '+p.code:'Artículo añadido')}${mode==='alimentos'?' · Cad. '+escape(niceDate(r.expiry)):''}</small></div><span class="recent-qty ${r.milli<0?'negative':''}">${r.milli<0?'−':'+'} ${nice(Math.abs(r.milli))} ${escape(r.unitKey==='source'?p.unit:primaryUnit(p))}</span></div>`;
+    }).join(''):'<p class="empty-note">Los movimientos se mostrarán aquí.</p>';
+  }
+  function newSession(){
+    const prior=active();if(prior&&!confirm('Crear un conteo nuevo no elimina el anterior. Asegúrate de exportarlo a PDF si necesitas respaldarlo. ¿Continuar?'))return;
+    storage.selected[mode]=null;
+    selectedProduct=null;selectedUnit='piece';expiryById={};saved();render();$('daily-name').focus();
+  }
+  function start(){
+    const name=$('daily-name').value.trim().replace(/\s+/g,' ');
+    if(name.length<2||name.length>100){notice('Escribe el nombre de la persona que realiza el conteo (2 a 100 caracteres).',true);$('daily-name').focus();return;}
+    const s={id:uid(),name,startedAt:new Date().toISOString(),extra:[],records:[]};
+    storage.sessions[mode].push(s);storage.selected[mode]=s.id; selectedProduct=null;selectedUnit='piece';expiryById={};
+    saved();render();notice(`Conteo de ${TYPES[mode].title} iniciado. Fecha y hora guardadas automáticamente.`);
+  }
+  function addNew(){
+    const s=active();if(!s)return;
+    const name=$('daily-new-name').value.trim().replace(/\s+/g,' ');
+    const code=$('daily-new-sap').value.trim();
+    const unit=$('daily-new-unit').value;
+    const family=$('daily-new-family').value.trim()||'Agregado manualmente';
+    if(name.length<3||name.length>180){$('daily-new-error').textContent='Escribe un nombre de 3 a 180 caracteres.';return;}
+    if(code&&!/^\d{5,10}$/.test(code)){$('daily-new-error').textContent='El SAP debe tener entre 5 y 10 dígitos, o quedar vacío.';return;}
+    if(code&&list().some(p=>p.code===code)){$('daily-new-error').textContent='Ese código ya existe. Busca el artículo en la lista.';return;}
+    if(!code&&list().some(p=>norm(p.name)===norm(name))){$('daily-new-error').textContent='Ya existe un artículo con ese nombre.';return;}
+    const p={id:'manual:'+uid(),code,description:code?`${code} - ${name} - ${unit}`:`${name} - ${unit}`,name,family,unit,manual:true};
+    s.extra.push(p);selectedProduct=p.id;selectedUnit='piece';expiryById={};
+    saved();$('daily-new-modal').hidden=true;render();notice('Artículo añadido a este conteo. Ya puedes registrar su cantidad.');
+  }
+  function exportPdf(){
+    const s=active();if(!s)return;
+    try{
+      const blob=window.InventoryPDF.exportDailyPDF({type:mode,title:TYPES[mode].title,name:s.name,startedAt:s.startedAt,products:list(),records:s.records});
+      const url=URL.createObjectURL(blob);
+      const filename=`Conteo_Diario_${mode==='alimentos'?'Alimentos':'Leches'}_${s.startedAt.slice(0,10)}_${s.startedAt.slice(11,16).replace(':','-')}.pdf`;
+      const anchor=document.createElement('a');anchor.href=url;anchor.download=filename;document.body.appendChild(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+      notice('Reporte PDF generado. Tu conteo permanece guardado para correcciones.');
+    }catch(error){notice('No fue posible generar el PDF: '+error.message,true);}
+  }
+  function openNewModal(){ $('daily-new-form').reset();$('daily-new-error').textContent='';$('daily-new-modal').hidden=false;$('daily-new-name').focus(); }
+  function closeNewModal(){$('daily-new-modal').hidden=true;}
+  function wire(){
+    $('daily-menu-button').addEventListener('click',openDrawer);
+    $('daily-drawer-close').addEventListener('click',closeDrawer);
+    $('daily-drawer-shade').addEventListener('click',closeDrawer);
+    $('daily-drawer-general').addEventListener('click',()=>showMode(null));
+    for(const name of Object.keys(TYPES))$('daily-drawer-'+name).addEventListener('click',()=>showMode(name));
+    $('daily-home').addEventListener('click',()=>showMode(null));
+    $('daily-start').addEventListener('click',start);
+    $('daily-restore-btn').addEventListener('click',()=>{
+      storage.selected[mode]=$('daily-restore-select').value;selectedProduct=null;selectedUnit='piece';expiryById={};saved();render();notice('Se retomó el conteo guardado.');
+    });
+    $('daily-name').addEventListener('keydown',e=>{if(e.key==='Enter')start();});
+    $('daily-new-session').addEventListener('click',newSession);
+    $('daily-session-select').addEventListener('change',e=>{storage.selected[mode]=e.target.value;selectedProduct=null;selectedUnit='piece';expiryById={};saved();render();});
+    $('daily-search').addEventListener('input',renderList);
+    $('daily-status-filter').addEventListener('change',renderList);
+    $('daily-add-new').addEventListener('click',openNewModal);
+    $('daily-new-close').addEventListener('click',closeNewModal);
+    $('daily-new-cancel').addEventListener('click',closeNewModal);
+    $('daily-new-modal').addEventListener('click',e=>{if(e.target===$('daily-new-modal'))closeNewModal();});
+    $('daily-new-form').addEventListener('submit',e=>{e.preventDefault();addNew();});
+    $('daily-export').addEventListener('click',exportPdf);
+    document.addEventListener('keydown',e=>{
+      if(e.key!=='Escape')return;
+      if(!$('daily-new-modal').hidden){closeNewModal();return;}
+      if($('daily-drawer').classList.contains('open'))closeDrawer();
+    });
+  }
+  wire();
+  window.ConteoVerdeDiario={showMode,getState:()=>storage};
 })();
 
 </script>
