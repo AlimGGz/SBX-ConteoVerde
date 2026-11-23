@@ -1,25 +1,21 @@
-# ConteoVerde V16.1 · Unidades y dictado
+# ConteoVerde V18 · Velocidad de avance sin audio
 
 ## Instalación
-1. Exporta cualquier inventario en curso como respaldo antes de actualizar.
-2. Sustituye `index.html` en tu repositorio de GitHub Pages. No es necesario crear otro repositorio.
-3. Recarga la página (Ctrl + Shift + R). Comprueba que aparezca V16.1 · UNIDADES Y DICTADO.
+1. Antes de actualizar, exporta los reportes que necesites conservar.
+2. Sustituye `index.html` en tu repositorio GitHub Pages por el incluido.
+3. Espera la publicación y recarga con Ctrl + Shift + R.
+4. Verifica «V18 · AVANCE SIN AUDIO» en la pantalla principal.
 
-## Unidades de conteo
-- SAP 149438, 149463 y 149469: PQT (un paquete por registro de una unidad). KG sigue disponible como cantidad independiente.
-- Café distinto de 250 g: BOL para las presentaciones identificadas por peso o en KG; café de 250 g conserva PZA. Incluye 5 LB, 2.27 KG y 2.7 KG. No aplica a materiales de empaque.
-- SAP 149746: BOL (una bolsa por unidad).
-- Panqués: REB (rebanadas). +1 suma una rebanada y el botón +1 PANQUÉ suma siete. No aplica a cajas o empaques para panqué.
-- No se realizan conversiones automáticas a KG o L.
-- El Excel mantiene Piezas, Cant. Unid y Unidad, más Unidad conteo, que indica qué representa el primer número. En PDF las cantidades especiales llevan su etiqueta PQT, BOL o REB.
+## Novedad visible en Dictado
+- Abre Finalizar inventario > Dictado > Generar reporte.
+- **Audio activado**: «Espera entre artículos» ofrece entre 1 y 5 segundos de pausa entre productos; la velocidad de voz se ajusta aparte.
+- **Audio desactivado**: el mismo selector se muestra como «Tiempo en pantalla por artículo». 1 segundo = desplazamiento más rápido; 5 segundos = más lento. No emite voces y permite escuchar música del dispositivo.
+- Puedes cambiar el valor durante el avance sin audio: el tiempo de pantalla para el artículo actual se recalcula desde ese momento.
+- «Pausar» congela el avance; «Continuar» conserva el tiempo restante; «Anterior» y «Siguiente» permiten ir manualmente.
+- El valor se guarda en el navegador.
 
-## Inventarios previos
-Si hay conteos anteriores de panqué, la primera vez se pregunta si eran panqués enteros (Aceptar: ×7) o rebanadas (Cancelar: conservar). El historial se ajusta de acuerdo con esa decisión. No se modifica el conteo de otras familias. Revisa las cantidades antes de exportar. Sumar Conteos rechaza reportes antiguos con cantidades de panqué no nulas sin unidad de conteo explícita, para evitar mezclar panqués enteros y rebanadas. Reexporta esos reportes desde V16 en rebanadas.
+## Funciones previas
+Inventario general XLS/XLSX, Merch, cantidades PZA/PQT/BOL/REB, Pick Pack, KG/L, cronómetro, PDF, Excel, Dictado, Sumar Conteos y Conteo Diario de Alimentos (caducidad) y Leches (sin caducidad). Las sesiones se guardan localmente en el navegador.
 
-## Dictado
-Abre Finalizar inventario → Dictado. Con Audio del dictado activado se mantiene la lectura por voz y las pausas anteriores. Sin audio, el artículo visible avanza automáticamente cada 1–5 segundos según el selector de espera. Los controles de pausa, anterior, siguiente y reproducción siguen disponibles. Cambiar audio durante la reproducción reinicia el artículo actual. Si lo cambias estando en pausa, pulsa Iniciar dictado para continuar desde ese artículo.
-
-Mientras se reproduce, la app solicita mantener la pantalla activa (Screen Wake Lock). En GitHub Pages se sirve por HTTPS; la disponibilidad depende del navegador, batería, permisos y visibilidad de la pestaña. Cuando termina o se cierra el dictado, libera la solicitud. Si el navegador no lo admite, configura el bloqueo automático desde el dispositivo.
-
-## Interfaz
-Las tarjetas de búsqueda y el detalle se ajustan al contenido, incluyendo nombres largos y cantidades grandes. Las funciones de importación XLS/XLSX, Merch, Pick Pack, historial, cronómetro, Excel/PDF y consolidación se mantienen.
+## Manual
+Consulta el documento separado `Manual_Completo_ConteoVerde_V18.pdf`, que contiene capturas reales de la aplicación, explicaciones de cada botón y ejemplos paso a paso.

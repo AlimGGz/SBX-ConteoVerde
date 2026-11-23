@@ -111,6 +111,7 @@
 .total-display{font-variant-numeric:tabular-nums;overflow-wrap:anywhere;word-break:normal;line-height:1.15}
 .dictation-audio{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:700;color:#123e34;background:#edf7ef;padding:10px;border-radius:8px}
 .dictation-audio input{width:18px;height:18px;accent-color:#087c58}
+.dictation-interval-help{font-size:11px;line-height:1.45;color:#4d6f5c;margin:-4px 0 9px;padding:0 3px}
 #dictation-screen-status{font-size:11px;color:#577868;margin:0;line-height:1.4}
 @media(max-width:440px){.product-item-left{flex-basis:100%}.product-item-qty{margin-left:0}.total-part .total-display{font-size:clamp(22px,7vw,34px)}}
 
@@ -189,7 +190,7 @@
     <main class="main-container" id="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V17 · CONTEO DIARIO</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V18 · AVANCE SIN AUDIO</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -271,7 +272,7 @@
     <p class="daily-drawer-foot">Cada tipo de conteo guarda sus propios registros en este navegador. Exportación diaria únicamente en PDF.</p>
   </aside>
   <main id="daily-main" class="main-container daily-main" hidden>
-    <div class="intro"><div class="daily-top-title"><div id="daily-mode-icon" class="daily-large-icon">🥐</div><div><p class="eyebrow">CONTEOVERDE / CONTEO DIARIO <span class="version-tag">V17</span></p><h1 id="daily-mode-title">Conteo diario</h1><p class="intro-description" id="daily-mode-label">Control de existencias</p></div></div><button class="button button-outline" type="button" id="daily-home">← Inventario general</button></div>
+    <div class="intro"><div class="daily-top-title"><div id="daily-mode-icon" class="daily-large-icon">🥐</div><div><p class="eyebrow">CONTEOVERDE / CONTEO DIARIO <span class="version-tag">V18</span></p><h1 id="daily-mode-title">Conteo diario</h1><p class="intro-description" id="daily-mode-label">Control de existencias</p></div></div><button class="button button-outline" type="button" id="daily-home">← Inventario general</button></div>
     <div id="daily-notice" class="daily-notice" role="status" hidden></div>
     <section id="daily-create" class="daily-setup" hidden>
       <p class="micro-label">PASO 01 · IDENTIFICAR AL RESPONSABLE</p>
@@ -357,8 +358,8 @@
           <div class="dictation-buttons"><button class="button button-primary" id="dictation-play" type="button">▶ Iniciar dictado</button><button class="button button-outline" id="dictation-pause" type="button">Ⅱ Pausar</button></div>
           <div class="dictation-buttons"><button class="button button-outline" id="dictation-prev" type="button">← Anterior</button><button class="button button-outline" id="dictation-next" type="button">Siguiente →</button></div>
           <label class="dictation-speed" for="dictation-rate">Velocidad de lectura<select id="dictation-rate"><option value="0.8">Lenta · 0.8×</option><option value="1" selected>Normal · 1×</option><option value="1.2">Rápida · 1.2×</option><option value="1.4">Muy rápida · 1.4×</option></select></label>
-          <label class="dictation-speed" for="dictation-gap">Espera entre artículos<select id="dictation-gap" aria-label="Espera entre artículos de 1 a 5 segundos"><option value="1">1 segundo</option><option value="2" selected>2 segundos</option><option value="3">3 segundos</option><option value="4">4 segundos</option><option value="5">5 segundos</option></select></label>
-          <label class="dictation-audio" for="dictation-audio">Audio del dictado <input id="dictation-audio" type="checkbox" checked /></label>
+          <label class="dictation-speed" for="dictation-gap"><span id="dictation-gap-label">Espera entre artículos</span><select id="dictation-gap" aria-label="Espera entre artículos de 1 a 5 segundos"><option value="1">1 segundo</option><option value="2" selected>2 segundos</option><option value="3">3 segundos</option><option value="4">4 segundos</option><option value="5">5 segundos</option></select></label>
+          <label class="dictation-audio" for="dictation-audio">Audio del dictado <input id="dictation-audio" type="checkbox" checked /></label><p class="dictation-interval-help" id="dictation-interval-help" aria-live="polite">Con audio: espera entre el final de una lectura y el siguiente artículo.</p>
           <p id="dictation-screen-status" role="status">La pantalla se mantendrá activa durante la reproducción si el navegador lo permite.</p>
           <p class="dictation-note" id="dictation-note">La lectura utiliza la voz disponible en tu navegador. Recomendamos Chrome o Edge. No se envían datos a un servidor de ConteoVerde.</p>
           <button class="button button-primary button-wide" id="dictation-download" type="button">↓ Descargar este PDF</button>
@@ -1923,12 +1924,21 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const secs=Number($('dictation-gap').value);
     return (Number.isInteger(secs)&&secs>=1&&secs<=5?secs:2)*1000;
   }
+  function updateDictationIntervalUI(){
+    const withAudio=$('dictation-audio').checked;
+    $('dictation-gap-label').textContent=withAudio?'Espera entre artículos':'Tiempo en pantalla por artículo';
+    $('dictation-gap').setAttribute('aria-label',withAudio?'Pausa entre artículos de 1 a 5 segundos':'Velocidad de avance sin audio: mostrar cada artículo durante 1 a 5 segundos');
+    $('dictation-interval-help').textContent=withAudio?
+      'Con audio: pausa entre la lectura de un artículo y el siguiente.':
+      'Sin audio: el siguiente artículo aparece automáticamente después del tiempo seleccionado (1 s = más rápido; 5 s = más lento). Puedes escuchar tu música.';
+  }
   function updateDictationWaitStatus(){
     const el=$('dictation-wait-state');
     if(dictation.waitKind!=='item' && dictation.waitKind!=='unit') {el.hidden=true;el.textContent='';return;}
     el.hidden=false;
     if(dictation.paused){el.textContent='Dictado pausado · se conservará la espera restante.';return;}
-    el.textContent=dictation.waitKind==='unit'?'Pausa de 1.25 s entre piezas y kilogramos/litros.':`Pausa entre artículos: ${selectedGapMs()/1000} s · próximo artículo en preparación`;
+    el.textContent=dictation.waitKind==='unit'?'Pausa de 1.25 s entre piezas y kilogramos/litros.':
+      ($('dictation-audio').checked?`Pausa entre artículos: ${selectedGapMs()/1000} s · próximo artículo en preparación`:`Avance sin audio: cada producto se muestra ${selectedGapMs()/1000} s antes de pasar al siguiente.`);
   }
   // Las pausas de voz y entre artículos son independientes de la velocidad de lectura.
   // Al pausar, detenemos el temporizador y conservamos exactamente el tiempo restante.
@@ -1969,6 +1979,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     const savedGap=localStorage.getItem(DICTATION_GAP_STORAGE_KEY);
     if(['1','2','3','4','5'].includes(savedGap))$('dictation-gap').value=savedGap;
   }catch(_error){}
+  updateDictationIntervalUI();
   const spokenNumbers = ['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve'];
   const spellDigits = value => /^\d+$/.test(String(value||'')) ? String(value).split('').map(d=>spokenNumbers[Number(d)]).join(' ') : 'sin código';
   function spokenQty(milli) {
@@ -2110,7 +2121,8 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     dictation.index=0;
     $('dictation-pdf').src=dictation.url;
     $('dictation-modal').hidden=false;
-    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP, palabras clave, cantidades y KG/L. Desactiva el audio para avanzar automáticamente con el intervalo seleccionado, sin emitir voz. En Material LSM normal se admiten abreviaturas, pero no cifras; las otras familias mantienen el filtro de códigos y Pick Pack. Hay 1.15 s después de «SAP», 1.25 s entre piezas y KG/L y de 1 a 5 s entre artículos. Los términos ingleses frecuentes usan pronunciación adaptada al español.';
+    updateDictationIntervalUI();
+    $('dictation-note').textContent = 'El dictado sigue el orden del PDF: SAP, palabras clave, cantidades y KG/L. Si desactivas el audio, el selector de 1 a 5 segundos controla cuánto tiempo permanece visible cada artículo antes del avance automático. Puedes escuchar tu música. En Material LSM normal se admiten abreviaturas, pero no cifras; las otras familias mantienen el filtro de códigos y Pick Pack. Hay 1.15 s después de «SAP», 1.25 s entre piezas y KG/L y de 1 a 5 s entre artículos. Los términos ingleses frecuentes usan pronunciación adaptada al español.';
     renderDictation();
     $('dictation-play').focus();
   }
@@ -2295,10 +2307,21 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
       }
       renderDictation();updateDictationWaitStatus();$('dictation-pause').textContent=dictation.paused?'▶ Continuar':'Ⅱ Pausar';
     });
-    $('dictation-audio').addEventListener('change',()=>{if(dictation.running && !dictation.paused)speakAt(dictation.index);else if(dictation.running){stopSpeaking();renderDictation();} });
+    $('dictation-audio').addEventListener('change',()=>{
+      updateDictationIntervalUI();
+      if(dictation.running && !dictation.paused)speakAt(dictation.index);
+      else if(dictation.running){stopSpeaking();renderDictation();}
+    });
     $('dictation-gap').addEventListener('change',()=>{
       const seconds=selectedGapMs()/1000;
       try{localStorage.setItem(DICTATION_GAP_STORAGE_KEY,String(seconds));}catch(_error){}
+      // Sin voz, cambiar el valor durante el avance actual inicia un nuevo
+      // intervalo para este mismo artículo: la velocidad se aplica de inmediato.
+      if(dictation.running && !dictation.paused && !$('dictation-audio').checked && dictation.waitKind==='item'){
+        const nonce=dictation.nonce;
+        const callback=dictation.waitCallback;
+        if(callback)scheduleDictationWait(selectedGapMs(),nonce,callback,'item');
+      }
       updateDictationWaitStatus();
     });
     $('dictation-prev').addEventListener('click',()=>speakAt(dictation.index-1));
