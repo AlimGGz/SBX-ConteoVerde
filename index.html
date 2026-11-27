@@ -169,6 +169,20 @@
 
 .daily-restore-wrap{border-top:1px solid #dbe8df;padding-top:15px;margin-top:25px}.daily-restore-wrap select{min-height:43px;border:1px solid #cddfd0;border-radius:9px;padding:8px;width:100%;margin-bottom:11px}.daily-restore-wrap .button{margin:0}.daily-new-form input:focus,.daily-new-form select:focus{outline:2px solid #8fceb0;outline-offset:1px}
 
+
+
+/* V19: panel de reconocimiento del catálogo general para conteos diarios. */
+.daily-review-button{width:100%;margin:10px 0;white-space:normal}
+.daily-classification-modal{position:fixed;inset:0;z-index:1400;background:rgba(8,37,30,.69);display:grid;place-items:center;padding:14px}
+.daily-classification-panel{background:#fff;color:#18392e;width:min(990px,100%);max-height:92vh;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;box-shadow:0 20px 70px #0005}
+.daily-classification-head{display:flex;justify-content:space-between;align-items:center;background:#123e34;color:white;padding:16px 22px;gap:12px}
+.daily-classification-head h2{margin:0;font-size:20px}.daily-classification-head button{color:white;background:transparent;border:1px solid #a0c8b0;border-radius:8px;padding:7px 12px}
+.daily-classification-body{overflow:auto;padding:18px 22px}.daily-classification-notice{padding:12px;border-radius:10px;background:#eff9f0;color:#426552;font-size:13px;margin:0 0 12px}
+.daily-classification-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.daily-classification-tools input{flex:2;min-width:175px}.daily-classification-tools select{flex:1;min-width:135px}.daily-classification-tools input,.daily-classification-tools select{border:1px solid #ccd9d2;border-radius:9px;padding:10px}
+.daily-classification-list{display:flex;flex-direction:column;gap:8px}.daily-classification-row{border:1px solid #dee9df;border-radius:9px;padding:10px;display:flex;align-items:center;gap:14px;justify-content:space-between}
+.daily-classification-row strong{font-size:12px}.daily-classification-row small{display:block;margin-top:3px;color:#60776c;line-height:1.35}.daily-classification-row select{min-width:145px;max-width:180px;border:1px solid #ccd9d2;border-radius:8px;padding:7px;background:white}
+.daily-classification-count{font-size:12px;color:#647b70}.daily-review-warn{color:#a65429;font-weight:700}
+@media(max-width:640px){.daily-classification-row{flex-direction:column;align-items:stretch}.daily-classification-row select{max-width:none;width:100%}.daily-classification-head h2{font-size:17px}}
 </style>
 </head>
 <body>
@@ -190,7 +204,7 @@
     <main class="main-container" id="main-container">
       <section class="intro">
         <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V18 · AVANCE SIN AUDIO</span></p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> INVENTARIOS / CONTROL DE EXISTENCIAS <span class="version-tag">V19 · CLASIFICACIÓN AUTOMÁTICA</span></p>
           <h1>Tu inventario, <em>bajo control.</em></h1>
           <p class="intro-description">Cuenta en piezas por defecto o en la unidad indicada en el Excel. El cronómetro inicia con el primer conteo y puede pausarse.</p>
         </div>
@@ -269,10 +283,12 @@
     <p class="micro-label">CONTEO DIARIO</p>
     <button type="button" class="daily-nav-link" id="daily-drawer-alimentos"><span class="daily-nav-icon">🥐</span><span>Alimentos<small>41 artículos · Fechas de caducidad</small></span></button>
     <button type="button" class="daily-nav-link" id="daily-drawer-leches"><span class="daily-nav-icon">🥛</span><span>Leches<small>10 artículos · Conteo de existencias</small></span></button>
+    <button type="button" class="daily-nav-link" id="daily-drawer-vasos"><span class="daily-nav-icon">🥤</span><span>Vasos<small>Reconocimiento desde Excel · Vasos operativos</small></span></button>
+    <button type="button" class="daily-nav-link" id="daily-drawer-classification"><span class="daily-nav-icon">◎</span><span>Revisar clasificación<small>Alimentos, Leches y Vasos · Corrección manual por SAP</small></span></button>
     <p class="daily-drawer-foot">Cada tipo de conteo guarda sus propios registros en este navegador. Exportación diaria únicamente en PDF.</p>
   </aside>
   <main id="daily-main" class="main-container daily-main" hidden>
-    <div class="intro"><div class="daily-top-title"><div id="daily-mode-icon" class="daily-large-icon">🥐</div><div><p class="eyebrow">CONTEOVERDE / CONTEO DIARIO <span class="version-tag">V18</span></p><h1 id="daily-mode-title">Conteo diario</h1><p class="intro-description" id="daily-mode-label">Control de existencias</p></div></div><button class="button button-outline" type="button" id="daily-home">← Inventario general</button></div>
+    <div class="intro"><div class="daily-top-title"><div id="daily-mode-icon" class="daily-large-icon">🥐</div><div><p class="eyebrow">CONTEOVERDE / CONTEO DIARIO <span class="version-tag">V19</span></p><h1 id="daily-mode-title">Conteo diario</h1><p class="intro-description" id="daily-mode-label">Control de existencias</p></div></div><button class="button button-outline" type="button" id="daily-home">← Inventario general</button></div>
     <div id="daily-notice" class="daily-notice" role="status" hidden></div>
     <section id="daily-create" class="daily-setup" hidden>
       <p class="micro-label">PASO 01 · IDENTIFICAR AL RESPONSABLE</p>
@@ -281,6 +297,8 @@
       <label for="daily-name">Nombre de quien cuenta <span class="required-asterisk">*</span><input type="text" id="daily-name" maxlength="100" autocomplete="name" placeholder="Nombre completo" required></label>
       <div class="daily-guide"><strong>Importante:</strong> los datos de los PDF que dieron origen a la lista son solo el catálogo de artículos. Todas las cantidades comienzan en 0. No se copia el conteo previo.</div>
       <p id="daily-create-count">Artículos precargados: <strong id="daily-item-count">0</strong></p>
+      <div id="daily-recognition-status" class="daily-guide" aria-live="polite"></div>
+      <button type="button" id="daily-review-button" class="button button-outline daily-review-button">◎ Revisar o modificar clasificación de artículos</button>
       <button class="button button-primary" id="daily-start" type="button">▶ Iniciar conteo</button>
       <div id="daily-restore-wrap" class="daily-restore-wrap" hidden><p><strong>¿Ya empezaste un conteo anteriormente?</strong> Puedes retomarlo sin crear otro.</p><select id="daily-restore-select" aria-label="Conteos guardados disponibles"></select><button class="button button-outline" type="button" id="daily-restore-btn">↻ Continuar conteo guardado</button></div>
     </section>
@@ -322,6 +340,17 @@
     </section>
   </div>
 
+  <div class="daily-classification-modal" id="daily-classification-modal" hidden>
+    <section class="daily-classification-panel" role="dialog" aria-modal="true" aria-labelledby="daily-classification-title">
+      <div class="daily-classification-head"><h2 id="daily-classification-title">Clasificación automática de inventario</h2><button id="daily-classification-close" type="button">✕ Cerrar</button></div>
+      <div class="daily-classification-body">
+        <p class="daily-classification-notice">Las categorías se detectan por SAP, familia y descripción del Excel general. Puedes corregir cualquier artículo. <strong>Las correcciones solo se aplican a los conteos nuevos</strong>; los anteriores conservan sus listas y cantidades.</p>
+        <div class="daily-classification-tools"><input id="daily-classification-search" type="search" placeholder="Buscar SAP, descripción o familia"><select id="daily-classification-filter" aria-label="Filtrar clasificación"><option value="all">Todas las categorías</option><option value="revisar">Requieren revisión</option><option value="alimentos">Alimentos</option><option value="leches">Leches</option><option value="vasos">Vasos</option><option value="none">Sin categoría</option></select></div>
+        <p id="daily-classification-count" class="daily-classification-count"></p>
+        <div class="daily-classification-list" id="daily-classification-list"></div>
+      </div>
+    </section>
+  </div>
   <input id="merch-file-input" type="file" accept=".pdf,.xls,.xlsx,.csv,application/pdf,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
   <input id="file-input" type="file" accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
 
@@ -973,7 +1002,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const pages=pageRows.map((group,index)=>{
       let s=rect(0,0,WIDTH,98,'#123e34');
       s+=rect(LEFT,16,4,65,'#a2d7b2');
-      s+=text(LEFT+17,13,`CONTEO DIARIO · ${food?'ALIMENTOS':'LECHES'}`,18,true,'#ffffff');
+      s+=text(LEFT+17,13,`CONTEO DIARIO · ${String(info.title||'Conteo').toUpperCase()}`,18,true,'#ffffff');
       s+=text(LEFT+17,40,`Responsable: ${fit(info.name,350,9)}`,9.3,true,'#d5eddf');
       s+=text(LEFT+17,57,`Inicio del conteo: ${dt(info.startedAt)}`,8.5,false,'#d5eddf');
       s+=text(LEFT+17,74,`Reporte generado: ${new Date().toLocaleString('es-MX')}`,8.5,false,'#d5eddf');
@@ -2343,13 +2372,47 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
 
 </script>
 <script>
+/* V19: reconocimiento seguro para conteos diarios. Solo analiza datos locales. */
+(function(root){
+'use strict';
+const norm = s => String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+function classify(product){
+  const family=norm(product.family||'');
+  const name=norm(product.name||product.description||'');
+  let category='none',reason='Fuera de estas categorías de conteo diario';
+  if ((/\bLECHE\b/.test(name)&&!/(DULCE LECHE|ETIQ|TAPA|VASO|CHOCOLATE CON LECHE|D\/LECHE)/.test(name))||/\bBEBIDA AVENA\b|\bCREMA HALF Y HALF\b/.test(name)) {
+    category='leches';reason='Leche, bebida vegetal o crema Half & Half';
+  } else if(/\bVASO\s+\d+(?:[.,]\d+)?\s*OZ\b/.test(name)&&family!=='MATERIAL LSM NORMAL'&&!/(BEARISTA|PORCELANA|REUSABLE)/.test(name)){
+    category='vasos';reason='Vaso operativo de servicio';
+  } else if(['COMIDA - CONGELADOS','COMIDA - REFRIGERADO','PAN Y PASTELES'].includes(family)){
+    if(/RASPBERRY FLAV PEARLS/.test(name)){category='revisar';reason='Ingrediente de bebida con familia Comida'}
+    else {category='alimentos';reason='Familia de alimentos preparados/refrigerados/congelados'}
+  } else if(/\bYOGUR\b|\bYOGURT\b/.test(name)){
+    category='alimentos';reason='Yogur como alimento';
+  } else if(family==='LACTEOS'&&/\bQUESO\b/.test(name)){
+    category='alimentos';reason='Queso para alimentos';
+  } else if(/\b(PAN ESTILO TEJAS|GALLETA OREO|MERMELADA|NUECES CUBIERTAS|COOKIE STRAW|CUP GUACAMOLE|MIX FRUTOS SECOS|SALSA CHIPOTLE|PANETTONE TOPPING|PALOMITAS|MANGO DESHID|CHOC BEARISTA)\b/.test(name)){
+    category='alimentos';reason='Alimento identificado por nombre';
+  } else if(/\bVASO\b/.test(name)||/\b(TAPA(?:S)?\b|PORTA\s*VASOS?|PORTAVASOS|COFFEE TRAVELER|VASO\/TAPA|VASO BEARISTA POSTRES)/.test(name)&&/(VASO|TAPA|TRAVELER)/.test(name)){
+    category='revisar';reason='Vaso reusable, mercancía o accesorio: requiere revisión';
+  } else if(/\b(MINI CHUCKS|CREMA P\/BATIR|RASPBERRY FLAV|QUESO CREMA UNTABLE|CAFE MATCHA|SALSA DULCE LECHE)\b/.test(name)){
+    category='revisar';reason='Alimento o insumo: requiere revisión';
+  }
+  return {category,reason};
+}
+const categories=[['alimentos','Alimentos'],['leches','Leches'],['vasos','Vasos'],['revisar','Revisar'],['none','Sin categoría']];
+root.ConteoVerdeClassifier={classify,categories};
+})(window);
+</script>
+
+<script>
 /* Conteo diario: sesiones independientes de alimentos y leches, solo PDF. */
 (function () {
   'use strict';
   const $ = id => document.getElementById(id);
   const KEY = 'conteoverde_daily_v17';
   const BASE_CATALOGS = {"alimentos":[{"code":"149286","family":"Comida - Refrigerado","description":"149286 - IFC MAP PIADINI CLARAS Y ESPINACA PZA - PZA","unit":"PZA"},{"code":"149290","family":"Comida - Congelados","description":"149290 - BAGEL THOMA´S CJ12PZAS - PZA","unit":"PZA"},{"code":"149293","family":"Comida - Refrigerado","description":"149293 - IFC MAP PANINI TRES QUESOS NUEVO PZA - PZA","unit":"PZA"},{"code":"149295","family":"Comida - Refrigerado","description":"149295 - IFC MAP PANINI PAVO Y PANELA PZA - PZA","unit":"PZA"},{"code":"149299","family":"Comida - Congelados","description":"149299 - SD 1/2 CHEESECAKE BRULEE CJ7REB - PZA","unit":"PZA"},{"code":"149300","family":"Comida - Congelados","description":"149300 - SD PASTEL CHOCOLATE CJ7REB - PZA","unit":"PZA"},{"code":"149303","family":"Comida - Congelados","description":"149303 - SD PASTEL RED VELVET CJ7REB - PZA","unit":"PZA"},{"code":"149305","family":"Comida - Congelados","description":"149305 - SD PAN ESTILO PANQUE LIMON CJ1PZA - PZA","unit":"PZA"},{"code":"149379","family":"Comida - Refrigerado","description":"149379 - IFC MAP SANDWICH GRILLED CHEESE V19 PZA - PZA","unit":"PZA"},{"code":"149385","family":"Comida - Refrigerado","description":"149385 - SUPREMAS TORONJA C/JUGO UVA CJ2PZAS310GR - PZA","unit":"PZA"},{"code":"149395","family":"Comida - Congelados","description":"149395 - SD TARTA ZARZM C/CHOC BCO CJ6PZAS - PZA","unit":"PZA"},{"code":"149397","family":"PAN Y PASTELES","description":"149397 - MAP ENVUELTO POBLANO COA PZA - PZA","unit":"PZA"},{"code":"149398","family":"Comida - Congelados","description":"149398 - SD TARTA BLUEB C/CHOC BCO CJ6PZAS - PZA","unit":"PZA"},{"code":"149400","family":"Comida - Refrigerado","description":"149400 - MIX MANZANA Y UVA CJ2PZAS - PZA","unit":"PZA"},{"code":"149410","family":"Comida - Congelados","description":"149410 - SD MUFFIN CHOCOLATE NUEVO CJ6PZAS - PZA","unit":"PZA"},{"code":"149416","family":"Comida - Congelados","description":"149416 - SD PASTEL ZANAHORIA CJ7REB - PZA","unit":"PZA"},{"code":"149435","family":"Comida - Congelados","description":"149435 - ROSCA REYES CJ12PZAS - PZA","unit":"PZA"},{"code":"149437","family":"Comida - Refrigerado","description":"149437 - HOGAZA NAVIDENA MXMC PZA - PZA","unit":"PZA"},{"code":"149450","family":"Comida - Congelados","description":"149450 - DONA OLD FASHION CHOCOLATE V23 CJ18PZAS - PZA","unit":"PZA"},{"code":"149460","family":"Comida - Congelados","description":"149460 - BOLITAS ALMIDON MANDIOCA/QUESO CJ3BOL1KG - PZA","unit":"PZA"},{"code":"149564","family":"Bebida","description":"149564 - YOGUR MXMH FRESA MORA AZUL MXMH CJ4PZA - PZA","unit":"PZA"},{"code":"149733","family":"Comida - Congelados","description":"149733 - MEDIA BAGUETTE PRECORTADA CJ70 PZAS115GR - PZA","unit":"PZA"},{"code":"149734","family":"Comida - Congelados","description":"149734 - BIS NAL CHCAKE ROULET MAXI CJ54PZAS125GR - PZA","unit":"PZA"},{"code":"149736","family":"Comida - Congelados","description":"149736 - BIS NAL CROISSANT CURV C/S CJ38PZAS95GR - PZA","unit":"PZA"},{"code":"149777","family":"Comida - Congelados","description":"149777 - SANDWICH POLLO CHIERBAS CJ6PZAS240GR - PZA","unit":"PZA"},{"code":"149778","family":"Comida - Congelados","description":"149778 - SANDWICH ENSALADA POLLO CJ8PZAS235GR - PZA","unit":"PZA"},{"code":"149779","family":"Comida - Refrigerado","description":"149779 - ENSALADA CESAR CJ2PZAS187GR - PZA","unit":"PZA"},{"code":"149782","family":"Comida - Congelados","description":"149782 - ENSALADA PASTA AL PESTO CJ4PZAS295GR - PZA","unit":"PZA"},{"code":"149881","family":"Comida - Congelados","description":"149881 - SD PANQUE NARANJA CJ1PZA890GR - PZA","unit":"PZA"},{"code":"149887","family":"Comida - Congelados","description":"149887 - PAN DE ELOTE CJ6PZAS121GR - PZA","unit":"PZA"},{"code":"149891","family":"Comida - Congelados","description":"149891 - ROL CANELA CJ10PZAS130GR - PZA","unit":"PZA"},{"code":"149956","family":"Comida - Congelados","description":"149956 - BIS PAN CHOCO/MARGARINA CJ68PZAS100GR - PZA","unit":"PZA"},{"code":"152557","family":"Comida - Congelados","description":"152557 - BIS GALLETA DUBAI CJ20PZAS80GR - UND","unit":"UND"},{"code":"155938","family":"PAN Y PASTELES","description":"155938 - BIS GALLETA DULCE D/LECHE CJ20PZAS110GR - PZA","unit":"PZA"},{"code":"155958","family":"Comida - Congelados","description":"155958 - BIS GALLETA CHISPAS/CHOCO CJ18PZAS110GR - PZA","unit":"PZA"},{"code":"156009","family":"Comida - Refrigerado","description":"156009 - MAP ENVUELTO BOLOGNESA PZA - PZA","unit":"PZA"},{"code":"156334","family":"Comida - Congelados","description":"156334 - BIS NAL SUPER CROISSANT CJ40PZAS90GR - PZA","unit":"PZA"},{"code":"163006","family":"PAN Y PASTELES","description":"163006 - CAKE POP BEARISTA CJ12BLIST3PZAS39GR - PZA","unit":"PZA"},{"code":"163932","family":"PAN Y PASTELES","description":"163932 - PINO NAVIDAD ROJO CJ30PZS85GR - PZA","unit":"PZA"},{"code":"163933","family":"PAN Y PASTELES","description":"163933 - PINO NAVIDAD CHOCOLATE CJ30PZS85GR - PZA","unit":"PZA"},{"code":"164034","family":"PAN Y PASTELES","description":"164034 - BIS GALLETA RED VELVET CJ20PZAS110GR - PZA","unit":"PZA"}],"leches":[{"code":"149239","family":"Bebida","description":"149239 - 20112 C8P LECHE SOYA ORGANIC 64OZ - L","unit":"L"},{"code":"149278","family":"LACTEOS","description":"149278 - CREMA HALF Y HALF CJ12PZAS1KG - KG","unit":"KG"},{"code":"149873","family":"Bebida","description":"149873 - BEBIDA AVENA CJ6PZAS1LT - L","unit":"L"},{"code":"150178","family":"LACTEOS","description":"150178 - LECHE ENTERA CJ6PZAS2LT - L","unit":"L"},{"code":"150180","family":"LACTEOS","description":"150180 - LECHE LIGHT CJ12PZAS1LT - L","unit":"L"},{"code":"150181","family":"LACTEOS","description":"150181 - LECHE DESLACTOSADA LIGHT CJ12PZAS1LT - L","unit":"L"},{"code":"150186","family":"LACTEOS","description":"150186 - LECHE DESLACTOSADA SUPREMA CJ12PZAS1LT - L","unit":"L"},{"code":"152630","family":"Comida - Seco","description":"152630 - LECHE PROTEINA 100 CJ12LT - L","unit":"L"},{"code":"155868","family":"LACTEOS","description":"155868 - 74136 C8B LECHE COCONUT 1.89LT - L","unit":"L"},{"code":"162528","family":"ABARROTES","description":"162528 - LECHE D/ALMENDRA CJ12PZAS946ML - L","unit":"L"}]};
-  const TYPES = { alimentos: {title:'Alimentos', icon:'🥐'}, leches: {title:'Leches', icon:'🥛'} };
+  const TYPES = { alimentos: {title:'Alimentos', icon:'🥐'}, leches: {title:'Leches', icon:'🥛'}, vasos: {title:'Vasos', icon:'🥤'} };
   const norm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   const escape = v => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   const fmt = v => Number(v).toLocaleString('es-MX',{maximumFractionDigits:3});
@@ -2358,13 +2421,34 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   const niceDate = value => !value ? '—' : `${value.slice(8,10)}/${value.slice(5,7)}/${value.slice(0,4)}`;
   const milliOf = raw => {const s=String(raw).trim().replace(',','.');if(!/^\d+(?:\.\d{1,3})?$/.test(s))return null;const n=Math.round(Number(s)*1000);return Number.isSafeInteger(n)&&n>0?n:null;};
   const uid = () => 'd'+Date.now().toString(36)+Math.random().toString(36).slice(2,9);
-  const catalog = key => BASE_CATALOGS[key].map(p=>({...p,id:'sap:'+p.code,name:p.description.replace(/^\d{6}\s*-\s*/, '').replace(/\s+-\s+(?:PZA|UND|L|KG)$/i,'').trim(),unit:p.unit}));
-  let storage={schema:1,sessions:{alimentos:[],leches:[]},selected:{alimentos:null,leches:null}};
+  const currentExcel = () => {
+    try {const data=JSON.parse(localStorage.getItem('conteoverde_inventory_v1')||'null');return Array.isArray(data?.products)&&data.products.length?data:null;}
+    catch(_error){return null;}
+  };
+  const classified = () => {
+    const data=currentExcel(); if(!data) return [];
+    return data.products.map(p=>{
+      const detected=window.ConteoVerdeClassifier.classify(p);
+      const override=Object.prototype.hasOwnProperty.call(storage.overrides||{},String(p.code||''))?storage.overrides[String(p.code||'')]:null;
+      return {...p,classification:override===null?detected.category:override,detectedCategory:detected.category,reason:detected.reason};
+    });
+  };
+  const catalog = (key,session=null) => {
+    const detected=currentExcel();
+    const source=Array.isArray(session?.sourceCatalog)?session.sourceCatalog:
+       session?(BASE_CATALOGS[key]||[]):
+       detected?classified().filter(p=>p.classification===key):(BASE_CATALOGS[key]||[]);
+    return source.map(p=>({...p,id:'sap:'+p.code,name:(p.name||p.description||'').replace(/^\d{6}\s*-\s*/, '').replace(/\s+-\s+(?:PZA|UND|L|KG)$/i,'').trim(),unit:p.unit}));
+  };
+  let storage={schema:2,sessions:{alimentos:[],leches:[],vasos:[]},selected:{alimentos:null,leches:null,vasos:null},overrides:{}};
   try {
     const saved=JSON.parse(localStorage.getItem(KEY)||'null');
     if(saved&&saved.sessions&&Array.isArray(saved.sessions.alimentos)&&Array.isArray(saved.sessions.leches)){
       storage=saved;
       storage.selected=storage.selected||{alimentos:null,leches:null};
+      storage.sessions.vasos=Array.isArray(storage.sessions.vasos)?storage.sessions.vasos:[];
+      storage.selected.vasos=storage.selected.vasos||null;
+      storage.overrides=storage.overrides||{};
     }
   }catch(_e){}
   let mode=null, selectedProduct=null, selectedUnit='piece',expiryById={},lastFocus=null;
@@ -2372,7 +2456,7 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   const saved = () => {try{localStorage.setItem(KEY,JSON.stringify(storage));}catch(_e){notice('No se pudo guardar. Exporta el PDF antes de cerrar.',true);}};
   const records = () => active()?.records || [];
   const active = () => storage.sessions[mode]?.find(s=>s.id===storage.selected[mode]) || null;
-  const list = () => {const s=active();return [...catalog(mode),...(s?.extra||[])];};
+  const list = () => {const s=active();return [...catalog(mode,s),...(s?.extra||[])];};
   const product = id => list().find(p=>p.id===id);
   const primaryUnit = p => window.cvPrimaryUnit?.(p)||'PZA';
   const hasSource = p => !!p.unit && !/^(?:pza|pzas|pzs|pz|pieza|piezas|und|un|unidad|unidades)$/i.test(p.unit.trim());
@@ -2417,7 +2501,12 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     $('daily-workspace').hidden=!s;
     renderHistorySelector();
     if(!s){
-      $('daily-name').value='';$('daily-item-count').textContent=BASE_CATALOGS[mode].length;
+      $('daily-name').value='';$('daily-item-count').textContent=catalog(mode).length;
+      const excel=currentExcel();
+      const pending=classified().filter(p=>p.classification==='revisar').length;
+      $('daily-recognition-status').innerHTML=excel
+        ?`<strong>Reconocimiento automático activo:</strong> ${escape(excel.filename||'Excel')} · ${catalog(mode).length} artículos de ${spec.title}. ${pending?`<span class="daily-review-warn">${pending} artículos requieren revisión.</span>`:'Sin artículos pendientes de revisión.'} Cada nuevo conteo conserva su catálogo inicial.`
+        :`<strong>Sin Excel general cargado:</strong> ${mode==='vasos'?'Carga primero un Excel desde Inventario general para reconocer vasos.':'Puedes utilizar la lista de respaldo o cargar un Excel en Inventario general para detectar artículos automáticamente.'}`;
       const prior=storage.sessions[mode].slice().reverse();
       $('daily-restore-wrap').hidden=prior.length===0;
       $('daily-restore-select').replaceChildren(...prior.map(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=startDate(r.startedAt)+' · '+r.name;return o;}));
@@ -2533,7 +2622,9 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
   function start(){
     const name=$('daily-name').value.trim().replace(/\s+/g,' ');
     if(name.length<2||name.length>100){notice('Escribe el nombre de la persona que realiza el conteo (2 a 100 caracteres).',true);$('daily-name').focus();return;}
-    const s={id:uid(),name,startedAt:new Date().toISOString(),extra:[],records:[]};
+    const sourceCatalog=catalog(mode);
+    if(!sourceCatalog.length){notice('No hay artículos detectados en esta categoría. Carga primero el Excel general o revisa la clasificación.',true);return;}
+    const s={id:uid(),name,startedAt:new Date().toISOString(),sourceCatalog,extra:[],records:[]};
     storage.sessions[mode].push(s);storage.selected[mode]=s.id; selectedProduct=null;selectedUnit='piece';expiryById={};
     saved();render();notice(`Conteo de ${TYPES[mode].title} iniciado. Fecha y hora guardadas automáticamente.`);
   }
@@ -2556,18 +2647,62 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     try{
       const blob=window.InventoryPDF.exportDailyPDF({type:mode,title:TYPES[mode].title,name:s.name,startedAt:s.startedAt,products:list(),records:s.records});
       const url=URL.createObjectURL(blob);
-      const filename=`Conteo_Diario_${mode==='alimentos'?'Alimentos':'Leches'}_${s.startedAt.slice(0,10)}_${s.startedAt.slice(11,16).replace(':','-')}.pdf`;
+      const filename=`Conteo_Diario_${TYPES[mode].title}_${s.startedAt.slice(0,10)}_${s.startedAt.slice(11,16).replace(':','-')}.pdf`;
       const anchor=document.createElement('a');anchor.href=url;anchor.download=filename;document.body.appendChild(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
       notice('Reporte PDF generado. Tu conteo permanece guardado para correcciones.');
     }catch(error){notice('No fue posible generar el PDF: '+error.message,true);}
   }
   function openNewModal(){ $('daily-new-form').reset();$('daily-new-error').textContent='';$('daily-new-modal').hidden=false;$('daily-new-name').focus(); }
   function closeNewModal(){$('daily-new-modal').hidden=true;}
+  function closeClassification(){ $('daily-classification-modal').hidden=true; }
+  function openClassification(){
+    closeDrawer();
+    if(!currentExcel()){alert('Primero carga tu Excel desde Inventario general. Después podrás revisar y corregir la clasificación automática.');return;}
+    $('daily-classification-search').value='';$('daily-classification-filter').value='revisar';
+    $('daily-classification-modal').hidden=false;
+    renderClassification();$('daily-classification-search').focus();
+  }
+  function renderClassification(){
+    const all=classified();
+    const query=norm($('daily-classification-search').value.trim());
+    const filter=$('daily-classification-filter').value;
+    const view=all.filter(p=>(filter==='all'||p.classification===filter)&&(!query||norm([p.code,p.name,p.description,p.family].join(' ')).includes(query)));
+    const stats=Object.keys(TYPES).map(k=>`${TYPES[k].title}: ${all.filter(p=>p.classification===k).length}`);
+    $('daily-classification-count').textContent=`${view.length} de ${all.length} artículos · ${stats.join(' · ')} · Revisar: ${all.filter(p=>p.classification==='revisar').length}`;
+    const host=$('daily-classification-list');host.replaceChildren();
+    const fragment=document.createDocumentFragment();
+    for(const p of view){
+      const row=document.createElement('div');row.className='daily-classification-row';
+      const info=document.createElement('div');
+      const strong=document.createElement('strong');strong.textContent=`SAP ${p.code} · ${p.name||p.description}`;
+      const small=document.createElement('small');small.textContent=`${p.family} · ${p.reason}${p.classification!==p.detectedCategory?' · Corrección manual':''}`;
+      info.append(strong,small);
+      const control=document.createElement('select');control.setAttribute('aria-label',`Categoría SAP ${p.code}`);
+      for(const [value,label] of window.ConteoVerdeClassifier.categories){const option=new Option(label,value);control.add(option);}
+      control.value=p.classification;
+      control.addEventListener('change',()=>{
+        const code=String(p.code);
+        const next=control.value;
+        if(next===p.detectedCategory)delete storage.overrides[code];else storage.overrides[code]=next;
+        saved();renderClassification();
+        if(!active()&&mode)render();
+      });
+      row.append(info,control);fragment.append(row);
+    }
+    host.append(fragment);
+    if(!view.length)host.textContent='No hay artículos que coincidan con este filtro.';
+  }
   function wire(){
     $('daily-menu-button').addEventListener('click',openDrawer);
     $('daily-drawer-close').addEventListener('click',closeDrawer);
     $('daily-drawer-shade').addEventListener('click',closeDrawer);
     $('daily-drawer-general').addEventListener('click',()=>showMode(null));
+    $('daily-drawer-classification').addEventListener('click',openClassification);
+    $('daily-review-button').addEventListener('click',openClassification);
+    $('daily-classification-close').addEventListener('click',closeClassification);
+    $('daily-classification-search').addEventListener('input',renderClassification);
+    $('daily-classification-filter').addEventListener('change',renderClassification);
+    $('daily-classification-modal').addEventListener('click',e=>{if(e.target===$('daily-classification-modal'))closeClassification();});
     for(const name of Object.keys(TYPES))$('daily-drawer-'+name).addEventListener('click',()=>showMode(name));
     $('daily-home').addEventListener('click',()=>showMode(null));
     $('daily-start').addEventListener('click',start);
@@ -2587,12 +2722,13 @@ root.MerchReader={read:readMerch,readPdf,fromRows};
     $('daily-export').addEventListener('click',exportPdf);
     document.addEventListener('keydown',e=>{
       if(e.key!=='Escape')return;
+      if(!$('daily-classification-modal').hidden){closeClassification();return;}
       if(!$('daily-new-modal').hidden){closeNewModal();return;}
       if($('daily-drawer').classList.contains('open'))closeDrawer();
     });
   }
   wire();
-  window.ConteoVerdeDiario={showMode,getState:()=>storage};
+  window.ConteoVerdeDiario={showMode,getState:()=>storage,getClassification:classified,openClassification};
 })();
 
 </script>
